@@ -18,3 +18,11 @@ Route::get('/', function () {
 });
 
 Route::view('/example', 'example');
+Route::prefix('users')
+    ->name('users.')
+    ->group(function () {
+        Route::get(
+            '/',
+            \App\Http\Controllers\UserController\IndexController::class
+        )->name('index');
+    });
