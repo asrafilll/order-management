@@ -1,4 +1,4 @@
-<aside class="main-sidebar elevation-4 sidebar-light-info">
+<aside class="main-sidebar elevation-4 sidebar-light-primary">
     <!-- Brand Logo -->
     <a
         href="index3.html"
