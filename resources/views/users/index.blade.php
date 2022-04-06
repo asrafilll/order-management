@@ -1,21 +1,15 @@
 <x-app>
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between mb-2">
-                <div>
-                    <h1 class="m-0">Users</h1>
-                </div><!-- /.col -->
-                <div>
-                    <a
-                        href="#"
-                        class="btn btn-info"
-                    >Create</a>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    <x-content-header>
+        <div>
+            <h1 class="m-0">Users</h1>
+        </div>
+        <div>
+            <a
+                href="#"
+                class="btn btn-info"
+            >{{ __('Create') }}</a>
+        </div>
+    </x-content-header>
 
     <!-- Main content -->
     <section class="content">
