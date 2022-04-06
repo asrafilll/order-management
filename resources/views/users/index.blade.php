@@ -6,47 +6,94 @@
         <div>
             <a
                 href="#"
-                class="btn btn-info"
+                class="btn btn-primary"
             >{{ __('Create') }}</a>
         </div>
     </x-content-header>
 
     <!-- Main content -->
     <section class="content">
-        <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Title</h3>
+                <div class="input-group">
+                    <input
+                        type="text"
+                        name="table_search"
+                        class="form-control"
+                        placeholder="Search"
+                    >
 
-                <div class="card-tools">
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="collapse"
-                        title="Collapse"
-                    >
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-card-widget="remove"
-                        title="Remove"
-                    >
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <div class="input-group-append">
+                        <button
+                            type="submit"
+                            class="btn btn-default"
+                        >
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="card-body">
-                Start creating your amazing application!
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('Email') }}</th>
+                            <th>{{ __('Created At') }}</th>
+                            <th>{{ __('Updated At') }}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($users as $user)
+                            <tr>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->created_at->diffForHumans() }}</td>
+                                <td>{{ $user->updated_at->diffForHumans() }}</td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <button
+                                            class="btn btn-light"
+                                            type="button"
+                                            data-toggle="dropdown"
+                                        >
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a
+                                                class="dropdown-item"
+                                                href="#"
+                                            >{{ __('Detail') }}</a>
+                                            <a
+                                                class="dropdown-item"
+                                                href="#"
+                                            >{{ __('Edit') }}</a>
+                                            <a
+                                                class="dropdown-item text-danger"
+                                                href="#"
+                                            >{{ __('Delete') }}</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td
+                                    colspan="5"
+                                    class="text-center"
+                                >{{ __('Data not found') }}</td>
+                            </tr>
+                        @endforelse
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-                Footer
+            <div class="card-footer d-flex justify-content-end">
+                {!! $users->withQueryString()->links() !!}
             </div>
-            <!-- /.card-footer-->
         </div>
-        <!-- /.card -->
     </section>
     <!-- /.content -->
 </x-app>
