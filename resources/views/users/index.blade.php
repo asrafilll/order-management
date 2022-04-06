@@ -64,10 +64,6 @@
                                             <a
                                                 class="dropdown-item"
                                                 href="#"
-                                            >{{ __('Detail') }}</a>
-                                            <a
-                                                class="dropdown-item"
-                                                href="#"
                                             >{{ __('Edit') }}</a>
                                             <a
                                                 class="dropdown-item text-danger"
