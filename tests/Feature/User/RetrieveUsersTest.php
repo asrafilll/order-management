@@ -1,15 +1,17 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\User;
 
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\Utils\ResponseAssertion;
 
 class RetrieveUsersTest extends TestCase
 {
     use RefreshDatabase;
+    use ResponseAssertion;
 
     protected function setUp(): void
     {
@@ -25,7 +27,11 @@ class RetrieveUsersTest extends TestCase
      */
     public function test_should_return_json_users()
     {
-        $response = $this->getJson(route('users.index'));
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->getJson(route('users.index'));
 
         $response
             ->assertStatus(200)
@@ -51,10 +57,13 @@ class RetrieveUsersTest extends TestCase
      */
     public function test_should_return_view_users()
     {
-        $response = $this->get(route('users.index'));
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->get(route('users.index'));
 
-        $response
-            ->assertStatus(200)
-            ->assertSee('html');
+        $response->assertStatus(200);
+        $this->assertHtmlResponse($response);
     }
 }
