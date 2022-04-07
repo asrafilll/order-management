@@ -95,6 +95,29 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-header"></li>
+                <li class="nav-item">
+                    <form
+                        action="{{ route('auth.login.destroy') }}"
+                        method="POST"
+                        style="display: none;"
+                    >
+                        @csrf
+                        @method('DELETE')
+                        <input
+                            type="submit"
+                            id="signout"
+                        >
+                    </form>
+                    <a
+                        href="#"
+                        class="nav-link text-danger"
+                        onclick="document.getElementById('signout').click()"
+                    >
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>{{ __('Sign Out') }}</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
