@@ -34,6 +34,14 @@
         rel="stylesheet"
         href="{{ url('/') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"
     >
+    <!-- jQuery -->
+    <script src="{{ url('/') }}/plugins/jquery/jquery.slim.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ url('/') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="{{ url('/') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ url('/themes') }}/js/adminlte.min.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -50,15 +58,6 @@
     </div>
     <!-- ./wrapper -->
     <x-modal-signout />
-
-    <!-- jQuery -->
-    <script src="{{ url('/') }}/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{{ url('/') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="{{ url('/') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ url('/themes') }}/js/adminlte.min.js"></script>
 </body>
 
 </html>
