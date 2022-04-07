@@ -18,12 +18,4 @@ Route::view('/home', 'home')->middleware('auth');
 Route::view('/example', 'example');
 
 require __DIR__ . '/auth.php';
-
-Route::prefix('users')
-    ->name('users.')
-    ->group(function () {
-        Route::get(
-            '/',
-            \App\Http\Controllers\UserController\IndexController::class
-        )->name('index');
-    });
+require __DIR__ . '/users.php';
