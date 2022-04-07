@@ -49,22 +49,11 @@
                 </x-nav-item>
                 <li class="nav-header"></li>
                 <li class="nav-item">
-                    <form
-                        action="{{ route('auth.login.destroy') }}"
-                        method="POST"
-                        style="display: none;"
-                    >
-                        @csrf
-                        @method('DELETE')
-                        <input
-                            type="submit"
-                            id="signout"
-                        >
-                    </form>
                     <a
                         href="#"
                         class="nav-link text-danger"
-                        onclick="document.getElementById('signout').click()"
+                        data-toggle="modal"
+                        data-target="#signout"
                     >
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>{{ __('Sign Out') }}</p>

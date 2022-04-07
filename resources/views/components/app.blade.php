@@ -49,6 +49,7 @@
         <x-footer />
     </div>
     <!-- ./wrapper -->
+    <x-modal-signout />
 
     <!-- jQuery -->
     <script src="{{ url('/') }}/plugins/jquery/jquery.min.js"></script>
