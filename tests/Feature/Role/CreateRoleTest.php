@@ -4,8 +4,11 @@ namespace Tests\Feature\Role;
 
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\PermissionSeeder;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
 class CreateRoleTest extends TestCase
@@ -22,7 +25,7 @@ class CreateRoleTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->post(route('roles.store'), [
-                'name' => 'Super Admin'
+                'name' => 'Super Admin',
             ]);
 
         $response
@@ -32,6 +35,53 @@ class CreateRoleTest extends TestCase
         $this->assertDatabaseHas((new Role())->getTable(), [
             'name' => 'Super Admin',
         ]);
+    }
+
+    public function test_should_success_create_role_with_permissions()
+    {
+        $this->seed(PermissionSeeder::class);
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        /** @var Collection */
+        $permissions = Permission::query()
+            ->take(4)
+            ->get();
+        $response = $this
+            ->actingAs($user)
+            ->post(route('roles.store'), [
+                'name' => 'Super Admin',
+                'permissions' => $permissions
+                    ->pluck('id')
+                    ->toArray(),
+            ]);
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
+
+        /** @var Role */
+        $role = Role::first();
+        $this->assertEquals('Super Admin', $role->name);
+        $this->assertEquals($permissions->count(), $role->permissions()->count());
+    }
+
+    /**
+     * @return array
+     */
+    public function validProvider()
+    {
+        return [
+            'name: Super Admin' => [
+                'Super Admin',
+                [],
+            ],
+            'name: Super Admin, permissions: [1]' => [
+                'Super Admin',
+                [
+                    $permission->id,
+                ],
+            ],
+        ];
     }
 
     /**
@@ -59,12 +109,49 @@ class CreateRoleTest extends TestCase
     public function invalidProvider()
     {
         return [
+            [
+                [],
+                [
+                    'name',
+                ],
+            ],
             'name: null' => [
                 [
                     'name' => null,
                 ],
                 [
                     'name',
+                ],
+            ],
+            'name: Super Admin, permissions: 1' => [
+                [
+                    'name' => 'Super Admin',
+                    'permissions' => 1,
+                ],
+                [
+                    'permissions',
+                ],
+            ],
+            'name: Super Admin, permissions: [0]' => [
+                [
+                    'name' => 'Super Admin',
+                    'permissions' => [
+                        0,
+                    ],
+                ],
+                [
+                    'permissions.0',
+                ],
+            ],
+            'name: Super Admin, permissions: [example]' => [
+                [
+                    'name' => 'Super Admin',
+                    'permissions' => [
+                        'example',
+                    ],
+                ],
+                [
+                    'permissions.0',
                 ],
             ],
         ];

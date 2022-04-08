@@ -38,7 +38,7 @@
                                             type="checkbox"
                                             id="permission{{ $permission->id }}"
                                             name="permissions[]"
-                                            value="1"
+                                            value="{{ $permission->id }}"
                                         >
                                         <label for="permission{{ $permission->id }}">
                                             {{ Str::title(__($permission->name)) }}
