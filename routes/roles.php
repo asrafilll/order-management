@@ -24,4 +24,8 @@ Route::middleware('auth')
             '/{role}',
             \App\Http\Controllers\Role\UpdateController::class
         )->name('update');
+        Route::delete(
+            '/{role}',
+            \App\Http\Controllers\Role\DestroyController::class
+        )->name('destroy');
     });

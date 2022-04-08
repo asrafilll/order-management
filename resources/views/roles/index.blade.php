@@ -48,7 +48,7 @@
                                                 class="dropdown-item text-danger"
                                                 data-toggle="modal"
                                                 data-target="#modal-delete"
-                                                data-action="#"
+                                                data-action="{{ route('roles.destroy', $role) }}"
                                             >{{ __('Delete') }}</button>
                                         </div>
                                     </div>
