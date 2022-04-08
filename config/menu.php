@@ -16,4 +16,10 @@ return [
         'route_name' => 'users.index',
         'group_name' => 'users',
     ],
+    [
+        'name' => 'Roles Management',
+        'icon' => 'fas fa-user-lock',
+        'route_name' => 'roles.index',
+        'group_name' => 'roles',
+    ],
 ];
