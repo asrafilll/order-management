@@ -69,4 +69,20 @@ class UpdateRoleTest extends TestCase
             ]
         ];
     }
+
+    /**
+     * @return void
+     */
+    public function test_should_error_when_not_found()
+    {
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->get(route('roles.update', [
+                'role' => '0',
+            ]));
+
+        $response->assertNotFound();
+    }
 }

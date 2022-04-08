@@ -29,4 +29,20 @@ class RetrieveEditRolePageTest extends TestCase
             ->assertOk()
             ->assertSee('html');
     }
+
+    /**
+     * @return void
+     */
+    public function test_should_error_when_not_found()
+    {
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->get(route('roles.edit', [
+                'role' => '0',
+            ]));
+
+        $response->assertNotFound();
+    }
 }
