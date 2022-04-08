@@ -12,4 +12,8 @@ Route::middleware('auth')
             '/create',
             \App\Http\Controllers\User\CreateController::class
         )->name('create');
+        Route::post(
+            '/',
+            \App\Http\Controllers\User\StoreController::class
+        )->name('store');
     });
