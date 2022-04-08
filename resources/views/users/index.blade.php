@@ -63,7 +63,7 @@
                                         <div class="dropdown-menu">
                                             <a
                                                 class="dropdown-item"
-                                                href="#"
+                                                href="{{ route('users.edit', $user) }}"
                                             >{{ __('Edit') }}</a>
                                             <a
                                                 class="dropdown-item text-danger"

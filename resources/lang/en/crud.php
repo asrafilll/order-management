@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'created' => 'Success create new :name.',
+    'created' => 'Success created new :name.',
+    'updated' => 'Success updated :name.',
 ];
