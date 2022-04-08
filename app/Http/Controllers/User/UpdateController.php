@@ -17,7 +17,9 @@ class UpdateController extends Controller
     public function __invoke(User $user, UpdateRequest $updateRequest)
     {
         $user->update($updateRequest->validated());
-        $message = __('crud.updated', ['name' => 'user']);
+        $message = __('crud.updated', [
+            'name' => 'user',
+        ]);
 
         return Response::redirectToRoute('users.edit', $user)
             ->with('success', $message);

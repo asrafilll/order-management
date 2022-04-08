@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Response;
 
@@ -17,7 +16,7 @@ class StoreController extends Controller
     public function __invoke(StoreRequest $storeRequest)
     {
         User::create($storeRequest->validated());
-        $message = __('crud.success', [
+        $message = __('crud.created', [
             'name' => 'user'
         ]);
 
