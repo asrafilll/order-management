@@ -20,7 +20,7 @@ class UsersSeeder extends Seeder
             'email' => 'superadmin@example.com',
         ], [
             'name' => 'Super Admin',
-            'password' => Hash::make('secret'),
+            'password' => 'secret',
             'email_verified_at' => Carbon::now(),
         ]);
     }
