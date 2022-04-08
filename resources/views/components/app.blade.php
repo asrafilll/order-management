@@ -24,20 +24,34 @@
         rel="stylesheet"
         href="{{ url('/') }}/plugins/icheck-bootstrap/icheck-bootstrap.min.css"
     >
-    <!-- Theme style -->
+    <!-- SweetAlert2 -->
     <link
         rel="stylesheet"
-        href="{{ url('/themes') }}/css/adminlte.light.min.css"
+        href="{{ url('/') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css"
+    >
+    <!-- Toastr -->
+    <link
+        rel="stylesheet"
+        href="{{ url('/') }}/plugins/toastr/toastr.min.css"
     >
     <!-- overlayScrollbars -->
     <link
         rel="stylesheet"
         href="{{ url('/') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"
     >
+    <!-- Theme style -->
+    <link
+        rel="stylesheet"
+        href="{{ url('/themes') }}/css/adminlte.light.min.css"
+    >
     <!-- jQuery -->
     <script src="{{ url('/') }}/plugins/jquery/jquery.slim.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ url('/') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="{{ url('/') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="{{ url('/') }}/plugins/toastr/toastr.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="{{ url('/') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
@@ -60,6 +74,20 @@
     </div>
     <!-- ./wrapper -->
     <x-modal-signout />
+
+    @if (Session::has('success'))
+        <x-feedback
+            type="success"
+            message="{{ Session::get('success') }}"
+        />
+    @endif
+
+    @if ($errors->any())
+        <x-feedback
+            type="error"
+            message="{{ __('Validation error.') }}"
+        />
+    @endif
 </body>
 
 </html>
