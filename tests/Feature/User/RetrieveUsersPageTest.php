@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Utils\ResponseAssertion;
 
-class RetrieveUsersTest extends TestCase
+class RetrieveUsersPageTest extends TestCase
 {
     use RefreshDatabase;
     use ResponseAssertion;

@@ -6,10 +6,12 @@ use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\ResponseAssertion;
 
 class RetrieveRolesPageTest extends TestCase
 {
     use RefreshDatabase;
+    use ResponseAssertion;
 
     /**
      * @return void
@@ -22,8 +24,7 @@ class RetrieveRolesPageTest extends TestCase
             ->actingAs($user)
             ->get(route('roles.index'));
 
-        $response
-            ->assertOk()
-            ->assertSee('html');
+        $response->assertOk();
+        $this->assertHtmlResponse($response);
     }
 }

@@ -7,10 +7,12 @@ use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\ResponseAssertion;
 
 class RetrieveEditRolePageTest extends TestCase
 {
     use RefreshDatabase;
+    use ResponseAssertion;
 
     /**
      * @return void
@@ -25,9 +27,8 @@ class RetrieveEditRolePageTest extends TestCase
             ->actingAs($user)
             ->get(route('roles.edit', $role));
 
-        $response
-            ->assertOk()
-            ->assertSee('html');
+        $response->assertOk();
+        $this->assertHtmlResponse($response);
     }
 
     /**

@@ -6,10 +6,12 @@ use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\ResponseAssertion;
 
 class RetrieveEditUserPageTest extends TestCase
 {
     use RefreshDatabase;
+    use ResponseAssertion;
 
     /**
      * @return void
@@ -24,8 +26,7 @@ class RetrieveEditUserPageTest extends TestCase
             ->actingAs($user)
             ->get(route('users.edit', $userForEdit));
 
-        $response
-            ->assertOk()
-            ->assertSee('html');
+        $response->assertOk();
+        $this->assertHtmlResponse($response);
     }
 }
