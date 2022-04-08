@@ -7,7 +7,6 @@
         <div class="row">
             <div class="col-lg-6">
                 <form
-                    id="form-create-user"
                     action="{{ route('users.store') }}"
                     method="POST"
                     novalidate
@@ -82,7 +81,6 @@
                             <button
                                 type="submit"
                                 class="btn btn-primary"
-                                id="btn-submit"
                             >{{ __('Save') }}</button>
                             <a
                                 href="{{ route('users.index') }}"
@@ -91,16 +89,6 @@
                         </div>
                     </div>
                 </form>
-                <script>
-                    $(function() {
-                        const $formCreateUser = $('#form-create-user');
-                        const $btnSubmit = $('#btn-submit');
-
-                        $formCreateUser.on('submit', function() {
-                            $btnSubmit.attr('disabled', true);
-                        });
-                    });
-                </script>
             </div>
         </div>
     </section>

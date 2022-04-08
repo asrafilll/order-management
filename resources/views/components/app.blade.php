@@ -42,6 +42,8 @@
     <script src="{{ url('/') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ url('/themes') }}/js/adminlte.min.js"></script>
+    <!-- Form -->
+    <script src="{{ url('/') }}/js/form.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
