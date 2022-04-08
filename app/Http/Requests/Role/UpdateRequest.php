@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Permission;
 
 class UpdateRequest extends FormRequest
 {
@@ -27,6 +29,13 @@ class UpdateRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
+            ],
+            'permissions' => [
+                'array',
+            ],
+            'permissions.*' => [
+                'integer',
+                Rule::exists((new Permission())->getTable(), 'id')
             ],
         ];
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\UpdateRequest;
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
 class UpdateController extends Controller
@@ -16,7 +17,14 @@ class UpdateController extends Controller
      */
     public function __invoke(Role $role, UpdateRequest $updateRequest)
     {
-        $role->update($updateRequest->validated());
+        DB::transaction(function () use ($role, $updateRequest) {
+            $role->update($updateRequest->safe()->only(['name']));
+
+            if ($updateRequest->filled('permissions')) {
+                $role->syncPermissions($updateRequest->safe()->only(['permissions']));
+            }
+        });
+
         $message = __('crud.updated', [
             'name' => 'role',
         ]);
