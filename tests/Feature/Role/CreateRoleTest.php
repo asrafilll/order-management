@@ -33,4 +33,40 @@ class CreateRoleTest extends TestCase
             'name' => 'Super Admin',
         ]);
     }
+
+    /**
+     * @dataProvider invalidProvider
+     * @param array $data
+     * @param array $errors
+     * @return void
+     */
+    public function test_should_error_create_role(array $data, array $errors)
+    {
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->post(route('roles.store'), $data);
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasErrors($errors);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidProvider()
+    {
+        return [
+            'name: null' => [
+                [
+                    'name' => null,
+                ],
+                [
+                    'name',
+                ],
+            ],
+        ];
+    }
 }
