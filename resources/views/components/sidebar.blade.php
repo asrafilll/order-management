@@ -40,13 +40,15 @@
                 role="menu"
                 data-accordion="false"
             >
-                <x-nav-item
-                    path="{{ route('users.index') }}"
-                    groupPath="users"
-                >
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>{{ __('Users Management') }}</p>
-                </x-nav-item>
+                @foreach (Config::get('menu') as $menu)
+                    <x-nav-item
+                        path="{{ route($menu['route_name']) }}"
+                        groupPath="{{ $menu['group_name'] }}"
+                    >
+                        <i class="nav-icon {{ $menu['icon'] }}"></i>
+                        <p>{{ $menu['name'] }}</p>
+                    </x-nav-item>
+                @endforeach
                 <li class="nav-header"></li>
                 <li class="nav-item">
                     <a
