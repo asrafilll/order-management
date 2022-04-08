@@ -74,6 +74,7 @@
     </div>
     <!-- ./wrapper -->
     <x-modal-signout />
+    <x-modal-delete />
 
     @if (Session::has('success'))
         <x-feedback
