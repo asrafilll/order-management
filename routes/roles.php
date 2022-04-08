@@ -16,4 +16,8 @@ Route::middleware('auth')
             '/',
             \App\Http\Controllers\Role\StoreController::class
         )->name('store');
+        Route::get(
+            '/{role}',
+            \App\Http\Controllers\Role\EditController::class
+        )->name('edit');
     });

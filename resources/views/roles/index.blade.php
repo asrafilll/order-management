@@ -41,7 +41,7 @@
                                         <div class="dropdown-menu">
                                             <a
                                                 class="dropdown-item"
-                                                href="#"
+                                                href="{{ route('roles.edit', $role) }}"
                                             >{{ __('Edit') }}</a>
                                             <button
                                                 type="button"
