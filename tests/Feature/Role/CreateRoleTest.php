@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Role;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CreateRoleTest extends TestCase
