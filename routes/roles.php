@@ -20,4 +20,8 @@ Route::middleware('auth')
             '/{role}',
             \App\Http\Controllers\Role\EditController::class
         )->name('edit');
+        Route::put(
+            '/{role}',
+            \App\Http\Controllers\Role\UpdateController::class
+        )->name('update');
     });

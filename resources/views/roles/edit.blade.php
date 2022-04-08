@@ -7,6 +7,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <form
+                    action="{{ route('roles.update', $role) }}"
                     method="POST"
                     novalidate
                 >
