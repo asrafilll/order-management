@@ -89,8 +89,6 @@
                                 >{{ __('Data not found') }}</td>
                             </tr>
                         @endforelse
-                        <tr>
-                        </tr>
                     </tbody>
                 </table>
             </div>
