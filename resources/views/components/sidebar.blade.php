@@ -28,7 +28,7 @@
                 <a
                     href="#"
                     class="d-block"
-                >Alexander Pierce</a>
+                >{{ Auth::user()->name }}</a>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
                     groupPath="users"
                 >
                     <i class="nav-icon fas fa-users"></i>
-                    <p>Users Management</p>
+                    <p>{{ __('Users Management') }}</p>
                 </x-nav-item>
                 <li class="nav-header"></li>
                 <li class="nav-item">
