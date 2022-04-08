@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -22,8 +21,8 @@ class IndexController extends Controller
         $users = User::query()
             ->when(
                 $request->filled('search'),
-                function (Builder $query) use ($request) {
-                    $query->where(function (Builder $query) use ($request) {
+                function ($query) use ($request) {
+                    $query->where(function ($query) use ($request) {
                         $value = '%' . $request->get('search') . '%';
                         $query
                             ->orWhere('name', 'LIKE', $value)
