@@ -232,4 +232,14 @@ return [
 
     ],
 
+    'permissions' => [
+        'retrieve users',
+        'create users',
+        'update users',
+        'delete users',
+        'retrieve roles',
+        'create roles',
+        'update roles',
+        'delete roles',
+    ],
 ];
