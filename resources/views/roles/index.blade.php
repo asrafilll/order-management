@@ -5,7 +5,7 @@
         </div>
         <div>
             <a
-                href="#"
+                href="{{ route('roles.create') }}"
                 class="btn btn-primary"
             >{{ __('Create') }}</a>
         </div>
