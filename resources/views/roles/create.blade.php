@@ -30,6 +30,22 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label>{{ __('Permissions') }}</label>
+                                @foreach ($permissions as $permission)
+                                    <div class="icheck-primary">
+                                        <input
+                                            type="checkbox"
+                                            id="permission{{ $permission->id }}"
+                                            name="permissions[]"
+                                            value="1"
+                                        >
+                                        <label for="permission{{ $permission->id }}">
+                                            {{ Str::title(__($permission->name)) }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="card-footer">
                             <button

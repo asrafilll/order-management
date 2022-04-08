@@ -26,5 +26,6 @@ class RetrieveCreateRolePageTest extends TestCase
 
         $response->assertOk();
         $this->assertHtmlResponse($response);
+        $response->assertViewHas('permissions');
     }
 }
