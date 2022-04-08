@@ -28,4 +28,8 @@ Route::middleware('auth')
             '/{user}/password',
             \App\Http\Controllers\User\Password\UpdateController::class,
         )->name('update.password');
+        Route::delete(
+            '/{user}',
+            \App\Http\Controllers\User\DestroyController::class,
+        )->name('destroy');
     });

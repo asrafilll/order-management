@@ -11,7 +11,6 @@
         </div>
     </x-content-header>
 
-    <!-- Main content -->
     <section class="content">
         <div class="card">
             <div class="card-header">
@@ -65,10 +64,13 @@
                                                 class="dropdown-item"
                                                 href="{{ route('users.edit', $user) }}"
                                             >{{ __('Edit') }}</a>
-                                            <a
+                                            <button
+                                                type="button"
                                                 class="dropdown-item text-danger"
-                                                href="#"
-                                            >{{ __('Delete') }}</a>
+                                                data-toggle="modal"
+                                                data-target="#modal-delete"
+                                                data-action="{{ route('users.destroy', $user) }}"
+                                            >{{ __('Delete') }}</button>
                                         </div>
                                     </div>
                                 </td>
@@ -91,5 +93,4 @@
             </div>
         </div>
     </section>
-    <!-- /.content -->
 </x-app>
