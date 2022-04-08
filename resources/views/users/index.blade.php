@@ -1,7 +1,7 @@
 <x-app>
     <x-content-header>
         <div>
-            <h1 class="m-0">Users</h1>
+            <h1 class="m-0">{{ __('Users') }}</h1>
         </div>
         <div>
             <a
