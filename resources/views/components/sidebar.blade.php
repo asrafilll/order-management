@@ -41,13 +41,15 @@
                 data-accordion="false"
             >
                 @foreach (Config::get('menu') as $menu)
-                    <x-nav-item
-                        path="{{ route($menu['route_name']) }}"
-                        groupPath="{{ $menu['group_name'] }}"
-                    >
-                        <i class="nav-icon {{ $menu['icon'] }}"></i>
-                        <p>{{ $menu['name'] }}</p>
-                    </x-nav-item>
+                    @if (!isset($menu['can']) || Auth::user()->can($menu['can']))
+                        <x-nav-item
+                            path="{{ route($menu['route_name']) }}"
+                            groupPath="{{ $menu['group_name'] }}"
+                        >
+                            <i class="nav-icon {{ $menu['icon'] }}"></i>
+                            <p>{{ $menu['name'] }}</p>
+                        </x-nav-item>
+                    @endif
                 @endforeach
                 <li class="nav-header"></li>
                 <li class="nav-item">
