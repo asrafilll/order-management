@@ -26,7 +26,7 @@
                     <tbody>
                         @forelse ($roles as $role)
                             <tr>
-                                <td>{{ $role->name }}</td>
+                                <td>{{ Str::title($role->name) }}</td>
                                 <td>{{ $role->created_at->diffForHumans() }}</td>
                                 <td>{{ $role->updated_at->diffForHumans() }}</td>
                                 <td class="text-right">
