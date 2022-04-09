@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PermissionEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
@@ -17,7 +17,7 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $temp = [];
-        $permissions = Config::get('app.permissions');
+        $permissions = PermissionEnum::toValues();
         $lastIndex = count($permissions) - 1;
 
         foreach ($permissions as $index => $permission) {

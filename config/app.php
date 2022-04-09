@@ -231,8 +231,4 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
-    'permissions' => [
-        'manage users and roles',
-    ],
 ];
