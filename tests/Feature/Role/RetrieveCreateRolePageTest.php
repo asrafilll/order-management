@@ -2,26 +2,29 @@
 
 namespace Tests\Feature\Role;
 
-use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Utils\ResponseAssertion;
+use Tests\Utils\UserFactory;
 
 class RetrieveCreateRolePageTest extends TestCase
 {
     use RefreshDatabase;
     use ResponseAssertion;
+    use UserFactory;
 
     /**
      * @return void
      */
     public function test_should_return_html_response()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->get(route('roles.create'));
 
         $response->assertOk();

@@ -2,30 +2,32 @@
 
 namespace Tests\Feature\Role;
 
+use App\Enums\PermissionEnum;
 use App\Models\Role;
-use App\Models\User;
-use Database\Seeders\PermissionSeeder;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
+use Tests\Utils\UserFactory;
 
 class UpdateRoleTest extends TestCase
 {
     use RefreshDatabase;
+    use UserFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_role()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var Role */
         $role = Role::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('roles.update', $role), [
                 'name' => $role->name,
             ]);
@@ -43,9 +45,6 @@ class UpdateRoleTest extends TestCase
      */
     public function test_should_success_update_role_with_permissions()
     {
-        $this->seed(PermissionSeeder::class);
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var Role */
         $role = Role::factory()->create();
         /** @var Collection */
@@ -53,7 +52,11 @@ class UpdateRoleTest extends TestCase
             ->take(4)
             ->get();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('roles.update', $role), [
                 'name' => 'New Role',
                 'permissions' => $permissions
@@ -78,12 +81,14 @@ class UpdateRoleTest extends TestCase
      */
     public function test_should_error_update_role(array $data, array $errors)
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var Role */
         $role = Role::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('roles.update', $role), $data);
 
         $response
@@ -136,10 +141,12 @@ class UpdateRoleTest extends TestCase
      */
     public function test_should_error_when_not_found()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('roles.update', [
                 'role' => '0',
             ]), [
@@ -154,14 +161,16 @@ class UpdateRoleTest extends TestCase
      */
     public function test_should_error_when_name_already_exists()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var Role */
         $existingRole = Role::factory()->create();
         /** @var Role */
         $roleForUpdate = Role::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('roles.update', $roleForUpdate), [
                 'name' => $existingRole->name
             ]);

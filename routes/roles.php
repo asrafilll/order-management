@@ -1,6 +1,8 @@
 <?php
 
-Route::middleware('auth')
+use App\Enums\PermissionEnum;
+
+Route::middleware(['auth', 'can:' . PermissionEnum::manage_users_and_roles()->value])
     ->prefix('roles')
     ->name('roles.')
     ->group(function () {

@@ -2,25 +2,29 @@
 
 namespace Tests\Feature\Role;
 
+use App\Enums\PermissionEnum;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\UserFactory;
 
 class DeleteRoleTest extends TestCase
 {
     use RefreshDatabase;
+    use UserFactory;
 
     /**
      * @return void
      */
     public function test_should_error_when_not_found()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->delete(route('roles.destroy', [
                 'role' => '0',
             ]));
@@ -33,12 +37,14 @@ class DeleteRoleTest extends TestCase
      */
     public function test_should_success_delete_role()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var Role */
         $role = Role::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->delete(route('roles.destroy', $role));
 
         $response
@@ -51,15 +57,17 @@ class DeleteRoleTest extends TestCase
      */
     public function test_should_error_when_role_used_by_users()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $userForRole = User::factory()->create();
         /** @var Role */
         $role = Role::factory()->create();
         $userForRole->assignRole($role);
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->delete(route('roles.destroy', $role));
 
         $response->assertForbidden();

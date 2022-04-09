@@ -25,5 +25,6 @@ return [
         'icon' => 'fas fa-user-lock',
         'route_name' => 'roles.index',
         'group_name' => 'roles',
+        'can' => PermissionEnum::manage_users_and_roles()->value,
     ],
 ];
