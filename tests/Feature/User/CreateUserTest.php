@@ -2,28 +2,32 @@
 
 namespace Tests\Feature\User;
 
+use App\Enums\PermissionEnum;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use Tests\Utils\UserFactory;
 
 class CreateUserTest extends TestCase
 {
     use RefreshDatabase;
+    use UserFactory;
 
     /**
      * @return void
      */
     public function test_should_success_create_user()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var Role */
         $role = Role::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->post(route('users.store'), [
                 'name' => 'John',
                 'email' => 'john@example.com',
@@ -53,10 +57,12 @@ class CreateUserTest extends TestCase
         callable $data,
         array $errors
     ) {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->post(route('users.store'), $data());
 
         $response
@@ -119,12 +125,14 @@ class CreateUserTest extends TestCase
      */
     public function test_should_error_create_user_when_email_already_registered()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $existingUser = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->post(route('users.store'), [
                 'name' => 'John',
                 'email' => $existingUser->email,

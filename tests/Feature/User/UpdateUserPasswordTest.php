@@ -2,15 +2,17 @@
 
 namespace Tests\Feature\User;
 
+use App\Enums\PermissionEnum;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use Tests\Utils\UserFactory;
 
 class UpdateUserPasswordTest extends TestCase
 {
     use RefreshDatabase;
+    use UserFactory;
 
     /**
      * @dataProvider invalidProvider
@@ -20,12 +22,14 @@ class UpdateUserPasswordTest extends TestCase
      */
     public function test_should_error_update_user_password(array $data, array $errors)
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $userForUpdate = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('users.update.password', $userForUpdate), $data);
 
         $response
@@ -62,12 +66,14 @@ class UpdateUserPasswordTest extends TestCase
      */
     public function test_should_success_update_user_password()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $userForUpdate = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('users.update.password', $userForUpdate), [
                 'password' => '123123',
                 'password_confirmation' => '123123',

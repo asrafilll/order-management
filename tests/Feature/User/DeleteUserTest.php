@@ -2,24 +2,28 @@
 
 namespace Tests\Feature\User;
 
+use App\Enums\PermissionEnum;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\UserFactory;
 
 class DeleteUserTest extends TestCase
 {
     use RefreshDatabase;
+    use UserFactory;
 
     /**
      * @return void
      */
     public function test_should_error_when_user_not_found()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->delete(route('users.destroy', ['user' => '0']));
 
         $response->assertNotFound();
@@ -30,8 +34,9 @@ class DeleteUserTest extends TestCase
      */
     public function test_should_error_when_delete_it_self()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
+        $user = $this->createUserWithPermission(
+            PermissionEnum::manage_users_and_roles()
+        );
         $response = $this
             ->actingAs($user)
             ->delete(route('users.destroy', $user));
@@ -44,12 +49,14 @@ class DeleteUserTest extends TestCase
      */
     public function test_should_success_delete_user()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $userForDelete = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->delete(route('users.destroy', $userForDelete));
 
         $response

@@ -2,25 +2,29 @@
 
 namespace Tests\Feature\User;
 
+use App\Enums\PermissionEnum;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\UserFactory;
 
 class UpdateUserTest extends TestCase
 {
     use RefreshDatabase;
+    use UserFactory;
 
     /**
      * @return void
      */
     public function test_should_error_when_user_not_found()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(
                 route('users.update', ['user' => '0']),
                 [
@@ -38,14 +42,16 @@ class UpdateUserTest extends TestCase
      */
     public function test_should_success_update_user()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $userForUpdate = User::factory()->create();
         /** @var Role */
         $role = Role::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(
                 route('users.update', $userForUpdate),
                 [
@@ -73,12 +79,14 @@ class UpdateUserTest extends TestCase
      */
     public function test_should_error_update_user(callable $data, array $errors)
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $userForUpdate = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('users.update', $userForUpdate), $data());
 
         $response
@@ -115,14 +123,16 @@ class UpdateUserTest extends TestCase
      */
     public function test_should_error_update_user_when_email_already_used()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         /** @var User */
         $userForUpdate1 = User::factory()->create();
         /** @var User */
         $userForUpdate2 = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->put(route('users.update', $userForUpdate2), [
                 'name' => 'John',
                 'email' => $userForUpdate1->email,

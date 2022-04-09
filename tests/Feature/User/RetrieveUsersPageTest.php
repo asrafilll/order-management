@@ -2,16 +2,18 @@
 
 namespace Tests\Feature\User;
 
+use App\Enums\PermissionEnum;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\UserFactory;
 use Tests\Utils\ResponseAssertion;
 
 class RetrieveUsersPageTest extends TestCase
 {
     use RefreshDatabase;
     use ResponseAssertion;
+    use UserFactory;
 
     protected function setUp(): void
     {
@@ -27,10 +29,12 @@ class RetrieveUsersPageTest extends TestCase
      */
     public function test_should_return_json_users()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->getJson(route('users.index'));
 
         $response
@@ -57,10 +61,12 @@ class RetrieveUsersPageTest extends TestCase
      */
     public function test_should_return_view_users()
     {
-        /** @var Authenticatable */
-        $user = User::factory()->create();
         $response = $this
-            ->actingAs($user)
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_users_and_roles()
+                )
+            )
             ->get(route('users.index'));
 
         $response->assertStatus(200);
