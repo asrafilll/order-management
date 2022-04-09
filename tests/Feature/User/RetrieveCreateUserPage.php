@@ -25,5 +25,6 @@ class RetrieveCreateUserPage extends TestCase
 
         $response->assertStatus(200);
         $this->assertHtmlResponse($response);
+        $response->assertViewHas('roles');
     }
 }

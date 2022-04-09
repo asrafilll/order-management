@@ -76,6 +76,22 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label>{{ __('Roles') }}</label>
+                                @foreach ($roles as $role)
+                                    <div class="icheck-primary">
+                                        <input
+                                            type="checkbox"
+                                            id="role{{ $role->id }}"
+                                            name="roles[]"
+                                            value="{{ $role->id }}"
+                                        >
+                                        <label for="role{{ $role->id }}">
+                                            {{ Str::title(__($role->name)) }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="card-footer">
                             <button
