@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\User;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,6 +26,7 @@ class UpdateUserTest extends TestCase
                 [
                     'name' => 'John',
                     'email' => 'john@example.com',
+                    'role' => Role::factory()->create()->id,
                 ]
             );
 
@@ -40,6 +42,8 @@ class UpdateUserTest extends TestCase
         $user = User::factory()->create();
         /** @var User */
         $userForUpdate = User::factory()->create();
+        /** @var Role */
+        $role = Role::factory()->create();
         $response = $this
             ->actingAs($user)
             ->put(
@@ -47,6 +51,7 @@ class UpdateUserTest extends TestCase
                 [
                     'name' => 'John',
                     'email' => 'john@example.com',
+                    'role' => $role->id,
                 ]
             );
 
@@ -57,15 +62,16 @@ class UpdateUserTest extends TestCase
         $userForUpdate->refresh();
         $this->assertEquals('John', $userForUpdate->name);
         $this->assertEquals('john@example.com', $userForUpdate->email);
+        $this->assertTrue($userForUpdate->hasRole($role));
     }
 
     /**
      * @dataProvider invalidProvider
-     * @param array $data
+     * @param callable $data
      * @param array $errors
      * @return void
      */
-    public function test_should_error_update_user(array $data, array $errors)
+    public function test_should_error_update_user(callable $data, array $errors)
     {
         /** @var Authenticatable */
         $user = User::factory()->create();
@@ -73,7 +79,7 @@ class UpdateUserTest extends TestCase
         $userForUpdate = User::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->put(route('users.update', $userForUpdate), $data);
+            ->put(route('users.update', $userForUpdate), $data());
 
         $response
             ->assertRedirect()
@@ -83,20 +89,19 @@ class UpdateUserTest extends TestCase
     public function invalidProvider()
     {
         return [
-            'name: null, email: null' => [
-                [
-                    'name' => null,
-                    'email' => null,
-                ],
+            'name: null, email: null, role: null' => [
+                fn () => [],
                 [
                     'name',
                     'email',
+                    'role',
                 ],
             ],
-            'name: John, email: johndoe' => [
-                [
+            'name: John, email: johndoe, role: (based_on_factory)' => [
+                fn () => [
                     'name' => 'John',
                     'email' => 'johndoe',
+                    'role' => Role::factory()->create()->id,
                 ],
                 [
                     'email',
@@ -121,6 +126,7 @@ class UpdateUserTest extends TestCase
             ->put(route('users.update', $userForUpdate2), [
                 'name' => 'John',
                 'email' => $userForUpdate1->email,
+                'role' => Role::factory()->create()->id,
             ]);
 
         $response

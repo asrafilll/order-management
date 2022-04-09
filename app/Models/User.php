@@ -89,7 +89,7 @@ class User extends Authenticatable
         $this->attributes['password'] = Hash::make($password);
     }
 
-    public function getRoleAttribute(): Role
+    public function getRoleAttribute()
     {
         return $this->roles->first();
     }

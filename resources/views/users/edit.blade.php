@@ -67,7 +67,7 @@
                                     @foreach ($roles as $role)
                                         <option
                                             value="{{ $role->id }}"
-                                            @if (old('role') == $role->id || $user->role->id == $role->id) selected @endif
+                                            @if (old('role') == $role->id || $user->role?->id == $role->id) selected @endif
                                         >
                                             {{ Str::title(__($role->name)) }}
                                         </option>

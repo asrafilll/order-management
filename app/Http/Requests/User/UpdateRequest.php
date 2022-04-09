@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,7 +35,12 @@ class UpdateRequest extends FormRequest
                 'string',
                 'email',
                 Rule::unique('users')->ignore($this->user),
-            ]
+            ],
+            'role' => [
+                'required',
+                'integer',
+                Rule::exists((new Role())->getTable(), 'id'),
+            ],
         ];
     }
 }
