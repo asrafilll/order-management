@@ -67,7 +67,7 @@ class UpdateRoleTest extends TestCase
 
         $role->refresh();
         $this->assertEquals('New Role', $role->name);
-        $this->assertEquals(4, $role->permissions->count());
+        $this->assertEquals($permissions->count(), $role->permissions->count());
     }
 
     /**
