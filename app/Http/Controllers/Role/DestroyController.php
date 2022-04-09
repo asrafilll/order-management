@@ -14,6 +14,7 @@ class DestroyController extends Controller
      */
     public function __invoke(Role $role)
     {
+        abort_if($role->users()->count() > 0, \Illuminate\Http\Response::HTTP_FORBIDDEN);
         $role->delete();
         $message = __('crud.deleted', [
             'name' => 'role',

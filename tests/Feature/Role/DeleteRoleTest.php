@@ -6,7 +6,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class DeleteRoleTest extends TestCase
@@ -45,5 +44,24 @@ class DeleteRoleTest extends TestCase
         $response
             ->assertRedirect()
             ->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @return void
+     */
+    public function test_should_error_when_role_used_by_users()
+    {
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        /** @var User */
+        $userForRole = User::factory()->create();
+        /** @var Role */
+        $role = Role::factory()->create();
+        $userForRole->assignRole($role);
+        $response = $this
+            ->actingAs($user)
+            ->delete(route('roles.destroy', $role));
+
+        $response->assertForbidden();
     }
 }
