@@ -50,6 +50,32 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label for="role">
+                                    <span>{{ __('Role') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select
+                                    name="role"
+                                    id="role"
+                                    class="form-control @error('role') is-invalid @enderror"
+                                >
+                                    <option
+                                        value=""
+                                        hidden
+                                    ></option>
+                                    @foreach ($roles as $role)
+                                        <option
+                                            value="{{ $role->id }}"
+                                            @if (old('role') == $role->id || $user->role->id == $role->id) selected @endif
+                                        >
+                                            {{ Str::title(__($role->name)) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                         </div>
                         <div class="card-footer">
                             <button

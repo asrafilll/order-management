@@ -28,5 +28,6 @@ class RetrieveEditUserPageTest extends TestCase
 
         $response->assertOk();
         $this->assertHtmlResponse($response);
+        $response->assertViewHas('roles');
     }
 }
