@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -39,6 +41,11 @@ class StoreRequest extends FormRequest
                 'string',
                 'confirmed',
                 'min:6',
+            ],
+            'role' => [
+                'required',
+                'integer',
+                Rule::exists((new Role())->getTable(), 'id'),
             ],
         ];
     }

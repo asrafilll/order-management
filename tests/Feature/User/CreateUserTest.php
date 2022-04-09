@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\User;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -20,6 +20,8 @@ class CreateUserTest extends TestCase
     {
         /** @var Authenticatable */
         $user = User::factory()->create();
+        /** @var Role */
+        $role = Role::factory()->create();
         $response = $this
             ->actingAs($user)
             ->post(route('users.store'), [
@@ -27,6 +29,7 @@ class CreateUserTest extends TestCase
                 'email' => 'john@example.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
+                'role' => $role->id,
             ]);
 
         $response
@@ -37,23 +40,24 @@ class CreateUserTest extends TestCase
         $this->assertEquals('John', $createdUser->name);
         $this->assertEquals('john@example.com', $createdUser->email);
         $this->assertTrue(Hash::check('password', $createdUser->password));
+        $this->assertTrue($createdUser->hasRole($role));
     }
 
     /**
      * @dataProvider invalidProvider
-     * @param array $data
+     * @param callable $data
      * @param array $errors
      * @return void
      */
     public function test_should_error_create_user(
-        array $data,
+        callable $data,
         array $errors
     ) {
         /** @var Authenticatable */
         $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->post(route('users.store'), $data);
+            ->post(route('users.store'), $data());
 
         $response
             ->assertRedirect()
@@ -66,33 +70,43 @@ class CreateUserTest extends TestCase
     public function invalidProvider()
     {
         return [
-            'name: null, email: null, password: null, password_confirmation: null' => [
-                [],
+            'name: null, email: null, password: null, password_confirmation: null, role: null' => [
+                function () {
+                    return [];
+                },
                 [
                     'name',
                     'email',
                     'password',
+                    'role',
                 ]
             ],
-            'name: John, email: johndoe, password: 1234, password_confirmation: 1234' => [
-                [
-                    'John',
-                    'johndoe',
-                    '1234',
-                    '1234',
-                ],
+            'name: John, email: johndoe, password: 1234, password_confirmation: 1234, role: (0)' => [
+                function () {
+                    return [
+                        'name' => 'John',
+                        'email' => 'johndoe',
+                        'password' => '1234',
+                        'password_confirmation' => '1234',
+                        'role' => 0,
+                    ];
+                },
                 [
                     'email',
                     'password',
+                    'role',
                 ],
             ],
-            'name: John, email: john@example.com, password: secret, password_confirmation: 1234' => [
-                [
-                    'John',
-                    'john@example.com',
-                    'secret',
-                    '1234'
-                ],
+            'name: John, email: john@example.com, password: secret, password_confirmation: 1234, role: (based_on_factory)' => [
+                function () {
+                    return [
+                        'name' => 'John',
+                        'email' => 'john@example.com',
+                        'password' => 'secret',
+                        'password_confirmation' => '1234',
+                        'role' => Role::factory()->create()->id,
+                    ];
+                },
                 [
                     'password'
                 ],
@@ -116,6 +130,7 @@ class CreateUserTest extends TestCase
                 'email' => $existingUser->email,
                 'password' => 'secret',
                 'password_confirmation' => 'secret',
+                'role' => Role::factory()->create()->id,
             ]);
 
         $response
