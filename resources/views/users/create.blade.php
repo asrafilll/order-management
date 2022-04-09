@@ -77,14 +77,14 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="role_id">
+                                <label for="role">
                                     <span>{{ __('Role') }}</span>
                                     <span class="text-danger">*</span>
                                 </label>
                                 <select
-                                    name="role_id"
-                                    id="role_id"
-                                    class="form-control"
+                                    name="role"
+                                    id="role"
+                                    class="form-control @error('role') is-invalid @enderror"
                                 >
                                     <option
                                         value=""
@@ -96,6 +96,9 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="card-footer">
