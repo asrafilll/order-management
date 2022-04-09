@@ -77,20 +77,25 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>{{ __('Roles') }}</label>
-                                @foreach ($roles as $role)
-                                    <div class="icheck-primary">
-                                        <input
-                                            type="checkbox"
-                                            id="role{{ $role->id }}"
-                                            name="roles[]"
-                                            value="{{ $role->id }}"
-                                        >
-                                        <label for="role{{ $role->id }}">
+                                <label for="role_id">
+                                    <span>{{ __('Role') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select
+                                    name="role_id"
+                                    id="role_id"
+                                    class="form-control"
+                                >
+                                    <option
+                                        value=""
+                                        hidden
+                                    ></option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}">
                                             {{ Str::title(__($role->name)) }}
-                                        </label>
-                                    </div>
-                                @endforeach
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="card-footer">
