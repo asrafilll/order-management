@@ -19,6 +19,7 @@ class IndexController extends Controller
     public function __invoke(Request $request)
     {
         $users = User::query()
+            ->with(['roles'])
             ->when(
                 $request->filled('search'),
                 function ($query) use ($request) {

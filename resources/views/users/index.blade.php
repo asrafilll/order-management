@@ -44,6 +44,7 @@
                         <tr>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Email') }}</th>
+                            <th>{{ __('Role') }}</th>
                             <th>{{ __('Created At') }}</th>
                             <th>{{ __('Updated At') }}</th>
                             <th></th>
@@ -54,6 +55,7 @@
                             <tr>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
+                                <td>{{ Str::title($user->role?->name) }}</td>
                                 <td>{{ $user->created_at->diffForHumans() }}</td>
                                 <td>{{ $user->updated_at->diffForHumans() }}</td>
                                 <td class="text-right">
@@ -84,7 +86,7 @@
                         @empty
                             <tr>
                                 <td
-                                    colspan="5"
+                                    colspan="6"
                                     class="text-center"
                                 >{{ __('Data not found') }}</td>
                             </tr>
