@@ -27,7 +27,7 @@ class UpdateRoleTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->put(route('roles.update', $role), [
-                'name' => 'New Role',
+                'name' => $role->name,
             ]);
 
         $response
@@ -35,7 +35,7 @@ class UpdateRoleTest extends TestCase
             ->assertSessionHasNoErrors();
 
         $role->refresh();
-        $this->assertEquals('New Role', $role->name);
+        $this->assertEquals($role->name, $role->name);
     }
 
     /**
@@ -140,10 +140,34 @@ class UpdateRoleTest extends TestCase
         $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->get(route('roles.update', [
+            ->put(route('roles.update', [
                 'role' => '0',
-            ]));
+            ]), [
+                'name' => 'New Role',
+            ]);
 
         $response->assertNotFound();
+    }
+
+    /**
+     * @return void
+     */
+    public function test_should_error_when_name_already_exists()
+    {
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        /** @var Role */
+        $existingRole = Role::factory()->create();
+        /** @var Role */
+        $roleForUpdate = Role::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->put(route('roles.update', $roleForUpdate), [
+                'name' => $existingRole->name
+            ]);
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasErrors(['name']);
     }
 }

@@ -66,25 +66,6 @@ class CreateRoleTest extends TestCase
     }
 
     /**
-     * @return array
-     */
-    public function validProvider()
-    {
-        return [
-            'name: Super Admin' => [
-                'Super Admin',
-                [],
-            ],
-            'name: Super Admin, permissions: [1]' => [
-                'Super Admin',
-                [
-                    $permission->id,
-                ],
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider invalidProvider
      * @param array $data
      * @param array $errors
@@ -155,5 +136,25 @@ class CreateRoleTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @return void
+     */
+    public function test_should_error_create_role_when_name_exists()
+    {
+        /** @var Authenticatable */
+        $user = User::factory()->create();
+        /** @var Role */
+        $role = Role::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->post(route('roles.store'), [
+                'name' => $role->name,
+            ]);
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasErrors(['name']);
     }
 }
