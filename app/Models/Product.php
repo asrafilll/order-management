@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ProductStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
@@ -29,6 +30,8 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductVariant[] $variant
+ * @property-read int|null $variant_count
  */
 class Product extends Model
 {
@@ -63,5 +66,14 @@ class Product extends Model
             $product->slug = Str::slug($product->name);
             $product->status = $product->status ?? ProductStatusEnum::draft();
         });
+    }
+
+    public function variant(): HasMany
+    {
+        return $this->hasMany(
+            related: ProductVariant::class,
+            foreignKey: 'product_id',
+            localKey: 'id'
+        );
     }
 }
