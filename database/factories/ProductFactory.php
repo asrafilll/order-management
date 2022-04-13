@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
 {
+    public static int $index = 0;
+
     /**
      * Define the model's default state.
      *
@@ -15,7 +17,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->words(3, true),
+            'name' => 'Product #' . ++static::$index,
             'description' => $this->faker->randomHtml(),
             'status' => $this->faker->randomElement(ProductStatusEnum::toValues())
         ];
