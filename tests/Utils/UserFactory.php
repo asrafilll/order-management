@@ -19,4 +19,9 @@ trait UserFactory
 
         return $user;
     }
+
+    public function createUser(): User|Authenticatable
+    {
+        return User::factory()->create();
+    }
 }

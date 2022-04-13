@@ -14,6 +14,12 @@ use App\Enums\PermissionEnum;
 
 return [
     [
+        'name' => 'Products',
+        'icon' => 'fas fa-tag',
+        'route_name' => 'products.index',
+        'group_name' => 'products',
+    ],
+    [
         'name' => 'Users',
         'icon' => 'fas fa-users',
         'route_name' => 'users.index',
