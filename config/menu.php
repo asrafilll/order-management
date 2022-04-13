@@ -14,14 +14,14 @@ use App\Enums\PermissionEnum;
 
 return [
     [
-        'name' => 'Users Management',
+        'name' => 'Users',
         'icon' => 'fas fa-users',
         'route_name' => 'users.index',
         'group_name' => 'users',
         'can' => PermissionEnum::manage_users_and_roles()->value,
     ],
     [
-        'name' => 'Roles Management',
+        'name' => 'Roles',
         'icon' => 'fas fa-user-lock',
         'route_name' => 'roles.index',
         'group_name' => 'roles',
