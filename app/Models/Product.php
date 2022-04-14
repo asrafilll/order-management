@@ -76,4 +76,13 @@ class Product extends Model
             localKey: 'id'
         );
     }
+
+    public function option(): HasMany
+    {
+        return $this->hasMany(
+            related: ProductOption::class,
+            foreignKey: 'product_id',
+            localKey: 'id'
+        );
+    }
 }
