@@ -45,7 +45,7 @@
         href="{{ url('/themes') }}/css/adminlte.light.min.css"
     >
     <!-- jQuery -->
-    <script src="{{ url('/') }}/plugins/jquery/jquery.slim.min.js"></script>
+    <script src="{{ url('/') }}/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ url('/') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 -->
