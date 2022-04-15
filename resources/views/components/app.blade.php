@@ -54,6 +54,8 @@
     <script src="{{ url('/') }}/plugins/toastr/toastr.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="{{ url('/') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- jQuery Throttle Debounce -->
+    <script src="{{ url('/') }}/plugins/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ url('/themes') }}/js/adminlte.min.js"></script>
     <!-- Form -->

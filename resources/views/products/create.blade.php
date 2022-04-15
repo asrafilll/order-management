@@ -109,7 +109,7 @@
 
             $btnAddOption.on('click', addOption);
             $(document).on('click', '.btn-delete-option', deleteOption);
-            $(document).on('keyup', '.values', generateVariants);
+            $(document).on('keyup', '.values', $.debounce(500, generateVariants));
 
             function addOption() {
                 const url = new URL('{{ route('products.create') }}');
