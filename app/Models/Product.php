@@ -32,6 +32,8 @@ use Illuminate\Support\Str;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductVariant[] $variant
  * @property-read int|null $variant_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductOption[] $option
+ * @property-read int|null $option_count
  */
 class Product extends Model
 {

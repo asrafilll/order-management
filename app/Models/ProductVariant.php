@@ -14,10 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $product_id
  * @property int $price
- * @property int|null $weight
- * @property int|null $width
- * @property int|null $height
- * @property int|null $length
+ * @property int $weight
  * @property string|null $option1
  * @property string|null $value1
  * @property string|null $option2
@@ -30,9 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant query()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereHeight($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereLength($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereOption1($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereOption2($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereOption3($value)
@@ -43,7 +38,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereValue2($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereValue3($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereWeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant whereWidth($value)
  * @mixin \Eloquent
  */
 class ProductVariant extends Model
@@ -53,9 +47,6 @@ class ProductVariant extends Model
     protected $fillable = [
         'price',
         'weight',
-        'width',
-        'height',
-        'length',
         'option1',
         'value1',
         'option2',

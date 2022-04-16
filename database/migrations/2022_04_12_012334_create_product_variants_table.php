@@ -19,9 +19,6 @@ class CreateProductVariantsTable extends Migration
             $table->foreignId('product_id')->constrained();
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('weight');
-            $table->unsignedBigInteger('width');
-            $table->unsignedBigInteger('height');
-            $table->unsignedBigInteger('length');
             $table->string('option1')->nullable();
             $table->string('value1')->nullable();
             $table->string('option2')->nullable();

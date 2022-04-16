@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $product_id
  * @property string $name
  * @property string $values
- * @property int $position
+ * @property-read \App\Models\Product $product
  * @method static \Database\Factories\ProductOptionFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption newQuery()
@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductOption wherePosition($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductOption whereValues($value)
