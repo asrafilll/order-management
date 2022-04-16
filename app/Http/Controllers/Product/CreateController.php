@@ -36,33 +36,39 @@ class CreateController extends Controller
     {
         $variants = Collection::make();
 
-        if ($request->filled('values1')) {
-            $values1 = Str::of($request->get('values1'))->explode('|');
+        if (!$request->filled('options')) {
+            return Response::view('products.components.variants', [
+                'variants' => $variants,
+            ]);
+        }
 
-            foreach ($values1 as $value1) {
-                if (!$request->filled('values2') && strlen($value1) > 0) {
-                    $variants->push($value1);
-                } else {
-                    $values2 = Str::of($request->get('values2'))->explode('|');
+        parse_str($request->get('options'), $options);
+        ['options' => $options] = $options;
+        $optionValues = $this->getOptionValues($options);
 
-                    foreach ($values2 as $value2) {
-                        if (!$request->filled('values3') && strlen($value2) > 0) {
+        if (count($optionValues) < 1) {
+            return Response::view('products.components.variants', [
+                'variants' => $variants,
+            ]);
+        }
+
+        foreach ($optionValues[0] as $value0) {
+            if (!isset($optionValues[1])) {
+                $variants->push($value0);
+            } else {
+                foreach ($optionValues[1] as $value1) {
+                    if (!isset($optionValues[2])) {
+                        $variants->push(implode(' / ', [
+                            $value0,
+                            $value1,
+                        ]));
+                    } else {
+                        foreach ($optionValues[2] as $value2) {
                             $variants->push(implode(' / ', [
+                                $value0,
                                 $value1,
                                 $value2,
                             ]));
-                        } else {
-                            $values3 = Str::of($request->get('values3'))->explode('|');
-
-                            foreach ($values3 as $value3) {
-                                if (strlen($value3) > 0) {
-                                    $variants->push(implode(' / ', [
-                                        $value1,
-                                        $value2,
-                                        $value3,
-                                    ]));
-                                }
-                            }
                         }
                     }
                 }
@@ -72,5 +78,30 @@ class CreateController extends Controller
         return Response::view('products.components.variants', [
             'variants' => $variants,
         ]);
+    }
+
+    private function getOptionValues(array $options)
+    {
+        $values = [];
+
+        for ($i = 0; $i < count($options); $i++) {
+            $_values = Str::of($options[$i]['values']);
+
+            if ($_values->length() < 1) {
+                break;
+            }
+
+            $values[] = $_values
+                ->explode('|')
+                ->reduce(function ($acc, $value) {
+                    if (strlen($value) > 0) {
+                        $acc[] = $value;
+                    }
+
+                    return $acc;
+                }, []);
+        }
+
+        return $values;
     }
 }

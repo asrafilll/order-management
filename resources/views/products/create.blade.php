@@ -10,93 +10,93 @@
             novalidate
         >
             @csrf
-            <div class="row">
-                <div class="col-lg-9">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="name">
-                                    <span>{{ __('Name') }}</span>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    class="form-control @error('name') is-invalid @enderror"
-                                    value="{{ old('name') }}"
-                                />
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="description">
-                                    <span>{{ __('Description') }}</span>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <textarea
-                                    name="description"
-                                    id="description"
-                                    rows="4"
-                                    class="form-control @error('description') is-invalid @enderror"
-                                >{{ old('description') }}</textarea>
-                                @error('description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name">
+                            <span>{{ __('Name') }}</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control @error('name') is-invalid @enderror"
+                            value="{{ old('name') }}"
+                        />
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">{{ __('Options') }}</h3>
-                        </div>
-                        <div class="card-body">
-                            <div id="options">
-                                @include('products.components.option', ['index' => 1])
-                            </div>
-                            <a
-                                href="javascript:void(0)"
-                                id="btn-add-option"
-                            >{{ __('Add another option') }}</a>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header d-flex align-items-center">
-                            <h3 class="card-title">{{ __('Variants') }}</h3>
-                        </div>
-                        <div
-                            class="card-body"
-                            id="variants"
-                        ></div>
+                    <div class="form-group">
+                        <label for="description">
+                            <span>{{ __('Description') }}</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <textarea
+                            name="description"
+                            id="description"
+                            rows="4"
+                            class="form-control @error('description') is-invalid @enderror"
+                        >{{ old('description') }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
-                <div class="col-lg">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="status">
-                                    <span>{{ __('Status') }}</span>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select
-                                    name="status"
-                                    id="status"
-                                    class="form-control @error('status') is-invalid @enderror"
-                                >
-                                    @foreach (\App\Enums\ProductStatusEnum::toValues() as $status)
-                                        <option
-                                            value="{{ $status }}"
-                                            @if (old('status') == $status) selected @endif
-                                        >{{ Str::title($status) }}</option>
-                                    @endforeach
-                                </select>
-                                @error('status')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ __('Options') }}</h3>
+                </div>
+                <div class="card-body">
+                    <div id="options">
+                        @include('products.components.option')
                     </div>
+                    <a
+                        href="javascript:void(0)"
+                        id="btn-add-option"
+                    >{{ __('Add another option') }}</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h3 class="card-title">{{ __('Variants') }}</h3>
+                </div>
+                <div
+                    class="card-body"
+                    id="variants"
+                ></div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="status">
+                            <span>{{ __('Status') }}</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select
+                            name="status"
+                            id="status"
+                            class="form-control @error('status') is-invalid @enderror"
+                        >
+                            @foreach (\App\Enums\ProductStatusEnum::toValues() as $status)
+                                <option
+                                    value="{{ $status }}"
+                                    @if (old('status') == $status) selected @endif
+                                >{{ Str::title($status) }}</option>
+                            @endforeach
+                        </select>
+                        @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >{{ __('Save') }}</button>
                 </div>
             </div>
         </form>
@@ -114,7 +114,7 @@
             function addOption() {
                 const url = new URL('{{ route('products.create') }}');
                 url.searchParams.set('action', 'add-option');
-                url.searchParams.set('index', $options.children().length + 1);
+                url.searchParams.set('index', $options.children().length);
 
                 if ($options.children().length > 1) {
                     $btnAddOption.hide();
@@ -142,13 +142,9 @@
             function generateVariants() {
                 const url = new URL('{{ route('products.create') }}');
                 url.searchParams.set('action', 'generate-variants');
-                for (let i = 1; i <= $options.children().length; i++) {
-                    const option = $('#option' + i).val();
-                    const values = $('#values' + i).val();
-                    if (option.length > 0 && values.length > 0) {
-                        url.searchParams.set('values' + i, values);
-                    }
-                }
+
+                const options = $('[name^=options]').serializeArray();
+                url.searchParams.set('options', $.param(options));
 
                 $.get(url, function(response) {
                     $variants.html(response);

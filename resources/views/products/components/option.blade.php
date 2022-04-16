@@ -1,22 +1,26 @@
+@php
+    $index = $index ?? 0;
+@endphp
+
 <div class="option-wrapper">
     <div class="form-group row align-items-end">
         <div class="col">
-            <label for="option{{ $index }}">
-                <span>{{ __('Option ' . $index . ' Name') }}</span>
+            <label for="options-{{ $index }}-name">
+                <span>{{ __('Option :name Name', ['name' => $index + 1]) }}</span>
                 <span class="text-danger">*</span>
             </label>
             <input
                 type="text"
-                name="option{{ $index }}"
-                id="option{{ $index }}"
-                class="form-control option @error('option{{ $index }}') is-invalid @enderror"
+                name="options[{{ $index }}][name]"
+                id="options-{{ $index }}-name"
+                class="form-control @error('options[{{ $index }}][name]') is-invalid @enderror"
                 placeholder="eg: Color or Size"
             />
-            @error('option{{ $index }}')
+            @error('options[{{ $index }}][name]')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        @if ($index > 1)
+        @if ($index > 0)
             <div class="col-auto">
                 <button
                     type="button"
@@ -28,19 +32,19 @@
         @endif
     </div>
     <div class="form-group">
-        <label for="values{{ $index }}">
+        <label for="options-{{ $index }}-values">
             <span>{{ __('Values') }}</span>
             <span class="text-danger">*</span>
         </label>
         <input
             type="text"
-            name="values{{ $index }}"
-            id="values{{ $index }}"
-            class="form-control values @error('values{{ $index }}') is-invalid @enderror"
+            name="options[{{ $index }}][values]"
+            id="options-{{ $index }}-values"
+            class="form-control values @error('options[{{ $index }}][values]') is-invalid @enderror"
             placeholder="eg: Red|Green|Blue or Small|Medium|Large"
         />
         <small>{{ __('Separate value with | (pipe) symbol.') }}</small>
-        @error('values{{ $index }}')
+        @error('options[{{ $index }}][values]')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
