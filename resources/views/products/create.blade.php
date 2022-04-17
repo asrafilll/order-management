@@ -1,6 +1,6 @@
 <x-app>
     <x-content-header>
-        <h1 class="m-0">{{ __('Create User') }}</h1>
+        <h1 class="m-0">{{ __('Create Product') }}</h1>
     </x-content-header>
 
     <section class="content">
