@@ -1,12 +1,12 @@
 @php
-    $index = $index ?? 0;
+$index = $index ?? 0;
 @endphp
 
-<div class="option-wrapper">
+<div class="option-wrapper px-3 py-2 border">
     <div class="form-group row align-items-end">
         <div class="col">
             <label for="options-{{ $index }}-name">
-                <span>{{ __('Option :name Name', ['name' => $index + 1]) }}</span>
+                <span>{{ __('Option Name') }}</span>
                 <span class="text-danger">*</span>
             </label>
             <input
@@ -20,32 +20,43 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        @if ($index > 0)
-            <div class="col-auto">
-                <button
-                    type="button"
-                    class="btn btn-default btn-delete-option"
-                >
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </div>
-        @endif
+        <div class="col-auto">
+            <button
+                type="button"
+                class="btn btn-default btn-delete-option"
+                tabindex="-1"
+                @if ($index < 1) disabled @endif
+            >
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
     </div>
     <div class="form-group">
-        <label for="options-{{ $index }}-values">
+        <label>
             <span>{{ __('Values') }}</span>
             <span class="text-danger">*</span>
         </label>
-        <input
-            type="text"
-            name="options[{{ $index }}][values]"
-            id="options-{{ $index }}-values"
-            class="form-control values @error('options[{{ $index }}][values]') is-invalid @enderror"
-            placeholder="eg: Red|Green|Blue or Small|Medium|Large"
-        />
-        <small>{{ __('Separate value with | (pipe) symbol.') }}</small>
-        @error('options[{{ $index }}][values]')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
+        <div class="option-values-wrapper">
+            <div class="row option-value-wrapper mb-1">
+                <div class="col">
+                    <input
+                        type="text"
+                        name="options[{{ $index }}][values]"
+                        class="form-control option-value"
+                        placeholder="{{ __('Add another value') }}"
+                    />
+                </div>
+                <div class="col-auto">
+                    <button
+                        type="button"
+                        class="btn btn-default btn-delete-option-value"
+                        tabindex="-1"
+                        disabled
+                    >
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

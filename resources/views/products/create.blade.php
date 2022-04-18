@@ -45,20 +45,106 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">{{ __('Options') }}</h3>
-                </div>
-                <div class="card-body">
-                    <div id="options">
-                        @include('products.components.option')
+            <div id="product-option-module">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ __('Options') }}</h3>
                     </div>
-                    <a
-                        href="javascript:void(0)"
-                        id="btn-add-option"
-                    >{{ __('Add another option') }}</a>
+                    <div class="card-body p-0">
+                        <div id="options"></div>
+                        <button
+                            type="button"
+                            id="btn-add-option"
+                            class="btn btn-default btn-block text-left text-primary"
+                        >{{ __('Add another option') }}</button>
+                    </div>
                 </div>
             </div>
+            <script>
+                const ProductOption = (function () {
+                    const MAX_OPTIONS_LENGTH = 2;
+                    const MIN_OPTION_VALUES_LENGTH = 2;
+
+                    // Cache DOM
+                    const $el = $('#product-option-module');
+                    const $options = $el.find('#options');
+                    const $add = $el.find('#btn-add-option');
+
+                    // Bind events
+                    $add.on('click', _addOptionHandler);
+                    $(document).on('click', '.btn-delete-option', _deleteOptionHandler);
+                    $(document).on('keyup', '.option-value', _addOptionValueHandler);
+                    $(document).on('click', '.btn-delete-option-value', _deleteOptionValueHandler);
+
+                    // Initial
+                    $add.trigger('click');
+
+                    function _addOptionHandler() {
+                        const url = new URL('{{ route('products.create') }}');
+                        url.searchParams.set('action', 'add-option');
+                        url.searchParams.set('index', getOptionsLength());
+
+                        $.get(url, function(response) {
+                            $options.append(response);
+
+                            if (getOptionsLength() >= MAX_OPTIONS_LENGTH) {
+                                $add.hide();
+                            }
+                        });
+                    }
+
+                    function getOptionsLength() {
+                        return $options.children().length;
+                    }
+
+                    function _deleteOptionHandler() {
+                        $options.children().last().remove();
+
+                        if (getOptionsLength() < 3) {
+                            $add.show();
+                        }
+                    }
+
+                    function _addOptionValueHandler() {
+                        const $this = $(this);
+                        const $optionValuesWrapper = $this.closest('.option-values-wrapper');
+                        const $optionValueWrapper = $this.closest('.option-value-wrapper');
+
+                        if ($this.val().length > 0 && $optionValueWrapper.next().length < 1) {
+                            const $clone = $optionValueWrapper.clone();
+                            $clone.find('input').val(null);
+                            $optionValuesWrapper.append($clone);
+                        }
+
+                        _toggleOptionValueDelete($optionValuesWrapper);
+                    }
+
+                    function _deleteOptionValueHandler() {
+                        const $this = $(this);
+                        const $optionValuesWrapper = $this.closest('.option-values-wrapper');
+                        const $optionValueWrapper = $this.closest('.option-value-wrapper');
+
+                        $optionValueWrapper.remove();
+
+                        _toggleOptionValueDelete($optionValuesWrapper);
+                    }
+
+                    function _toggleOptionValueDelete($optionValuesWrapper) {
+                        const $deleteOptionValues = $optionValuesWrapper.find('.btn-delete-option-value');
+
+                        if ($optionValuesWrapper.children().length > MIN_OPTION_VALUES_LENGTH) {
+                            $deleteOptionValues.removeAttr('disabled');
+                            $deleteOptionValues.last().attr('disabled', true);
+                        } else {
+                            $deleteOptionValues.attr('disabled', true);
+                        }
+                    }
+
+                    return {
+                        getOptionsLength: getOptionsLength,
+                    };
+                })();
+            </script>
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <h3 class="card-title">{{ __('Variants') }}</h3>
@@ -101,55 +187,4 @@
             </div>
         </form>
     </section>
-    <script>
-        $(function() {
-            const $options = $('#options');
-            const $variants = $('#variants');
-            const $btnAddOption = $('#btn-add-option');
-
-            $btnAddOption.on('click', addOption);
-            $(document).on('click', '.btn-delete-option', deleteOption);
-            $(document).on('keyup', '.values', $.debounce(500, generateVariants));
-
-            function addOption() {
-                const url = new URL('{{ route('products.create') }}');
-                url.searchParams.set('action', 'add-option');
-                url.searchParams.set('index', $options.children().length);
-
-                if ($options.children().length > 1) {
-                    $btnAddOption.hide();
-                }
-
-                if ($options.children().length > 2) {
-                    return;
-                }
-
-                $.get(url, function(response) {
-                    $options.append(response)
-                });
-            }
-
-            function deleteOption() {
-                $('.option-wrapper').last().remove();
-
-                if ($options.children().length < 3) {
-                    $btnAddOption.show();
-                }
-
-                generateVariants();
-            }
-
-            function generateVariants() {
-                const url = new URL('{{ route('products.create') }}');
-                url.searchParams.set('action', 'generate-variants');
-
-                const options = $('[name^=options]').serializeArray();
-                url.searchParams.set('options', $.param(options));
-
-                $.get(url, function(response) {
-                    $variants.html(response);
-                });
-            }
-        });
-    </script>
 </x-app>
