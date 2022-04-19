@@ -17,14 +17,13 @@ class CreateProductVariantsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('product_id')->constrained();
+            $table->string('name');
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('weight');
             $table->string('option1')->nullable();
             $table->string('value1')->nullable();
             $table->string('option2')->nullable();
             $table->string('value2')->nullable();
-            $table->string('option3')->nullable();
-            $table->string('value3')->nullable();
         });
     }
 
