@@ -269,7 +269,7 @@
                         <div class="col-lg">
                             <div class="form-group">
                                 <label for="variant-@{{ index }}-weight">
-                                    <span>{{ __('Weight in gram') }}</span>
+                                    <span>{{ __('Weight') }} (gram)</span>
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input
