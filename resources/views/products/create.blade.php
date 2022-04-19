@@ -71,7 +71,7 @@
                                     type="text"
                                     name="options[@{{ index }}][name]"
                                     id="options-@{{ index }}-name"
-                                    class="form-control"
+                                    class="form-control option-name"
                                     placeholder="eg: Color or Size"
                                 />
                             </div>
@@ -138,22 +138,22 @@
 
                     function _addOptionHandler() {
                         $options.append(Mustache.render(template, {
-                            index: getOptionsLength(),
+                            index: _getOptionsLength(),
                         }));
 
-                        if (getOptionsLength() >= MAX_OPTIONS_LENGTH) {
+                        if (_getOptionsLength() >= MAX_OPTIONS_LENGTH) {
                             $add.hide();
                         }
                     }
 
-                    function getOptionsLength() {
+                    function _getOptionsLength() {
                         return $options.children().length;
                     }
 
                     function _deleteOptionHandler() {
                         $options.children().last().remove();
 
-                        if (getOptionsLength() < 3) {
+                        if (_getOptionsLength() < 3) {
                             $add.show();
                         }
                     }
@@ -170,6 +170,7 @@
                         }
 
                         _toggleOptionValueDelete($optionValuesWrapper);
+                        Variants.generate();
                     }
 
                     function _deleteOptionValueHandler() {
@@ -180,6 +181,7 @@
                         $optionValueWrapper.remove();
 
                         _toggleOptionValueDelete($optionValuesWrapper);
+                        Variants.generate();
                     }
 
                     function _toggleOptionValueDelete($optionValuesWrapper) {
@@ -193,8 +195,45 @@
                         }
                     }
 
+                    function getOptions() {
+                        return $('.option-wrapper')
+                            .toArray()
+                            .reduce(function (acc, element) {
+                                const name = $(element).find('.option-name').val();
+
+                                if (name.length < 1) {
+                                    return acc;
+                                }
+
+                                const values = $(element).find('.option-value')
+                                    .toArray()
+                                    .reduce(function (acc, element) {
+                                        const value = $(element).val();
+
+                                        if (value.length < 1) {
+                                            return acc;
+                                        }
+
+                                        acc.push(value);
+
+                                        return acc;
+                                    }, []);
+
+                                if (values.length < 1) {
+                                    return acc;
+                                }
+
+                                acc.push({
+                                    'name': name,
+                                    'values': values,
+                                });
+
+                                return acc;
+                            }, []);
+                    }
+
                     return {
-                        getOptionsLength: getOptionsLength,
+                        getOptions: getOptions,
                     };
                 })();
             </script>
@@ -203,10 +242,106 @@
                     <h3 class="card-title">{{ __('Variants') }}</h3>
                 </div>
                 <div
-                    class="card-body"
+                    class="card-body p-0"
                     id="variants"
-                ></div>
+                >
+                </div>
+                <script id="variant-template" type="text/html">
+                    @{{ #variants }}
+                    <div class="row align-items-center px-3 py-2 border">
+                        <div class="col-lg">
+                            <p class="text-bold">#@{{ currentRow }} - @{{ name }}</p>
+                        </div>
+                        <div class="col-lg">
+                            <div class="form-group">
+                                <label for="variant-@{{ index }}-price">
+                                    <span>{{ __('Price') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    name="variant[@{{ index }}][price]"
+                                    id="variant-@{{ index }}-price"
+                                    class="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-lg">
+                            <div class="form-group">
+                                <label for="variant-@{{ index }}-weight">
+                                    <span>{{ __('Weight in gram') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    name="variant[@{{ index }}][weight]"
+                                    id="variant-@{{ index }}-weight"
+                                    class="form-control"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    @{{ /variants }}
+                </script>
             </div>
+            <script>
+                const Variants = (function () {
+                    const template = $('#variant-template').html();
+                    let variants = [];
+
+                    // Cache DOM
+                    const $el = $('#variants-module');
+                    const $variants = $el.find('#variants');
+
+                    _render();
+
+                    function _render() {
+                        $variants.html(
+                            Mustache.render(template, {
+                                variants: variants,
+                                currentRow: function () {
+                                    return this.index + 1;
+                                },
+                            })
+                        );
+                    }
+
+                    function generate() {
+                        variants = [];
+                        const options = ProductOption.getOptions();
+
+                        if (options.length < 1) {
+                            return;
+                        }
+
+                        let index = 0;
+
+                        options[0].values.forEach(function (value1) {
+                            if (typeof options[1] === 'undefined') {
+                                variants.push({
+                                    index: index,
+                                    name: value1,
+                                });
+                                index++;
+                            } else {
+                                options[1].values.forEach(function (value2) {
+                                    variants.push({
+                                        index: index,
+                                        name: [value1, value2].join(' / '),
+                                    });
+                                    index++;
+                                });
+                            }
+                        });
+
+                        _render();
+                    }
+
+                    return {
+                        generate: generate,
+                    };
+                })();
+            </script>
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
