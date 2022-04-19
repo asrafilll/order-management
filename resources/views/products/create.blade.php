@@ -260,7 +260,7 @@
                                 </label>
                                 <input
                                     type="number"
-                                    name="variant[@{{ index }}][price]"
+                                    name="variants[@{{ index }}][price]"
                                     id="variant-@{{ index }}-price"
                                     class="form-control"
                                 />
@@ -274,7 +274,7 @@
                                 </label>
                                 <input
                                     type="number"
-                                    name="variant[@{{ index }}][weight]"
+                                    name="variants[@{{ index }}][weight]"
                                     id="variant-@{{ index }}-weight"
                                     class="form-control"
                                 />
