@@ -251,11 +251,6 @@
                     <div class="row align-items-center px-3 py-2 border">
                         <div class="col-lg">
                             <p class="text-bold">#@{{ currentRow }} - @{{ name }}</p>
-                            <input
-                                type="hidden"
-                                name="variants[@{{ index }}][name]"
-                                value="@{{ name }}"
-                            />
                         </div>
                         <div class="col-lg">
                             <div class="form-group">
