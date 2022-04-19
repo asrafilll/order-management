@@ -56,6 +56,8 @@
     <script src="{{ url('/') }}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- jQuery Throttle Debounce -->
     <script src="{{ url('/') }}/plugins/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
+    <!-- Mustache JS -->
+    <script src="https://unpkg.com/mustache@latest"></script>
     <!-- AdminLTE App -->
     <script src="{{ url('/themes') }}/js/adminlte.min.js"></script>
     <!-- Form -->

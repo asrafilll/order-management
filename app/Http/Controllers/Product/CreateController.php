@@ -17,10 +17,6 @@ class CreateController extends Controller
     public function __invoke(Request $request)
     {
         switch ($request->get('action')) {
-            case 'add-option':
-                return Response::view('products.components.option', [
-                    'index' => $request->get('index'),
-                ]);
             case 'generate-variants':
                 return $this->generateVariants($request);
             default:
