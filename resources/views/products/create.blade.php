@@ -45,19 +45,17 @@
                     </div>
                 </div>
             </div>
-            <div id="product-option-module">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">{{ __('Options') }}</h3>
-                    </div>
-                    <div class="card-body p-0">
-                        <div id="options"></div>
-                        <button
-                            type="button"
-                            id="btn-add-option"
-                            class="btn btn-default btn-block text-left text-primary"
-                        >{{ __('Add another option') }}</button>
-                    </div>
+            <div class="card" id="product-option-module">
+                <div class="card-header">
+                    <h3 class="card-title">{{ __('Options') }}</h3>
+                </div>
+                <div class="card-body p-0">
+                    <div id="options"></div>
+                    <button
+                        type="button"
+                        id="btn-add-option"
+                        class="btn btn-default btn-block text-left text-primary"
+                    >{{ __('Add another option') }}</button>
                 </div>
             </div>
             <script>
