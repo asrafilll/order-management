@@ -4,6 +4,19 @@
     </x-content-header>
 
     <section class="content">
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <h5>
+                    <i class="icon fas fa-ban"></i>
+                    <span>{{ __('The given data is invalid.') }}</span>
+                </h5>
+                <ul>
+                    @foreach ($errors->all() as $message)
+                        <li>{{ $message }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form
             action="{{ route('products.store') }}"
             method="POST"
@@ -31,17 +44,13 @@
                     <div class="form-group">
                         <label for="description">
                             <span>{{ __('Description') }}</span>
-                            <span class="text-danger">*</span>
                         </label>
                         <textarea
                             name="description"
                             id="description"
                             rows="4"
-                            class="form-control @error('description') is-invalid @enderror"
+                            class="form-control"
                         >{{ old('description') }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
                 </div>
             </div>
@@ -51,112 +60,166 @@
                         <h3 class="card-title">{{ __('Options') }}</h3>
                     </div>
                     <div class="card-body p-0">
-                        <div id="options"></div>
-                        <button
-                            type="button"
-                            id="btn-add-option"
-                            class="btn btn-default btn-block text-left text-primary"
-                        >{{ __('Add another option') }}</button>
-                    </div>
-                </div>
-                <script id="option-template" type="text/html">
-                    <div class="option-wrapper px-3 py-2 border">
-                        <div class="form-group row align-items-end">
-                            <div class="col">
-                                <label for="options-@{{ index }}-name">
-                                    <span>{{ __('Option Name') }}</span>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    name="options[@{{ index }}][name]"
-                                    id="options-@{{ index }}-name"
-                                    class="form-control option-name"
-                                    placeholder="eg: Color or Size"
-                                />
-                            </div>
-                            <div class="col-auto">
-                                <button
-                                    type="button"
-                                    class="btn btn-default btn-delete-option"
-                                    tabindex="-1"
-                                >
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <span>{{ __('Values') }}</span>
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="option-values-wrapper">
-                                <div class="row option-value-wrapper mb-1">
-                                    <div class="col">
-                                        <input
-                                            type="text"
-                                            name="options[@{{ index }}][values][]"
-                                            class="form-control option-value"
-                                            placeholder="{{ __('Add another value') }}"
-                                        />
+                        <div id="options">
+                            <div class="option-wrapper px-3 py-2 border">
+                                <div class="form-group">
+                                    <label for="options.0.name">
+                                        <span>{{ __('Option :number Name', ['number' => 1]) }}</span>
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="options[0][name]"
+                                        id="options.0.name"
+                                        class="form-control option-name @error('options.0.name') is-invalid @enderror"
+                                        placeholder="eg: Color"
+                                        value="{{ old('options')[0]['name'] ?? '' }}"
+                                    />
+                                    @error('options.0.name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <span>{{ __('Values') }}</span>
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="option-values-wrapper">
+                                        @if (isset(old('options')[0]['values']))
+                                            @foreach (old('options')[0]['values'] as $value)
+                                                <div class="row option-value-wrapper mb-1">
+                                                    <div class="col">
+                                                        <input
+                                                            type="text"
+                                                            name="options[0][values][]"
+                                                            class="form-control option-value"
+                                                            placeholder="{{ __('Add another value') }}"
+                                                            value="{{ $value }}"
+                                                        />
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-default btn-delete-option-value"
+                                                            tabindex="-1"
+                                                            @if(is_null($value)) disabled @endif
+                                                        >
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="row option-value-wrapper mb-1">
+                                                <div class="col">
+                                                    <input
+                                                        type="text"
+                                                        name="options[0][values][]"
+                                                        class="form-control option-value"
+                                                        placeholder="{{ __('Add another value') }}"
+                                                    />
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-default btn-delete-option-value"
+                                                        tabindex="-1"
+                                                        disabled
+                                                    >
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
-                                    <div class="col-auto">
-                                        <button
-                                            type="button"
-                                            class="btn btn-default btn-delete-option-value"
-                                            tabindex="-1"
-                                            disabled
-                                        >
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                </div>
+                            </div>
+                            <div class="option-wrapper px-3 py-2 border">
+                                <div class="form-group">
+                                    <label for="options.1.name">
+                                        <span>{{ __('Option :number Name', ['number' => 2]) }}</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="options[1][name]"
+                                        id="options.1.name"
+                                        class="form-control option-name @error('options.1.name') is-invalid @enderror"
+                                        placeholder="eg: Size"
+                                        value="{{ old('options')[1]['name'] ?? '' }}"
+                                    />
+                                    @error('options.1.name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <span>{{ __('Values') }}</span>
+                                    </label>
+                                    <div class="option-values-wrapper">
+                                        @if (isset(old('options')[1]['values']))
+                                            @foreach (old('options')[1]['values'] as $value)
+                                                <div class="row option-value-wrapper mb-1">
+                                                    <div class="col">
+                                                        <input
+                                                            type="text"
+                                                            name="options[1][values][]"
+                                                            class="form-control option-value"
+                                                            placeholder="{{ __('Add another value') }}"
+                                                            value="{{ $value }}"
+                                                        />
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-default btn-delete-option-value"
+                                                            tabindex="-1"
+                                                            @if(is_null($value)) disabled @endif
+                                                        >
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="row option-value-wrapper mb-1">
+                                                <div class="col">
+                                                    <input
+                                                        type="text"
+                                                        name="options[1][values][]"
+                                                        class="form-control option-value"
+                                                        placeholder="{{ __('Add another value') }}"
+                                                    />
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-default btn-delete-option-value"
+                                                        tabindex="-1"
+                                                        disabled
+                                                    >
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </script>
+                </div>
             </div>
             <script>
                 const ProductOption = (function () {
-                    const MAX_OPTIONS_LENGTH = 2;
                     const MIN_OPTION_VALUES_LENGTH = 2;
                     const template = $('#option-template').html();
 
                     // Cache DOM
                     const $el = $('#product-option-module');
-                    const $options = $el.find('#options');
-                    const $add = $el.find('#btn-add-option');
 
                     // Bind events
-                    $add.on('click', _addOptionHandler);
-                    $(document).on('click', '.btn-delete-option', _deleteOptionHandler);
                     $(document).on('keyup', '.option-value', _addOptionValueHandler);
                     $(document).on('click', '.btn-delete-option-value', _deleteOptionValueHandler);
-
-                    // Initial
-                    $add.trigger('click');
-
-                    function _addOptionHandler() {
-                        $options.append(Mustache.render(template, {
-                            index: _getOptionsLength(),
-                        }));
-
-                        if (_getOptionsLength() >= MAX_OPTIONS_LENGTH) {
-                            $add.hide();
-                        }
-                    }
-
-                    function _getOptionsLength() {
-                        return $options.children().length;
-                    }
-
-                    function _deleteOptionHandler() {
-                        $options.children().last().remove();
-
-                        if (_getOptionsLength() < 3) {
-                            $add.show();
-                        }
-                    }
 
                     function _addOptionValueHandler() {
                         const $this = $(this);
@@ -251,6 +314,11 @@
                     <div class="row align-items-center px-3 py-2 border">
                         <div class="col-lg">
                             <p class="text-bold">#@{{ currentRow }} - @{{ name }}</p>
+                            <input type="hidden" name="variants[@{{ index }}][name]" value="@{{ name }}">
+                            <input type="hidden" name="variants[@{{ index }}][option1]" value="@{{ option1 }}">
+                            <input type="hidden" name="variants[@{{ index }}][value1]" value="@{{ value1 }}">
+                            <input type="hidden" name="variants[@{{ index }}][option2]" value="@{{ option2 }}">
+                            <input type="hidden" name="variants[@{{ index }}][value2]" value="@{{ value2 }}">
                         </div>
                         <div class="col-lg">
                             <div class="form-group">
@@ -321,6 +389,10 @@
                                 variants.push({
                                     index: index,
                                     name: value1,
+                                    option1: options[0].name,
+                                    value1: value1,
+                                    option2: null,
+                                    value2: null,
                                 });
                                 index++;
                             } else {
@@ -328,6 +400,10 @@
                                     variants.push({
                                         index: index,
                                         name: [value1, value2].join(' / '),
+                                        option1: options[0].name,
+                                        value1: value1,
+                                        option2: options[1].name,
+                                        value2: value2,
                                     });
                                     index++;
                                 });
@@ -341,6 +417,10 @@
                         generate: generate,
                     };
                 })();
+
+                @if($errors->isNotEmpty())
+                    Variants.generate();
+                @endif
             </script>
             <div class="card">
                 <div class="card-body">
