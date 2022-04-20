@@ -65,4 +65,35 @@ class StoreRequest extends FormRequest
             ]
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function getProductAttribute()
+    {
+        return [
+            'name' => $this->get('name'),
+            'description' => $this->get('description'),
+            'status' => $this->get('status'),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductOptionsAttributes()
+    {
+        return array_map(fn (array $option) => [
+            'name' => $option['name'],
+            'values' => json_encode($option['values']),
+        ], $this->get('options'));
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductVariantsAttributes()
+    {
+        return $this->get('variants');
+    }
 }

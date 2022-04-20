@@ -17,7 +17,11 @@ use Illuminate\Support\Str;
  * @property string $slug
  * @property string $name
  * @property string|null $description
- * @property string $status
+ * @property \Spatie\Enum\Enum|null $status
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductOption[] $options
+ * @property-read int|null $options_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductVariant[] $variants
+ * @property-read int|null $variants_count
  * @method static \Database\Factories\ProductFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
@@ -30,10 +34,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductVariant[] $variant
- * @property-read int|null $variant_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductOption[] $option
- * @property-read int|null $option_count
  */
 class Product extends Model
 {
@@ -70,7 +70,7 @@ class Product extends Model
         });
     }
 
-    public function variant(): HasMany
+    public function variants(): HasMany
     {
         return $this->hasMany(
             related: ProductVariant::class,
@@ -79,7 +79,7 @@ class Product extends Model
         );
     }
 
-    public function option(): HasMany
+    public function options(): HasMany
     {
         return $this->hasMany(
             related: ProductOption::class,
