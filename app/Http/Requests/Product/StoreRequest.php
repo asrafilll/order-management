@@ -49,6 +49,26 @@ class StoreRequest extends FormRequest
                 'required',
                 'array',
             ],
+            'variants.*.name' => [
+                'required',
+                'string',
+            ],
+            'variants.*.option1' => [
+                'required',
+                'string',
+            ],
+            'variants.*.value1' => [
+                'required',
+                'string',
+            ],
+            'variants.*.option2' => [
+                'nullable',
+                'string',
+            ],
+            'variants.*.value2' => [
+                'nullable',
+                'string',
+            ],
             'variants.*.price' => [
                 'required',
                 'numeric',
