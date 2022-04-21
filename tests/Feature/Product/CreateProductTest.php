@@ -190,4 +190,143 @@ class CreateProductTest extends TestCase
             ]
         ];
     }
+
+    /**
+     * @dataProvider invalidProvider
+     * @param array $input
+     * @param array $errors
+     * @return void
+     */
+    public function test_should_error_create_product(
+        array $input,
+        array $errors
+    ) {
+        $response = $this
+            ->actingAs($this->createUser())
+            ->post(route('products.store', $input));
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasErrors($errors);
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidProvider()
+    {
+        return [
+            'name: null, options: null, variants: null, status: null' => [
+                [],
+                [
+                    'name',
+                    'options',
+                    'variants',
+                    'status'
+                ],
+            ],
+            'options: (not array), variants: (not array)' => [
+                [
+                    'name' => 'Sample Product #1',
+                    'description' => 'This is sample product 1 description',
+                    'options' => 'some-string',
+                    'variants' => 'some-string',
+                    'status' => ProductStatusEnum::draft()->value
+                ],
+                [
+                    'options',
+                    'variants',
+                ],
+            ],
+            'options.0.name: null, variants: null' => [
+                [
+                    'name' => 'Sample Product #1',
+                    'description' => 'This is sample product 1 description',
+                    'options' => [],
+                    'variants' => [],
+                    'status' => ProductStatusEnum::draft()->value
+                ],
+                [
+                    'options.0.name',
+                ],
+            ],
+            'options.0.values: null, variants: null' => [
+                [
+                    'name' => 'Sample Product #1',
+                    'description' => 'This is sample product 1 description',
+                    'options' => [
+                        [
+                            'name' => 'Color',
+                        ],
+                    ],
+                    'variants' => [],
+                    'status' => ProductStatusEnum::draft()->value
+                ],
+                [
+                    'options.0.values',
+                    'variants',
+                ],
+            ],
+            'variants.0.price: null, variants.0.weight: null, option1: null, value1: null' => [
+                [
+                    'name' => 'Sample Product #1',
+                    'description' => 'This is sample product 1 description',
+                    'options' => [
+                        [
+                            'name' => 'Color',
+                            'values' => [
+                                'Red',
+                                'Green',
+                                'Blue',
+                            ],
+                        ],
+                    ],
+                    'variants' => [
+                        [
+                            'name' => 'test',
+                            'price' => null,
+                            'weight' => null,
+                            'option1' => null,
+                            'value1' => null,
+                        ],
+                    ],
+                    'status' => ProductStatusEnum::draft()->value
+                ],
+                [
+                    'variants.0.price',
+                    'variants.0.weight',
+                    'variants.0.option1',
+                    'variants.0.value1',
+                ],
+            ],
+            'variants.0.price: 0, variants.0.weight: 0' => [
+                [
+                    'name' => 'Sample Product #1',
+                    'description' => 'This is sample product 1 description',
+                    'options' => [
+                        [
+                            'name' => 'Color',
+                            'values' => [
+                                'Red',
+                            ],
+                        ],
+                    ],
+                    'variants' => [
+                        [
+                            'name' => 'test',
+                            'price' => 0,
+                            'weight' => 0,
+                            'option1' => 'Color',
+                            'value1' => 'Red',
+                        ],
+                    ],
+                    'status' => ProductStatusEnum::draft()->value
+                ],
+                [
+                    'variants.0.price',
+                    'variants.0.weight',
+                ],
+            ],
+        ];
+    }
 }

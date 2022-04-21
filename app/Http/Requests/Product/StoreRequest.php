@@ -42,7 +42,7 @@ class StoreRequest extends FormRequest
                 'string',
             ],
             'options.0.values' => [
-                'required_with:options.*.name',
+                'required_with:options.0.name',
                 'array',
             ],
             'variants' => [
@@ -72,12 +72,12 @@ class StoreRequest extends FormRequest
             'variants.*.price' => [
                 'required',
                 'numeric',
-                'min:0',
+                'min:1',
             ],
             'variants.*.weight' => [
                 'required',
                 'numeric',
-                'min:0'
+                'min:1'
             ],
             'status' => [
                 'required',
