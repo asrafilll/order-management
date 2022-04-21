@@ -17,7 +17,7 @@ class ProductOptionFactory extends Factory
     {
         return [
             'name' => 'Option #' . ++static::$index,
-            'values' => ['Value #1', 'Value #2', 'Value #3'],
+            'values' => json_encode(['Value #1', 'Value #2', 'Value #3']),
         ];
     }
 }

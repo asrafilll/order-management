@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Product;
+use Illuminate\Support\Facades\Response;
 
 class EditController extends Controller
 {
     /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Product $product)
     {
-        //
+        $product->load(['options', 'variants']);
+
+        return Response::view('products.edit', [
+            'product' => $product,
+        ]);
     }
 }

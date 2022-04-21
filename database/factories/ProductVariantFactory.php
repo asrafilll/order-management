@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductVariantFactory extends Factory
 {
+    public static int $index = 0;
+
     /**
      * Define the model's default state.
      *
@@ -14,22 +16,9 @@ class ProductVariantFactory extends Factory
     public function definition()
     {
         return [
+            'name' => 'Variant #' . ++static::$index,
             'price' => $this->faker->randomNumber(5),
             'weight' => $this->faker->randomNumber(2),
         ];
-    }
-
-    /**
-     * Indicate that product variant has dimension.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function dimension()
-    {
-        return $this->state(fn (array $attributes) => [
-            'width' => $this->faker->randomNumber(2),
-            'height' => $this->faker->randomNumber(2),
-            'length' => $this->faker->randomNumber(2),
-        ]);
     }
 }
