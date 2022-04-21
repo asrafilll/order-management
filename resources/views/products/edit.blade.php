@@ -77,7 +77,7 @@
                                         id="options.0.name"
                                         class="form-control option-name @error('options.0.name') is-invalid @enderror"
                                         placeholder="eg: Color"
-                                        value="{{ old('options')[0]['name'] ?? $option1->name }}"
+                                        value="{{ old('options')[0]['name'] ?? $option1->name ?? '' }}"
                                     />
                                     @error('options.0.name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -89,7 +89,7 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <div class="option-values-wrapper">
-                                        @if (isset(old('options')[0]['values']) || $option1->values)
+                                        @if (isset(old('options')[0]['values']) || !is_null($option1))
                                             @php
                                                 $values1 = isset(old('options')[0]['values'])
                                                     ? old('options')[0]['values']
@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             @php
-                                $option2 = $product->options->where('id', '!=', $option1->id)->first();
+                                $option2 = !is_null($option1) ? $product->options->where('id', '!=', $option1->id)->first() : null;
                             @endphp
                             <div class="option-wrapper px-3 py-2 border">
                                 <div class="form-group">
