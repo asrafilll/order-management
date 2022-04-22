@@ -118,28 +118,27 @@
                                                     </div>
                                                 </div>
                                             @endforeach
-                                        @else
-                                            <div class="row option-value-wrapper mb-1">
-                                                <div class="col">
-                                                    <input
-                                                        type="text"
-                                                        name="options[0][values][]"
-                                                        class="form-control option-value"
-                                                        placeholder="{{ __('Add another value') }}"
-                                                    />
-                                                </div>
-                                                <div class="col-auto">
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-default btn-delete-option-value"
-                                                        tabindex="-1"
-                                                        disabled
-                                                    >
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
                                         @endif
+                                        <div class="row option-value-wrapper mb-1">
+                                            <div class="col">
+                                                <input
+                                                    type="text"
+                                                    name="options[0][values][]"
+                                                    class="form-control option-value"
+                                                    placeholder="{{ __('Add another value') }}"
+                                                />
+                                            </div>
+                                            <div class="col-auto">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-delete-option-value"
+                                                    tabindex="-1"
+                                                    disabled
+                                                >
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -197,28 +196,27 @@
                                                     </div>
                                                 </div>
                                             @endforeach
-                                        @else
-                                            <div class="row option-value-wrapper mb-1">
-                                                <div class="col">
-                                                    <input
-                                                        type="text"
-                                                        name="options[1][values][]"
-                                                        class="form-control option-value"
-                                                        placeholder="{{ __('Add another value') }}"
-                                                    />
-                                                </div>
-                                                <div class="col-auto">
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-default btn-delete-option-value"
-                                                        tabindex="-1"
-                                                        disabled
-                                                    >
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
                                         @endif
+                                        <div class="row option-value-wrapper mb-1">
+                                            <div class="col">
+                                                <input
+                                                    type="text"
+                                                    name="options[1][values][]"
+                                                    class="form-control option-value"
+                                                    placeholder="{{ __('Add another value') }}"
+                                                />
+                                            </div>
+                                            <div class="col-auto">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-delete-option-value"
+                                                    tabindex="-1"
+                                                    disabled
+                                                >
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -417,9 +415,12 @@
                             if (typeof options[1] === 'undefined') {
                                 const name = value1;
                                 const variantExists = existingVariants.find(function (existingVariant) {
-                                    return existingVariant.name === name;
+                                    return existingVariant.value1 === value1 && existingVariant.value2 === null;
                                 });
-                                variantExists['index'] = index;
+
+                                if (variantExists) {
+                                    variantExists['index'] = index;
+                                }
 
                                 generatedVariants.push(variantExists ?? {
                                     index: index,
@@ -434,9 +435,12 @@
                                 options[1].values.forEach(function (value2) {
                                     const name = [value1, value2].join(' / ');
                                     const variantExists = existingVariants.find(function (existingVariant) {
-                                        return existingVariant.name === name;
+                                        return existingVariant.value1 === value1 && existingVariant.value2 === value2;
                                     });
-                                    variantExists['index'] = index;
+
+                                    if (variantExists) {
+                                        variantExists['index'] = index;
+                                    }
 
                                     generatedVariants.push(variantExists ?? {
                                         index: index,
