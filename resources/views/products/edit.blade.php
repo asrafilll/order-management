@@ -402,10 +402,7 @@
                     }
 
                     function generate() {
-                        const existingVariants = @json($product->variants).map(function (variant, index) {
-                            variant['index'] = index;
-                            return variant;
-                        });
+                        const existingVariants = @json($product->variants);
                         const options = ProductOption.getOptions();
 
                         if (options.length < 1) {
@@ -422,6 +419,7 @@
                                 const variantExists = existingVariants.find(function (existingVariant) {
                                     return existingVariant.name === name;
                                 });
+                                variantExists['index'] = index;
 
                                 generatedVariants.push(variantExists ?? {
                                     index: index,
@@ -438,6 +436,7 @@
                                     const variantExists = existingVariants.find(function (existingVariant) {
                                         return existingVariant.name === name;
                                     });
+                                    variantExists['index'] = index;
 
                                     generatedVariants.push(variantExists ?? {
                                         index: index,
