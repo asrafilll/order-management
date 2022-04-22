@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
 use App\Models\ProductOption;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -22,20 +23,14 @@ class UpdateController extends Controller
         $product = DB::transaction(function () use ($product, $updateRequest) {
             $product->load(['options', 'variants']);
             $product->update($updateRequest->getProductAttribute());
-            $deletedValues = $this->syncProductOptionsAndGetDeletedValues(
+            $this->syncProductOptions(
                 $product,
                 $updateRequest
             );
-
-            foreach ($deletedValues as ['number' => $number, 'name' => $name, 'value' => $value]) {
-                $product->variants
-                    ->where('option' . $number, '=', $name)
-                    ->where('value' . $number, '=', $value)
-                    ->first()
-                    ->delete();
-            }
-
-            // Create created variants
+            $this->syncProductVariants(
+                $product,
+                $updateRequest
+            );
 
             return $product;
         });
@@ -48,43 +43,13 @@ class UpdateController extends Controller
             ->with('success', $message);
     }
 
-    private function getDeletedValues(
-        int $optionNumber,
-        ProductOption $productOption,
-        array $productOptionsAttribute = null
-    ): array {
-        $productOptionValues = json_decode($productOption->values);
-        $values = !is_null($productOptionsAttribute)
-            ? json_decode($productOptionsAttribute['values'])
-            : [];
-
-        $deletedValues = [];
-
-        foreach ($productOptionValues as $productOptionValue) {
-            if (!in_array($productOptionValue, $values)) {
-                $deletedValues[] = [
-                    'number' => $optionNumber,
-                    'name' => $productOption->name,
-                    'value' => $productOptionValue,
-                ];
-            }
-        }
-
-        return $deletedValues;
-    }
-
-    private function syncProductOptionsAndGetDeletedValues(
+    private function syncProductOptions(
         Product $product,
         UpdateRequest $updateRequest
-    ): array {
+    ) {
         $productOptionsAttributes = $updateRequest->getProductOptionsAttributes();
         /** @var ProductOption */
         $productOption1 = $product->options->first();
-        $deletedValues = $this->getDeletedValues(
-            1,
-            $productOption1,
-            $productOptionsAttributes[0]
-        );
         $productOption1->update($productOptionsAttributes[0]);
 
         /** @var ProductOption */
@@ -103,27 +68,50 @@ class UpdateController extends Controller
                     ->options()
                     ->create($productOptionsAttributes[1]);
             } else {
-                $deletedValues = array_merge($deletedValues, $this->getDeletedValues(
-                    2,
-                    $productOption2,
-                    $productOptionsAttributes[1]
-                ));
-
                 $productOption2->update($productOptionsAttributes[1]);
             }
         } else {
             if ($productOption2) {
-                $deletedValues = array_merge(
-                    $deletedValues,
-                    $this->getDeletedValues(
-                        2,
-                        $productOption2
-                    )
-                );
                 $productOption2->delete();
             }
         }
 
-        return $deletedValues;
+        $product->load(['options']);
+    }
+
+    private function syncProductVariants(
+        Product $product,
+        UpdateRequest $updateRequest
+    ) {
+        /** @var ProductOption */
+        $productOption1 = $product
+            ->options
+            ->first();
+        $productOption1ArrayValues = json_decode($productOption1->values);
+        /** @var ProductOption|null */
+        $productOption2 = $product
+            ->options
+            ->where('id', '!=', $productOption1->id)
+            ->first();
+        $productOption2ArrayValues = !is_null($productOption2)
+            ? json_decode($productOption2->values)
+            : [];
+
+        foreach ($product->variants as $productVariant) {
+            if (
+                !in_array($productVariant->value1, $productOption1ArrayValues)
+                || !in_array($productVariant->value2, $productOption2ArrayValues)
+            ) {
+                $productVariant->delete();
+            }
+        }
+
+        foreach ($updateRequest->getProductVariantsAttributes() as $productVariantAttribute) {
+            $product
+                ->variants()
+                ->updateOrCreate([
+                    'name' => $productVariantAttribute['name'],
+                ], $productVariantAttribute);
+        }
     }
 }
