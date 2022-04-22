@@ -109,10 +109,9 @@ class UpdateRequest extends FormRequest
                 array_reduce(
                     $option['values'],
                     function (array $acc, $value) {
-                        if (is_null($value)) {
-                            return $acc;
+                        if (!is_null($value)) {
+                            array_push($acc, $value);
                         }
-                        array_push($acc, $value);
                         return $acc;
                     },
                     []

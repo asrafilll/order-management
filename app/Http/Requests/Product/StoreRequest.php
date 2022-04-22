@@ -105,7 +105,18 @@ class StoreRequest extends FormRequest
     {
         return array_map(fn (array $option) => [
             'name' => $option['name'],
-            'values' => json_encode($option['values']),
+            'values' => json_encode(
+                array_reduce(
+                    $option['values'],
+                    function (array $acc, $value) {
+                        if (!is_null($value)) {
+                            array_push($acc, $value);
+                        }
+                        return $acc;
+                    },
+                    []
+                )
+            ),
         ], $this->get('options'));
     }
 

@@ -48,8 +48,14 @@ class CreateProductTest extends TestCase
         $productOptions = ProductOption::whereProductId($product->id)->get();
 
         foreach ($productOptions as $index => $productOption) {
+            $values = array_reduce($input['options'][$index]['values'], function (array $acc, $value) {
+                if (!is_null($value)) {
+                    array_push($acc, $value);
+                }
+                return $acc;
+            }, []);
             $this->assertEquals($input['options'][$index]['name'], $productOption->name);
-            $this->assertEquals(json_encode($input['options'][$index]['values']), $productOption->values);
+            $this->assertEquals(json_encode($values), $productOption->values);
         }
 
         /** @var Collection<ProductVariant> */
@@ -79,12 +85,14 @@ class CreateProductTest extends TestCase
                             'values' => [
                                 'Red',
                                 'Green',
+                                null,
                             ],
                         ],
                         [
                             'name' => 'Size',
                             'values' => [
                                 'Small',
+                                null,
                             ],
                         ],
                     ],
@@ -163,7 +171,13 @@ class CreateProductTest extends TestCase
                                 'Red',
                                 'Green',
                             ],
-                        ]
+                        ],
+                        [
+                            'name' => null,
+                            'values' => [
+                                null
+                            ],
+                        ],
                     ],
                     'variants' => [
                         [
