@@ -83,6 +83,29 @@ class UpdateController extends Controller
         Product $product,
         UpdateRequest $updateRequest
     ) {
+        foreach ($updateRequest->getProductVariantsAttributes() as $productVariantAttribute) {
+            if (!is_null($productVariantAttribute['id'])) {
+                $productVariantId = $productVariantAttribute['id'];
+
+                unset($productVariantAttribute['id']);
+
+                $product
+                    ->variants()
+                    ->where('id', $productVariantId)
+                    ->update($productVariantAttribute);
+            } else {
+                $productVariantId = $productVariantAttribute['id'];
+
+                unset($productVariantAttribute['id']);
+
+                $product
+                    ->variants()
+                    ->create($productVariantAttribute);
+            }
+        }
+
+        $product->load(['variants']);
+
         /** @var ProductOption */
         $productOption1 = $product
             ->options
@@ -104,14 +127,6 @@ class UpdateController extends Controller
             ) {
                 $productVariant->delete();
             }
-        }
-
-        foreach ($updateRequest->getProductVariantsAttributes() as $productVariantAttribute) {
-            $product
-                ->variants()
-                ->updateOrCreate([
-                    'name' => $productVariantAttribute['name'],
-                ], $productVariantAttribute);
         }
     }
 }

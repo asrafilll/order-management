@@ -8,6 +8,7 @@ use App\Models\ProductOption;
 use App\Models\ProductVariant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Tests\Utils\ProductFactory;
 use Tests\Utils\ResponseAssertion;
@@ -38,6 +39,84 @@ class UpdateProductTest extends TestCase
             ->latest()
             ->first();
 
+        $variants = $product
+            ->variants
+            ->reduce(function (array $acc, ProductVariant $variant) {
+                if ($variant->value1 === 'Green' || $variant->value2 === 'Medium') {
+                    return $acc;
+                }
+                $value1 = Str::substr($variant->value1, 0, 1);
+                $value2 = Str::substr($variant->value2, 0, 1);
+
+                $acc[] = [
+                    'id' => $variant->id,
+                    'name' => implode(' / ', [$value1, $value2]),
+                    'price' => 12345,
+                    'weight' => 123,
+                    'option1' => 'Option 1',
+                    'value1' => $value1,
+                    'option2' => 'Option 2',
+                    'value2' => $value2,
+                ];
+
+                return $acc;
+            }, []);
+
+        $variants[] = [
+            'id' => null,
+            'name' => 'R / E',
+            'price' => 12345,
+            'weight' => 123,
+            'option1' => 'Option 1',
+            'value1' => 'R',
+            'option2' => 'Option 2',
+            'value2' => 'E',
+        ];
+
+        $variants[] = [
+            'id' => null,
+            'name' => 'B / E',
+            'price' => 12345,
+            'weight' => 123,
+            'option1' => 'Option 1',
+            'value1' => 'B',
+            'option2' => 'Option 2',
+            'value2' => 'E',
+        ];
+
+        $variants[] = [
+            'id' => null,
+            'name' => 'Y / S',
+            'price' => 12345,
+            'weight' => 123,
+            'option1' => 'Option 1',
+            'value1' => 'Y',
+            'option2' => 'Option 2',
+            'value2' => 'S',
+        ];
+
+        $variants[] = [
+            'id' => null,
+            'name' => 'Y / L',
+            'price' => 12345,
+            'weight' => 123,
+            'option1' => 'Option 1',
+            'value1' => 'Y',
+            'option2' => 'Option 2',
+            'value2' => 'L',
+        ];
+
+        $variants[] = [
+            'id' => null,
+            'name' => 'Y / E',
+            'price' => 12345,
+            'weight' => 123,
+            'option1' => 'Option 1',
+            'value1' => 'Y',
+            'option2' => 'Option 2',
+            'value2' => 'E',
+        ];
+
         $input = [
             'name' => 'Updated Sample Product #1',
             'description' => 'This is updated sample product 1 description',
@@ -45,105 +124,23 @@ class UpdateProductTest extends TestCase
                 [
                     'name' => 'Option 1',
                     'values' => [
-                        'Red',
-                        'Blue',
-                        'Yellow',
+                        'R',
+                        'B',
+                        'Y',
                         null,
                     ],
                 ],
                 [
                     'name' => 'Option 2',
                     'values' => [
-                        'Small',
-                        'Large',
-                        'Extra Large',
+                        'S',
+                        'L',
+                        'E',
                         null,
                     ],
                 ],
             ],
-            'variants' => [
-                [
-                    'name' => 'Red / Small',
-                    'price' => 1000,
-                    'weight' => 100,
-                    'option1' => 'Option 1',
-                    'value1' => 'Red',
-                    'option2' => 'Option 2',
-                    'value2' => 'Small',
-                ],
-                [
-                    'name' => 'Red / Large',
-                    'price' => 1100,
-                    'weight' => 110,
-                    'option1' => 'Option 1',
-                    'value1' => 'Red',
-                    'option2' => 'Option 2',
-                    'value2' => 'Large',
-                ],
-                [
-                    'name' => 'Red / Extra Large',
-                    'price' => 1200,
-                    'weight' => 120,
-                    'option1' => 'Option 1',
-                    'value1' => 'Red',
-                    'option2' => 'Option 2',
-                    'value2' => 'Extra Large',
-                ],
-                [
-                    'name' => 'Blue / Small',
-                    'price' => 1000,
-                    'weight' => 100,
-                    'option1' => 'Option 1',
-                    'value1' => 'Blue',
-                    'option2' => 'Option 2',
-                    'value2' => 'Small',
-                ],
-                [
-                    'name' => 'Blue / Large',
-                    'price' => 1100,
-                    'weight' => 110,
-                    'option1' => 'Option 1',
-                    'value1' => 'Blue',
-                    'option2' => 'Option 2',
-                    'value2' => 'Large',
-                ],
-                [
-                    'name' => 'Blue / Extra Large',
-                    'price' => 1200,
-                    'weight' => 120,
-                    'option1' => 'Option 1',
-                    'value1' => 'Blue',
-                    'option2' => 'Option 2',
-                    'value2' => 'Extra Large',
-                ],
-                [
-                    'name' => 'Yellow / Small',
-                    'price' => 1000,
-                    'weight' => 100,
-                    'option1' => 'Option 1',
-                    'value1' => 'Yellow',
-                    'option2' => 'Option 2',
-                    'value2' => 'Small',
-                ],
-                [
-                    'name' => 'Yellow / Large',
-                    'price' => 1100,
-                    'weight' => 110,
-                    'option1' => 'Option 1',
-                    'value1' => 'Yellow',
-                    'option2' => 'Option 2',
-                    'value2' => 'Large',
-                ],
-                [
-                    'name' => 'Yellow / Extra Large',
-                    'price' => 1200,
-                    'weight' => 120,
-                    'option1' => 'Option 1',
-                    'value1' => 'Yellow',
-                    'option2' => 'Option 2',
-                    'value2' => 'Extra Large',
-                ],
-            ],
+            'variants' => $variants,
             'status' => ProductStatusEnum::draft()->value,
         ];
 
@@ -169,15 +166,18 @@ class UpdateProductTest extends TestCase
         $this->assertEquals('This is updated sample product 1 description', $product->description);
         $this->assertEquals(ProductStatusEnum::draft()->value, $product->status);
         $this->assertEquals('Option 1', $option1->name);
-        $this->assertEquals('["Red","Blue","Yellow"]', $option1->values);
+        $this->assertEquals('["R","B","Y"]', $option1->values);
         $this->assertEquals('Option 2', $option2->name);
-        $this->assertEquals('["Small","Large","Extra Large"]', $option2->values);
+        $this->assertEquals('["S","L","E"]', $option2->values);
         $this->assertEquals(count($input['variants']), $product->variants->count());
 
-        Collection::make($input['variants'])
+        Collection::make($variants)
             ->each(function (array $variant) use ($product) {
                 $productVariant = $product
                     ->variants
+                    ->when(!is_null($variant['id']), function ($variants) use ($variant) {
+                        return $variants->where('id', $variant['id']);
+                    })
                     ->where('name', $variant['name'])
                     ->where('price', $variant['price'])
                     ->where('weight', $variant['weight'])

@@ -49,6 +49,10 @@ class UpdateRequest extends FormRequest
                 'required',
                 'array',
             ],
+            'variants.*.id' => [
+                'nullable',
+                'integer',
+            ],
             'variants.*.name' => [
                 'required',
                 'string',
