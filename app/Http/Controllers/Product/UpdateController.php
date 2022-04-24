@@ -123,7 +123,10 @@ class UpdateController extends Controller
         foreach ($product->variants as $productVariant) {
             if (
                 !in_array($productVariant->value1, $productOption1ArrayValues)
-                || !in_array($productVariant->value2, $productOption2ArrayValues)
+                || (
+                    count($productOption2ArrayValues) > 0
+                    && !in_array($productVariant->value2, $productOption2ArrayValues)
+                )
             ) {
                 $productVariant->delete();
             }

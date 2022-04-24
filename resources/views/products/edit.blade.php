@@ -104,6 +104,8 @@
                                                             class="form-control option-value"
                                                             placeholder="{{ __('Add another value') }}"
                                                             value="{{ $value }}"
+                                                            data-previous-value="{{ $value }}"
+                                                            data-option-number="1"
                                                         />
                                                     </div>
                                                     <div class="col-auto">
@@ -126,6 +128,8 @@
                                                     name="options[0][values][]"
                                                     class="form-control option-value"
                                                     placeholder="{{ __('Add another value') }}"
+                                                    data-previous-value=""
+                                                    data-option-number="1"
                                                 />
                                             </div>
                                             <div class="col-auto">
@@ -182,6 +186,8 @@
                                                             class="form-control option-value"
                                                             placeholder="{{ __('Add another value') }}"
                                                             value="{{ $value }}"
+                                                            data-previous-value="{{ $value }}"
+                                                            data-option-number="2"
                                                         />
                                                     </div>
                                                     <div class="col-auto">
@@ -204,6 +210,8 @@
                                                     name="options[1][values][]"
                                                     class="form-control option-value"
                                                     placeholder="{{ __('Add another value') }}"
+                                                    data-previous-value=""
+                                                    data-option-number="2"
                                                 />
                                             </div>
                                             <div class="col-auto">
@@ -248,6 +256,16 @@
                         }
 
                         _toggleOptionValueDelete($optionValuesWrapper);
+
+                        Variants.syncVariant(
+                            $this.data('option-number'),
+                            $this.data('previous-value'),
+                            $this.val()
+                        );
+
+                        // Update previous value
+                        $this.data('previous-value', $this.val());
+
                         Variants.generate();
                     }
 
@@ -262,9 +280,14 @@
                             confirmButtonText: '{{ __('Yes') }}',
                         }).then(function (result) {
                             if (result.isConfirmed) {
+                                const $input = $optionValueWrapper.find('.option-value');
                                 $optionValueWrapper.remove();
-
                                 _toggleOptionValueDelete($optionValuesWrapper);
+                                Variants.syncVariant(
+                                    $input.data('option-number'),
+                                    $input.data('previous-value'),
+                                    null
+                                );
                                 Variants.generate();
                             }
                         });
@@ -337,6 +360,7 @@
                     <div class="row align-items-center px-3 py-2 border">
                         <div class="col-lg">
                             <p class="text-bold">#@{{ currentRow }} - @{{ name }}</p>
+                            <input type="hidden" name="variants[@{{ index }}][id]" value="@{{ id }}">
                             <input type="hidden" name="variants[@{{ index }}][name]" value="@{{ name }}">
                             <input type="hidden" name="variants[@{{ index }}][option1]" value="@{{ option1 }}">
                             <input type="hidden" name="variants[@{{ index }}][value1]" value="@{{ value1 }}">
@@ -380,6 +404,7 @@
             <script>
                 const Variants = (function () {
                     const template = $('#variant-template').html();
+                    let existingVariants = @json($product->variants);
                     let variants = [];
 
                     // Cache DOM
@@ -400,7 +425,6 @@
                     }
 
                     function generate() {
-                        const existingVariants = @json($product->variants);
                         const options = ProductOption.getOptions();
 
                         if (options.length < 1) {
@@ -420,9 +444,11 @@
 
                                 if (variantExists) {
                                     variantExists['index'] = index;
+                                    variantExists.option2 = null;
                                 }
 
                                 generatedVariants.push(variantExists ?? {
+                                    id: null,
                                     index: index,
                                     name: value1,
                                     option1: options[0].name,
@@ -435,14 +461,21 @@
                                 options[1].values.forEach(function (value2) {
                                     const name = [value1, value2].join(' / ');
                                     const variantExists = existingVariants.find(function (existingVariant) {
-                                        return existingVariant.value1 === value1 && existingVariant.value2 === value2;
+                                        return existingVariant.value1 === value1
+                                            && (
+                                                existingVariant.value2 === null
+                                                || existingVariant.value2 === value2
+                                            );
                                     });
 
                                     if (variantExists) {
                                         variantExists['index'] = index;
+                                        variantExists.option2 = options[1].name;
+                                        variantExists.value2 = value2;
                                     }
 
                                     generatedVariants.push(variantExists ?? {
+                                        id: null,
                                         index: index,
                                         name: name,
                                         option1: options[0].name,
@@ -459,8 +492,23 @@
 
                         _render();
                     }
+
+                    function syncVariant(valueNumber, previousValue, value) {
+                        existingVariants = existingVariants.map(function (variant) {
+                            if (variant[`value${valueNumber}`] == previousValue) {
+                                variant[`value${valueNumber}`] = value;
+                                variant.name = !variant.value2
+                                    ? variant.value1
+                                    : [variant.value1, variant.value2].join(' / ');
+                            }
+
+                           return variant;
+                        });
+                    }
+
                     return {
                         generate: generate,
+                        syncVariant: syncVariant,
                     };
                 })();
             </script>

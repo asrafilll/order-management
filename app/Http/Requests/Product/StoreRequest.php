@@ -103,21 +103,31 @@ class StoreRequest extends FormRequest
      */
     public function getProductOptionsAttributes()
     {
-        return array_map(fn (array $option) => [
-            'name' => $option['name'],
-            'values' => json_encode(
-                array_reduce(
-                    $option['values'],
-                    function (array $acc, $value) {
-                        if (!is_null($value)) {
-                            array_push($acc, $value);
-                        }
-                        return $acc;
-                    },
-                    []
-                )
-            ),
-        ], $this->get('options'));
+        return array_reduce(
+            $this->get('options'),
+            function ($acc, array $option) {
+                if (!is_null($option['name'])) {
+                    array_push($acc,  [
+                        'name' => $option['name'],
+                        'values' => json_encode(
+                            array_reduce(
+                                $option['values'],
+                                function (array $acc, $value) {
+                                    if (!is_null($value)) {
+                                        array_push($acc, $value);
+                                    }
+                                    return $acc;
+                                },
+                                []
+                            )
+                        ),
+                    ]);
+                }
+
+                return $acc;
+            },
+            []
+        );
     }
 
     /**
