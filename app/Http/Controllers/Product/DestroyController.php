@@ -3,18 +3,23 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Product;
+use Illuminate\Support\Facades\Response;
 
 class DestroyController extends Controller
 {
     /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Product $product)
     {
-        //
+        $product->delete();
+
+        $message = __('crud.deleted', [
+            'name' => 'product',
+        ]);
+
+        return Response::redirectToRoute('products.index')
+            ->with('success', $message);
     }
 }

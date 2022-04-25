@@ -68,6 +68,11 @@ class Product extends Model
             $product->slug = Str::slug($product->name);
             $product->status = $product->status ?? ProductStatusEnum::draft();
         });
+
+        static::deleting(function (Product $product) {
+            $product->variants()->delete();
+            $product->options()->delete();
+        });
     }
 
     public function variants(): HasMany
