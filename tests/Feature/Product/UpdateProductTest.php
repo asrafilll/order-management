@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Product;
 
+use App\Enums\PermissionEnum;
 use App\Enums\ProductStatusEnum;
 use App\Models\Product;
 use App\Models\ProductOption;
 use App\Models\ProductVariant;
+use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -21,9 +24,15 @@ class UpdateProductTest extends TestCase
     use UserFactory;
     use ProductFactory;
 
+    protected Authenticatable|User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->user = $this->createUserWithPermission(
+            PermissionEnum::manage_products()
+        );
 
         $this->createProductViaHttp();
     }
@@ -145,7 +154,9 @@ class UpdateProductTest extends TestCase
         ];
 
         $response = $this
-            ->actingAs($this->createUser())
+            ->actingAs(
+                $this->user
+            )
             ->put(route('products.update', $product), $input);
 
         $response
@@ -301,7 +312,9 @@ class UpdateProductTest extends TestCase
         ];
 
         $this
-            ->actingAs($this->createUser())
+            ->actingAs(
+                $this->user
+            )
             ->post(route('products.store', $input));
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-Route::middleware(['auth'])
+use App\Enums\PermissionEnum;
+
+Route::middleware(['auth', 'can:' . PermissionEnum::manage_products()->value])
     ->prefix('products')
     ->name('products.')
     ->group(function () {

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Product;
 
+use App\Enums\PermissionEnum;
 use App\Enums\ProductStatusEnum;
 use App\Models\Product;
 use App\Models\ProductOption;
@@ -25,7 +26,11 @@ class CreateProductTest extends TestCase
     public function test_should_success_create_product(array $input)
     {
         $response = $this
-            ->actingAs($this->createUser())
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_products()
+                )
+            )
             ->post(route('products.store', $input));
 
         $response
@@ -216,7 +221,11 @@ class CreateProductTest extends TestCase
         array $errors
     ) {
         $response = $this
-            ->actingAs($this->createUser())
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_products()
+                )
+            )
             ->post(route('products.store', $input));
 
         $response

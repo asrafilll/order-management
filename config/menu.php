@@ -18,6 +18,7 @@ return [
         'icon' => 'fas fa-tag',
         'route_name' => 'products.index',
         'group_name' => 'products',
+        'can' => PermissionEnum::manage_products()->value,
     ],
     [
         'name' => 'Users',

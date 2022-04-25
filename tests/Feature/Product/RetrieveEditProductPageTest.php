@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Product;
 
+use App\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Utils\ProductFactory;
@@ -21,7 +22,11 @@ class RetrieveEditProductPageTest extends TestCase
     public function test_should_return_html_response()
     {
         $response = $this
-            ->actingAs($this->createUser())
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_products()
+                )
+            )
             ->get(route('products.edit', $this->createProduct()));
 
         $response->assertStatus(200);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Product;
 
+use App\Enums\PermissionEnum;
 use App\Models\Product;
 use App\Models\ProductOption;
 use App\Models\ProductVariant;
@@ -43,7 +44,9 @@ class DeleteProductTest extends TestCase
 
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_products()
+                )
             )
             ->delete(route('products.destroy', $product));
 
