@@ -21,6 +21,13 @@ return [
         'can' => PermissionEnum::manage_products()->value,
     ],
     [
+        'name' => 'Customers',
+        'icon' => 'fas fa-user-tag',
+        'route_name' => 'customers.index',
+        'group_name' => 'customers',
+        'can' => PermissionEnum::manage_customers()->value,
+    ],
+    [
         'name' => 'Employees',
         'icon' => 'fas fa-user-friends',
         'route_name' => 'employees.index',
