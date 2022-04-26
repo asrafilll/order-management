@@ -35,7 +35,7 @@ return [
         'can' => PermissionEnum::manage_shippings()->value,
     ],
     [
-        'name' => 'Order Source',
+        'name' => 'Order Sources',
         'icon' => 'fas fa-cart-arrow-down',
         'route_name' => 'order-sources.index',
         'group_name' => 'order-sources',
