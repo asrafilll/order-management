@@ -25,6 +25,7 @@ return [
         'icon' => 'fas fa-user-friends',
         'route_name' => 'employees.index',
         'group_name' => 'employees',
+        'can' => PermissionEnum::manage_employees()->value,
     ],
     [
         'name' => 'Users',

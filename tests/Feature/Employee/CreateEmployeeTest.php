@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Employee;
 
+use App\Enums\PermissionEnum;
 use App\Models\Employee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -26,7 +27,9 @@ class CreateEmployeeTest extends TestCase
 
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_employees()
+                )
             )
             ->post(route('employees.store'), $input);
 
@@ -48,7 +51,9 @@ class CreateEmployeeTest extends TestCase
 
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_employees()
+                )
             )
             ->post(route('employees.store'), $input);
 

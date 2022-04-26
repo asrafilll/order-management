@@ -2,7 +2,7 @@
 
 use App\Enums\PermissionEnum;
 
-Route::middleware(['auth'])
+Route::middleware(['auth', 'can:' . PermissionEnum::manage_employees()->value])
     ->prefix('employees')
     ->name('employees.')
     ->group(function () {

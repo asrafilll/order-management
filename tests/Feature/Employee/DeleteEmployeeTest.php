@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Employee;
 
+use App\Enums\PermissionEnum;
 use App\Models\Employee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -24,7 +25,9 @@ class DeleteEmployeeTest extends TestCase
         $employee = Employee::factory()->create();
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_employees()
+                )
             )
             ->delete(route('employees.destroy', $employee));
 
@@ -37,7 +40,9 @@ class DeleteEmployeeTest extends TestCase
     {
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_employees()
+                )
             )
             ->delete(route('employees.destroy', ['employee' => '0']));
 

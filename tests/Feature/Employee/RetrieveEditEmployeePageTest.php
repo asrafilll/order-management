@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Employee;
 
+use App\Enums\PermissionEnum;
 use App\Models\Employee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,7 +24,9 @@ class RetrieveEditEmployeePageTest extends TestCase
         $employee = Employee::factory()->create();
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_employees()
+                )
             )
             ->get(route('employees.edit', $employee));
 
@@ -38,7 +41,9 @@ class RetrieveEditEmployeePageTest extends TestCase
     {
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_employees()
+                )
             )
             ->get(route('employees.edit', ['employee' => '0']));
 

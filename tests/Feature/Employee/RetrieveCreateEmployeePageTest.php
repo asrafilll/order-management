@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Employee;
 
+use App\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Utils\ResponseAssertion;
@@ -20,7 +21,9 @@ class RetrieveCreateEmployeePageTest extends TestCase
     {
         $response = $this
             ->actingAs(
-                $this->createUser()
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_employees()
+                )
             )
             ->get(route('employees.create'));
 
