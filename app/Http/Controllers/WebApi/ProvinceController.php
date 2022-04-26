@@ -17,8 +17,11 @@ class ProvinceController extends Controller
     {
         return ProvinceResource::collection(
             Province::query()
+                ->when($request->filled('q'), function ($query) use ($request) {
+                    $query->where('name', 'LIKE', '%' . $request->get('q') . '%');
+                })
                 ->paginate(
-                    perPage: $request->get('per_page', 10),
+                    perPage: $request->get('per_page'),
                     page: $request->get('page')
                 )
         );

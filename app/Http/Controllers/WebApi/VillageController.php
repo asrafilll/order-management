@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 class VillageController extends Controller
 {
     /**
-     * Handle the incoming request.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -19,6 +17,9 @@ class VillageController extends Controller
     {
         return VillageResource::collection(
             Village::query()
+                ->when($request->filled('q'), function ($query) use ($request) {
+                    $query->where('name', 'LIKE', '%' . $request->get('q') . '%');
+                })
                 ->when($request->filled('subdistrict_code'), function ($query) use ($request) {
                     $query->whereParent($request->get('subdistrict_code'));
                 })

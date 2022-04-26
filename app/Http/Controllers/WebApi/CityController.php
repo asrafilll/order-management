@@ -17,6 +17,9 @@ class CityController extends Controller
     {
         return CityResource::collection(
             City::query()
+                ->when($request->filled('q'), function ($query) use ($request) {
+                    $query->where('name', 'LIKE', '%' . $request->get('q') . '%');
+                })
                 ->when($request->filled('province_code'), function ($query) use ($request) {
                     $query->whereParent($request->get('province_code'));
                 })
