@@ -9,6 +9,7 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self manage_users_and_roles()
  * @method static self manage_products()
  * @method static self manage_employees()
+ * @method static self manage_shippings()
  */
 final class PermissionEnum extends Enum
 {

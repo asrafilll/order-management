@@ -22,3 +22,4 @@ require __DIR__ . '/users.php';
 require __DIR__ . '/roles.php';
 require __DIR__ . '/products.php';
 require __DIR__ . '/employees.php';
+require __DIR__ . '/shippings.php';

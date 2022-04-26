@@ -28,6 +28,13 @@ return [
         'can' => PermissionEnum::manage_employees()->value,
     ],
     [
+        'name' => 'Shippings',
+        'icon' => 'fas fa-truck',
+        'route_name' => 'shippings.index',
+        'group_name' => 'shippings',
+        'can' => PermissionEnum::manage_shippings()->value,
+    ],
+    [
         'name' => 'Users',
         'icon' => 'fas fa-users',
         'route_name' => 'users.index',
