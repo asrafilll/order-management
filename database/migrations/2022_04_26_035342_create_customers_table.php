@@ -20,14 +20,10 @@ class CreateCustomersTable extends Migration
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('address');
-            $table->string('province_code');
-            $table->string('province_name');
-            $table->string('city_code');
-            $table->string('city_name');
-            $table->string('subdistrict_code');
-            $table->string('subdistrict_name');
-            $table->string('village_code');
-            $table->string('village_name');
+            $table->string('province');
+            $table->string('city');
+            $table->string('subdistrict');
+            $table->string('village');
             $table->string('postal_code');
             $table->string('type')->index();
         });

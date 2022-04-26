@@ -15,14 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $phone
  * @property string $address
- * @property string $province_code
- * @property string $province_name
- * @property string $city_code
- * @property string $city_name
- * @property string $subdistrict_code
- * @property string $subdistrict_name
- * @property string $village_code
- * @property string $village_name
+ * @property string $province
+ * @property string $city
+ * @property string $subdistrict
+ * @property string $village
  * @property string $postal_code
  * @property string $type
  * @method static \Database\Factories\CustomerFactory factory(...$parameters)
@@ -30,21 +26,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Customer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer query()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCityCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCityName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer wherePostalCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereProvinceCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereProvinceName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereSubdistrictCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereSubdistrictName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereProvince($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereSubdistrict($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereVillageCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereVillageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereVillage($value)
  * @mixin \Eloquent
  */
 class Customer extends Model
@@ -54,14 +46,11 @@ class Customer extends Model
     protected $fillable = [
         'name',
         'phone',
-        'province_code',
-        'province_name',
-        'city_code',
-        'city_name',
-        'subdistrict_code',
-        'subdistrict_name',
-        'village_code',
-        'village_name',
+        'address',
+        'province',
+        'city',
+        'subdistrict',
+        'village',
         'postal_code',
         'type',
     ];
