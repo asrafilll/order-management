@@ -20,10 +20,6 @@ class CitySeeder extends Seeder
         );
 
         $totalRows = count($csv->data);
-
-        Schema::disableForeignKeyConstraints();
-        City::truncate();
-
         $temp = [];
 
         foreach ($csv->data as $index => $row) {
@@ -38,7 +34,5 @@ class CitySeeder extends Seeder
                 $temp = [];
             }
         }
-
-        Schema::enableForeignKeyConstraints();
     }
 }

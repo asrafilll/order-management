@@ -21,10 +21,6 @@ class ProvinceSeeder extends Seeder
         );
 
         $totalRows = count($csv->data);
-
-        Schema::disableForeignKeyConstraints();
-        Province::truncate();
-
         $temp = [];
 
         foreach ($csv->data as $index => $row) {
@@ -38,7 +34,5 @@ class ProvinceSeeder extends Seeder
                 $temp = [];
             }
         }
-
-        Schema::enableForeignKeyConstraints();
     }
 }
