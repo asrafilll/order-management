@@ -11,6 +11,7 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self manage_employees()
  * @method static self manage_shippings()
  * @method static self manage_order_sources()
+ * @method static self manage_payment_methods()
  */
 final class PermissionEnum extends Enum
 {
