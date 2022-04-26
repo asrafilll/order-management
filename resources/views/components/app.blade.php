@@ -19,6 +19,11 @@
         rel="stylesheet"
         href="{{ url('/') }}/plugins/fontawesome-free/css/all.min.css"
     >
+    <!-- jQuery UI -->
+    <link
+        rel="stylesheet"
+        href="{{ url('/') }}/plugins/jquery-ui/jquery-ui.min.css"
+    >
     <!-- iCheck -->
     <link
         rel="stylesheet"
@@ -46,6 +51,8 @@
     >
     <!-- jQuery -->
     <script src="{{ url('/') }}/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="{{ url('/') }}/plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ url('/') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 -->
