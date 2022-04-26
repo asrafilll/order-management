@@ -26,7 +26,7 @@
                     <tbody>
                         @forelse ($employees as $employee)
                             <tr>
-                                <td>{{ Str::title($employee->name) }}</td>
+                                <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->created_at->diffForHumans() }}</td>
                                 <td>{{ $employee->updated_at->diffForHumans() }}</td>
                                 <td class="text-right">

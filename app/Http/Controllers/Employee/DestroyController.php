@@ -16,7 +16,7 @@ class DestroyController extends Controller
     {
         $employee->delete();
         $message = __('crud.deleted', [
-            'name' => 'role',
+            'name' => 'employee',
         ]);
 
         return Response::redirectToRoute('employees.index')
