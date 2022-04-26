@@ -42,6 +42,13 @@ return [
         'can' => PermissionEnum::manage_order_sources()->value,
     ],
     [
+        'name' => 'Payment Methods',
+        'icon' => 'fas fa-money-check',
+        'route_name' => 'payment-methods.index',
+        'group_name' => 'payment-methods',
+        'can' => PermissionEnum::manage_payment_methods()->value,
+    ],
+    [
         'name' => 'Users',
         'icon' => 'fas fa-users',
         'route_name' => 'users.index',
