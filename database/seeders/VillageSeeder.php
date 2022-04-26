@@ -16,7 +16,7 @@ class VillageSeeder extends Seeder
     public function run()
     {
         $csv = new \ParseCsv\Csv(
-            storage_path('indonesia-areas/subdistricts.csv')
+            storage_path('indonesia-areas/villages.csv')
         );
 
         $totalRows = count($csv->data);
