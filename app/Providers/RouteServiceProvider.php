@@ -49,7 +49,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::prefix('web-api')
                 ->name('web-api.')
-                ->middleware('web-api')
+                ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web-api.php'));
         });

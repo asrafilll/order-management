@@ -23,7 +23,7 @@ class CustomerFactory extends Factory
                 '0',
                 STR_PAD_LEFT
             ),
-            'address' => '',
+            'address' => 'CICADAS, CIBEUNYING KIDUL, BANDUNG, JAWA BARAT 40121',
             'province' => 'JAWA BARAT',
             'city' => 'BANDUNG',
             'subdistrict' => 'CIBEUNYING KIDUL',
