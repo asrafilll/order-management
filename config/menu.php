@@ -14,6 +14,13 @@ use App\Enums\PermissionEnum;
 
 return [
     [
+        'name' => 'Orders',
+        'icon' => 'fas fa-box',
+        'route_name' => 'orders.index',
+        'group_name' => 'orders',
+        'can' => PermissionEnum::manage_orders()->value,
+    ],
+    [
         'name' => 'Products',
         'icon' => 'fas fa-tag',
         'route_name' => 'products.index',
