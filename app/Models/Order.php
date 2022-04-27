@@ -6,6 +6,7 @@ use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Order
@@ -44,6 +45,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $sales_name
  * @property string|null $creator_name
  * @property string|null $packer_name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
+ * @property-read int|null $items_count
  * @method static \Database\Factories\OrderFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
@@ -126,4 +129,9 @@ class Order extends Model
         'status' => OrderStatusEnum::class,
         'payment_status' => PaymentStatusEnum::class,
     ];
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
