@@ -2,6 +2,12 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Enums\OrderStatusEnum;
+use App\Models\Customer;
+use App\Models\Shipping;
+use App\Models\OrderSource;
+use App\Models\PaymentMethod;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -13,7 +19,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->order->status->equals(OrderStatusEnum::draft());
     }
 
     /**
@@ -24,7 +30,87 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'source_id' => [
+                'required',
+                'integer',
+                Rule::exists((new OrderSource())->getTable(), 'id'),
+            ],
+            'source_name' => [
+                'required',
+                'string',
+            ],
+            'customer_id' => [
+                'required',
+                'integer',
+                Rule::exists((new Customer())->getTable(), 'id'),
+            ],
+            'customer_name' => [
+                'required',
+                'string',
+            ],
+            'customer_phone' => [
+                'required',
+                'numeric',
+            ],
+            'customer_address' => [
+                'required',
+                'string',
+            ],
+            'customer_province' => [
+                'required',
+                'string',
+            ],
+            'customer_city' => [
+                'required',
+                'string',
+            ],
+            'customer_subdistrict' => [
+                'required',
+                'string',
+            ],
+            'customer_village' => [
+                'required',
+                'string',
+            ],
+            'customer_postal_code' => [
+                'required',
+                'numeric',
+            ],
+            'payment_method_id' => [
+                'required',
+                'integer',
+                Rule::exists((new PaymentMethod())->getTable(), 'id'),
+            ],
+            'payment_method_name' => [
+                'required',
+                'string',
+            ],
+            'shipping_id' => [
+                'required',
+                'integer',
+                Rule::exists((new Shipping())->getTable(), 'id'),
+            ],
+            'shipping_name' => [
+                'required',
+                'string',
+            ],
+            'shipping_price' => [
+                'required',
+                'numeric',
+            ],
+            'note' => [
+                'nullable',
+                'string',
+            ],
+            'sales_name' => [
+                'required',
+                'string',
+            ],
+            'creator_name' => [
+                'required',
+                'string',
+            ],
+            'packer_name' => [
                 'required',
                 'string',
             ],
