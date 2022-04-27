@@ -32,10 +32,13 @@
                                     type="text"
                                     id="source_name"
                                     name="source_name"
-                                    class="form-control @error('source_name') is-invalid @enderror"
+                                    class="form-control @error('source_name') is-invalid @enderror @error('source_id') is-invalid @enderror"
                                     value="{{ old('source_name') }}"
                                 />
                                 @error('source_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @error('source_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -96,10 +99,13 @@
                                     type="text"
                                     id="customer_name"
                                     name="customer_name"
-                                    class="form-control @error('customer_name') is-invalid @enderror"
+                                    class="form-control @error('customer_name') is-invalid @enderror @error('customer_id') is-invalid @enderror"
                                     value="{{ old('customer_name') }}"
                                 />
                                 @error('customer_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @error('customer_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
