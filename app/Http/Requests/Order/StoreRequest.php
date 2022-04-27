@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Models\Customer;
+use App\Models\OrderSource;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -24,9 +27,51 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'source_id' => [
+                'required',
+                'integer',
+                Rule::exists((new OrderSource())->getTable(), 'id'),
+            ],
+            'source_name' => [
                 'required',
                 'string',
+            ],
+            'customer_id' => [
+                'required',
+                'integer',
+                Rule::exists((new Customer())->getTable(), 'id'),
+            ],
+            'customer_name' => [
+                'required',
+                'string',
+            ],
+            'customer_phone' => [
+                'required',
+                'numeric',
+            ],
+            'customer_address' => [
+                'required',
+                'string',
+            ],
+            'customer_province' => [
+                'required',
+                'string',
+            ],
+            'customer_city' => [
+                'required',
+                'string',
+            ],
+            'customer_subdistrict' => [
+                'required',
+                'string',
+            ],
+            'customer_village' => [
+                'required',
+                'string',
+            ],
+            'customer_postal_code' => [
+                'required',
+                'numeric',
             ],
         ];
     }
