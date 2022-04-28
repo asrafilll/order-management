@@ -20,6 +20,7 @@
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('Source') }}</th>
                             <th>{{ __('Customer') }}</th>
+                            <th>{{ __('Status') }}</th>
                             <th>{{ __('Created At') }}</th>
                             <th>{{ __('Updated At') }}</th>
                             <th></th>
@@ -31,6 +32,7 @@
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->source_name }}</td>
                                 <td>{{ $order->customer_name }}</td>
+                                <td>{{ Str::upper($order->status) }}</td>
                                 <td>{{ $order->created_at->diffForHumans() }}</td>
                                 <td>{{ $order->updated_at->diffForHumans() }}</td>
                                 <td class="text-right">
@@ -61,7 +63,7 @@
                         @empty
                             <tr>
                                 <td
-                                    colspan="5"
+                                    colspan="6"
                                     class="text-center"
                                 >{{ __('Data not found') }}</td>
                             </tr>
