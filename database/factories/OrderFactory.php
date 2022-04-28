@@ -17,7 +17,7 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'status' => OrderStatusEnum::waiting()->value,
+            'status' => OrderStatusEnum::draft()->value,
             'source_id' => 1,
             'source_name' => 'Marketplace',
             'customer_id' => 1,
@@ -69,6 +69,16 @@ class OrderFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'shipping_discount' => 5000,
             'total_price' => $attributes['total_price'] - 5000,
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function waiting()
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => OrderStatusEnum::waiting()->value,
         ]);
     }
 

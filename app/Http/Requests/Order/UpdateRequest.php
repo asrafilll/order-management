@@ -76,44 +76,6 @@ class UpdateRequest extends FormRequest
                 'required',
                 'numeric',
             ],
-            'payment_method_id' => [
-                'required',
-                'integer',
-                Rule::exists((new PaymentMethod())->getTable(), 'id'),
-            ],
-            'payment_method_name' => [
-                'required',
-                'string',
-            ],
-            'shipping_id' => [
-                'required',
-                'integer',
-                Rule::exists((new Shipping())->getTable(), 'id'),
-            ],
-            'shipping_name' => [
-                'required',
-                'string',
-            ],
-            'shipping_price' => [
-                'required',
-                'numeric',
-            ],
-            'note' => [
-                'nullable',
-                'string',
-            ],
-            'sales_name' => [
-                'required',
-                'string',
-            ],
-            'creator_name' => [
-                'required',
-                'string',
-            ],
-            'packer_name' => [
-                'required',
-                'string',
-            ],
         ];
     }
 }
