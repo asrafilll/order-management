@@ -11,7 +11,7 @@ use Tests\TestCase;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
-class UpdateOrderTest extends TestCase
+class UpdateOrderGeneralInformationTest extends TestCase
 {
     use RefreshDatabase;
     use ResponseAssertion;
@@ -22,7 +22,6 @@ class UpdateOrderTest extends TestCase
      */
     public function test_should_success_update_order()
     {
-        $this->markTestSkipped();
         /** @var Order */
         $order = Order::factory()->create();
         /** @var OrderSource */
@@ -50,7 +49,7 @@ class UpdateOrderTest extends TestCase
                     PermissionEnum::manage_orders()
                 )
             )
-            ->put(route('orders.update', $order), $input);
+            ->put(route('orders.general-information.update', $order), $input);
 
         $response
             ->assertRedirect()
@@ -69,7 +68,6 @@ class UpdateOrderTest extends TestCase
         array $input,
         array $errors
     ) {
-        $this->markTestSkipped();
         /** @var Order */
         $order = Order::factory()->create();
         $response = $this
@@ -78,7 +76,7 @@ class UpdateOrderTest extends TestCase
                     PermissionEnum::manage_orders()
                 )
             )
-            ->put(route('orders.update', $order), $input);
+            ->put(route('orders.general-information.update', $order), $input);
 
         $response
             ->assertRedirect()
@@ -148,7 +146,6 @@ class UpdateOrderTest extends TestCase
      */
     public function test_should_error_when_not_found()
     {
-        $this->markTestSkipped();
         $input = [
             'source_id' => 1,
             'source_name' => 'Source #1',
@@ -168,7 +165,7 @@ class UpdateOrderTest extends TestCase
                     PermissionEnum::manage_orders()
                 )
             )
-            ->put(route('orders.update', ['order' => 0]), $input);
+            ->put(route('orders.general-information.update', ['order' => 0]), $input);
 
         $response->assertNotFound();
     }
@@ -178,7 +175,6 @@ class UpdateOrderTest extends TestCase
      */
     public function test_should_error_update_order_when_status_not_draft()
     {
-        $this->markTestSkipped();
         /** @var Order */
         $order = Order::factory()
             ->waiting()
@@ -208,7 +204,7 @@ class UpdateOrderTest extends TestCase
                     PermissionEnum::manage_orders()
                 )
             )
-            ->put(route('orders.update', $order), $input);
+            ->put(route('orders.general-information.update', $order), $input);
 
         $response->assertForbidden();
     }

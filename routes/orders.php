@@ -30,4 +30,12 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}',
             \App\Http\Controllers\Order\DestroyController::class
         )->name('destroy');
+        Route::get(
+            '/{order}/general-information',
+            \App\Http\Controllers\Order\GeneralInformation\EditController::class
+        )->name('general-information.edit');
+        Route::put(
+            '/{order}/general-information',
+            \App\Http\Controllers\Order\GeneralInformation\UpdateController::class
+        )->name('general-information.update');
     });
