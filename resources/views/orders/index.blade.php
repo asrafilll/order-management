@@ -17,7 +17,9 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('ID') }}</th>
+                            <th>{{ __('Source') }}</th>
+                            <th>{{ __('Customer') }}</th>
                             <th>{{ __('Created At') }}</th>
                             <th>{{ __('Updated At') }}</th>
                             <th></th>
@@ -26,7 +28,9 @@
                     <tbody>
                         @forelse ($orders as $order)
                             <tr>
-                                <td>{{ $order->name }}</td>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ $order->source_name }}</td>
+                                <td>{{ $order->customer_name }}</td>
                                 <td>{{ $order->created_at->diffForHumans() }}</td>
                                 <td>{{ $order->updated_at->diffForHumans() }}</td>
                                 <td class="text-right">
@@ -57,7 +61,7 @@
                         @empty
                             <tr>
                                 <td
-                                    colspan="4"
+                                    colspan="5"
                                     class="text-center"
                                 >{{ __('Data not found') }}</td>
                             </tr>

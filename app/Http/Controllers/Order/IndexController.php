@@ -16,6 +16,7 @@ class IndexController extends Controller
     public function __invoke(Request $request)
     {
         $orders = Order::query()
+            ->latest()
             ->paginate(
                 perPage: $request->get('per_page', 10),
                 page: $request->get('page')
