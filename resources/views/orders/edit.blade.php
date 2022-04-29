@@ -488,7 +488,7 @@
                     </div>
                 </form>
                 <form
-                    id="contributors-module"
+                    id="order-contributors-module"
                     action="{{ route('orders.contributors.update', $order) }}"
                     method="POST"
                 >
@@ -596,8 +596,8 @@
                     </div>
                 </form>
                 <script>
-                    const Contributors = (function() {
-                        const $el = $('#contributors-module');
+                    const OrderContributors = (function() {
+                        const $el = $('#order-contributors-module');
                         const $salesId = $el.find('#sales_id');
                         const $salesName = $el.find('#sales_name');
                         const $creatorId = $el.find('#creator_id');
