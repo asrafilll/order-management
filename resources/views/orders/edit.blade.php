@@ -107,7 +107,7 @@
                                     <tr>
                                         <th>{{ __('Product') }}</th>
                                         <th width="150">{{ __('Quantity') }}</th>
-                                        <th width="150">{{ __('Total') }}</th>
+                                        <th width="150" class="text-right">{{ __('Total') }}</th>
                                         <th width="10"></th>
                                     </tr>
                                 </thead>
@@ -147,7 +147,7 @@
                                                     {{ $item->quantity }}
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="text-right">
                                                 {{ Config::get('app.currency') . ' ' . number_format($item->variant_price * $item->quantity) }}
                                             </td>
                                             <td>
