@@ -11,55 +11,57 @@
                         <h3 class="card-title float-none">{{ __('Products') }}</h3>
                     </div>
                     <div class="card-body p-0">
-                        <div
-                            id="product-search-module"
-                            class="p-3 border"
-                        >
-                            <input
-                                type="search"
-                                name="search"
-                                id="search"
-                                class="form-control"
-                                placeholder="{{ __('Search product') }}"
-                            />
-                        </div>
-                        <script>
-                            const ProductSearch = (function() {
-                                const $el = $('#product-search-module');
-                                const $input = $el.find('#search');
+                        @if ($order->isEditable())
+                            <div
+                                id="product-search-module"
+                                class="p-3 border"
+                            >
+                                <input
+                                    type="search"
+                                    name="search"
+                                    id="search"
+                                    class="form-control"
+                                    placeholder="{{ __('Search product') }}"
+                                />
+                            </div>
+                            <script>
+                                const ProductSearch = (function() {
+                                    const $el = $('#product-search-module');
+                                    const $input = $el.find('#search');
 
-                                init();
+                                    init();
 
-                                function init() {
-                                    $input.autocomplete({
-                                        source: function(request, response) {
-                                            $.ajax({
-                                                method: 'GET',
-                                                url: '{{ route('web-api.product-variants.index') }}',
-                                                data: {
-                                                    q: request.term,
-                                                    status: '{{ \App\Enums\ProductStatusEnum::published()->value }}',
-                                                },
-                                                success: function(res) {
-                                                    response(res.data.map(function(productVariant) {
-                                                        const value =
-                                                            `${productVariant.product_name} - ${productVariant.name}`;
-                                                        return {
-                                                            label: value,
-                                                            value: value,
-                                                            id: productVariant.id,
-                                                        };
-                                                    }))
-                                                },
-                                            });
-                                        },
-                                        select: function(event, ui) {
-                                            AddOrderItem.submit(ui.item.id);
-                                        },
-                                    });
-                                }
-                            })();
-                        </script>
+                                    function init() {
+                                        $input.autocomplete({
+                                            source: function(request, response) {
+                                                $.ajax({
+                                                    method: 'GET',
+                                                    url: '{{ route('web-api.product-variants.index') }}',
+                                                    data: {
+                                                        q: request.term,
+                                                        status: '{{ \App\Enums\ProductStatusEnum::published()->value }}',
+                                                    },
+                                                    success: function(res) {
+                                                        response(res.data.map(function(productVariant) {
+                                                            const value =
+                                                                `${productVariant.product_name} - ${productVariant.name}`;
+                                                            return {
+                                                                label: value,
+                                                                value: value,
+                                                                id: productVariant.id,
+                                                            };
+                                                        }))
+                                                    },
+                                                });
+                                            },
+                                            select: function(event, ui) {
+                                                AddOrderItem.submit(ui.item.id);
+                                            },
+                                        });
+                                    }
+                                })();
+                            </script>
+                        @endif
                         <div
                             id="add-order-item-module"
                             class="d-none"
@@ -96,7 +98,10 @@
                                 };
                             })();
                         </script>
-                        <div id="update-order-item-module" class="table-responsive">
+                        <div
+                            id="update-order-item-module"
+                            class="table-responsive"
+                        >
                             <table class="table text-nowrap">
                                 <thead>
                                     <tr>
@@ -123,32 +128,38 @@
                                                 </dl>
                                             </td>
                                             <td>
-                                                <form
-                                                    action="{{ route('orders.items.update', [$order, $item]) }}"
-                                                    method="POST"
-                                                    class="order-item-form"
-                                                >
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input
-                                                        type="number"
-                                                        name="quantity"
-                                                        class="form-control order-item-quantity"
-                                                        value="{{ $item->quantity }}"
-                                                    />
-                                                </form>
+                                                @if ($order->isEditable())
+                                                    <form
+                                                        action="{{ route('orders.items.update', [$order, $item]) }}"
+                                                        method="POST"
+                                                        class="order-item-form"
+                                                    >
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input
+                                                            type="number"
+                                                            name="quantity"
+                                                            class="form-control order-item-quantity"
+                                                            value="{{ $item->quantity }}"
+                                                        />
+                                                    </form>
+                                                @else
+                                                    {{ $item->quantity }}
+                                                @endif
                                             </td>
                                             <td>
                                                 {{ Config::get('app.currency') . ' ' . number_format($item->variant_price * $item->quantity) }}
                                             </td>
                                             <td>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-danger"
-                                                    data-toggle="modal"
-                                                    data-target="#modal-delete"
-                                                    data-action="{{ route('orders.items.destroy', [$order, $item]) }}"
-                                                >{{ __('Delete') }}</button>
+                                                @if ($order->isEditable())
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-danger"
+                                                        data-toggle="modal"
+                                                        data-target="#modal-delete"
+                                                        data-action="{{ route('orders.items.destroy', [$order, $item]) }}"
+                                                    >{{ __('Delete') }}</button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -156,7 +167,7 @@
                             </table>
                         </div>
                         <script>
-                            const UpdateOrderItem = (function () {
+                            const UpdateOrderItem = (function() {
                                 const $el = $('#update-order-item-module');
                                 const $quantities = $el.find('.order-item-quantity');
 
