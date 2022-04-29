@@ -54,4 +54,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/items-discount',
             \App\Http\Controllers\Order\ItemsDiscount\UpdateController::class
         )->name('items-discount.update');
+        Route::put(
+            '/{order}/note',
+            \App\Http\Controllers\Order\Note\UpdateController::class
+        )->name('note.update');
     });
