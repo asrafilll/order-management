@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\OrderStatusEnum;
+use App\Enums\PaymentStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -37,7 +38,7 @@ class CreateOrdersTable extends Migration
             $table
                 ->string('payment_status')
                 ->index()
-                ->nullable();
+                ->default(PaymentStatusEnum::unpaid());
             $table->unsignedBigInteger('shipping_id')->nullable();
             $table->string('shipping_name')->nullable();
             $table->date('shipping_date')->nullable();
