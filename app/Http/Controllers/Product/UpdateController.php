@@ -50,7 +50,13 @@ class UpdateController extends Controller
         $productOptionsAttributes = $updateRequest->getProductOptionsAttributes();
         /** @var ProductOption */
         $productOption1 = $product->options->first();
-        $productOption1->update($productOptionsAttributes[0]);
+        if (!is_null($productOption1)) {
+            $productOption1->update($productOptionsAttributes[0]);
+        } else {
+            $productOption1 = $product
+                ->options()
+                ->create($productOptionsAttributes[0]);
+        }
 
         /** @var ProductOption */
         $productOption2 = $product
@@ -123,8 +129,7 @@ class UpdateController extends Controller
         foreach ($product->variants as $productVariant) {
             if (
                 !in_array($productVariant->value1, $productOption1ArrayValues)
-                || (
-                    count($productOption2ArrayValues) > 0
+                || (count($productOption2ArrayValues) > 0
                     && !in_array($productVariant->value2, $productOption2ArrayValues)
                 )
             ) {
