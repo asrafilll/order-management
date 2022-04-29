@@ -4,15 +4,11 @@ namespace Tests\Feature\Order\Item;
 
 use App\Enums\OrderStatusEnum;
 use App\Enums\PermissionEnum;
-use App\Models\Customer;
-use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\OrderSource;
-use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\Utils\OrderFactory;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -21,77 +17,21 @@ class CreateOrderItemTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
+    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_create_order_item()
     {
-        /** @var Product */
-        $product = Product::factory()->create();
-        $product
-            ->options()
-            ->create([
-                'name' => 'Color',
-                'values' => json_encode([
-                    'Red',
-                    'Green',
-                    'Blue',
-                ])
-            ]);
-        $product
-            ->variants()
-            ->createMany([
-                [
-                    'name' => 'Red',
-                    'price' => 10000,
-                    'weight' => 1000,
-                    'option1' => 'Color',
-                    'value1' => 'Red',
-                ],
-                [
-                    'name' => 'Green',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Green',
-                ],
-                [
-                    'name' => 'Blue',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Blue',
-                ],
-            ]);
-
+        $order = $this->createOrderWithoutOrderItems();
         /** @var ProductVariant */
         $productVariant = ProductVariant::with(['product'])
             ->inRandomOrder()
             ->first();
-        /** @var OrderSource */
-        $orderSource = OrderSource::factory()->create();
-        /** @var Customer */
-        $customer = Customer::factory()->create();
-        /** @var Order */
-        $order = Order::create([
-            'source_id' => $orderSource->id,
-            'source_name' => $orderSource->name,
-            'customer_id' => $customer->id,
-            'customer_name' => $customer->name,
-            'customer_phone' => $customer->phone,
-            'customer_address' => $customer->address,
-            'customer_province' => $customer->province,
-            'customer_city' => $customer->city,
-            'customer_subdistrict' => $customer->subdistrict,
-            'customer_village' => $customer->village,
-            'customer_postal_code' => $customer->postal_code,
-        ]);
-
         $input = [
             'variant_id' => $productVariant->id,
         ];
-
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(
@@ -131,72 +71,14 @@ class CreateOrderItemTest extends TestCase
      */
     public function test_should_error_create_order_item_when_order_is_not_editable()
     {
-        /** @var Product */
-        $product = Product::factory()->create();
-        $product
-            ->options()
-            ->create([
-                'name' => 'Color',
-                'values' => json_encode([
-                    'Red',
-                    'Green',
-                    'Blue',
-                ])
-            ]);
-        $product
-            ->variants()
-            ->createMany([
-                [
-                    'name' => 'Red',
-                    'price' => 10000,
-                    'weight' => 1000,
-                    'option1' => 'Color',
-                    'value1' => 'Red',
-                ],
-                [
-                    'name' => 'Green',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Green',
-                ],
-                [
-                    'name' => 'Blue',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Blue',
-                ],
-            ]);
-
+        $order = $this->createOrderWithoutOrderItems(OrderStatusEnum::waiting());
         /** @var ProductVariant */
         $productVariant = ProductVariant::with(['product'])
             ->inRandomOrder()
             ->first();
-        /** @var OrderSource */
-        $orderSource = OrderSource::factory()->create();
-        /** @var Customer */
-        $customer = Customer::factory()->create();
-        /** @var Order */
-        $order = Order::create([
-            'source_id' => $orderSource->id,
-            'source_name' => $orderSource->name,
-            'customer_id' => $customer->id,
-            'customer_name' => $customer->name,
-            'customer_phone' => $customer->phone,
-            'customer_address' => $customer->address,
-            'customer_province' => $customer->province,
-            'customer_city' => $customer->city,
-            'customer_subdistrict' => $customer->subdistrict,
-            'customer_village' => $customer->village,
-            'customer_postal_code' => $customer->postal_code,
-            'status' => OrderStatusEnum::waiting(),
-        ]);
-
         $input = [
             'variant_id' => $productVariant->id,
         ];
-
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(
@@ -213,29 +95,10 @@ class CreateOrderItemTest extends TestCase
      */
     public function test_should_error_create_order_item_because_product_variant_not_exists()
     {
-        /** @var OrderSource */
-        $orderSource = OrderSource::factory()->create();
-        /** @var Customer */
-        $customer = Customer::factory()->create();
-        /** @var Order */
-        $order = Order::create([
-            'source_id' => $orderSource->id,
-            'source_name' => $orderSource->name,
-            'customer_id' => $customer->id,
-            'customer_name' => $customer->name,
-            'customer_phone' => $customer->phone,
-            'customer_address' => $customer->address,
-            'customer_province' => $customer->province,
-            'customer_city' => $customer->city,
-            'customer_subdistrict' => $customer->subdistrict,
-            'customer_village' => $customer->village,
-            'customer_postal_code' => $customer->postal_code,
-        ]);
-
+        $order = $this->createOrderWithoutOrderItems();
         $input = [
             'variant_id' => 1,
         ];
-
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(
@@ -256,66 +119,11 @@ class CreateOrderItemTest extends TestCase
      */
     public function test_should_not_create_new_order_item_when_order_item_already_exists()
     {
-        /** @var Product */
-        $product = Product::factory()->create();
-        $product
-            ->options()
-            ->create([
-                'name' => 'Color',
-                'values' => json_encode([
-                    'Red',
-                    'Green',
-                    'Blue',
-                ])
-            ]);
-        $product
-            ->variants()
-            ->createMany([
-                [
-                    'name' => 'Red',
-                    'price' => 10000,
-                    'weight' => 1000,
-                    'option1' => 'Color',
-                    'value1' => 'Red',
-                ],
-                [
-                    'name' => 'Green',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Green',
-                ],
-                [
-                    'name' => 'Blue',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Blue',
-                ],
-            ]);
-
+        $order = $this->createOrderWithoutOrderItems();
         /** @var ProductVariant */
         $productVariant = ProductVariant::with(['product'])
             ->inRandomOrder()
             ->first();
-        /** @var OrderSource */
-        $orderSource = OrderSource::factory()->create();
-        /** @var Customer */
-        $customer = Customer::factory()->create();
-        /** @var Order */
-        $order = Order::create([
-            'source_id' => $orderSource->id,
-            'source_name' => $orderSource->name,
-            'customer_id' => $customer->id,
-            'customer_name' => $customer->name,
-            'customer_phone' => $customer->phone,
-            'customer_address' => $customer->address,
-            'customer_province' => $customer->province,
-            'customer_city' => $customer->city,
-            'customer_subdistrict' => $customer->subdistrict,
-            'customer_village' => $customer->village,
-            'customer_postal_code' => $customer->postal_code,
-        ]);
         /** @var OrderItem */
         $orderItem = $order
             ->items()
