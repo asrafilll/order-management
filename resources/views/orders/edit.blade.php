@@ -96,7 +96,7 @@
                                 };
                             })();
                         </script>
-                        <div class="table-responsive">
+                        <div id="update-order-item-module" class="table-responsive">
                             <table class="table text-nowrap">
                                 <thead>
                                     <tr>
@@ -123,13 +123,17 @@
                                                 </dl>
                                             </td>
                                             <td>
-                                                <form method="POST">
+                                                <form
+                                                    action="{{ route('orders.items.update', [$order, $item]) }}"
+                                                    method="POST"
+                                                    class="order-item-form"
+                                                >
                                                     @csrf
+                                                    @method('PUT')
                                                     <input
                                                         type="number"
                                                         name="quantity"
-                                                        id="quantity"
-                                                        class="form-control"
+                                                        class="form-control order-item-quantity"
                                                         value="{{ $item->quantity }}"
                                                     />
                                                 </form>
@@ -148,6 +152,20 @@
                                 </tbody>
                             </table>
                         </div>
+                        <script>
+                            const UpdateOrderItem = (function () {
+                                const $el = $('#update-order-item-module');
+                                const $quantities = $el.find('.order-item-quantity');
+
+                                $quantities.on('change', handleChangeQuantity);
+
+                                function handleChangeQuantity() {
+                                    const $this = $(this);
+                                    const $form = $this.closest('.order-item-form');
+                                    $form.submit();
+                                }
+                            })();
+                        </script>
                     </div>
                 </div>
             </div>
