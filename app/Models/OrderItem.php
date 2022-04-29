@@ -71,6 +71,10 @@ class OrderItem extends Model
         'quantity',
     ];
 
+    protected $attributes = [
+        'quantity' => 1,
+    ];
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

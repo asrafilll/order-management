@@ -38,4 +38,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/general-information',
             \App\Http\Controllers\Order\GeneralInformation\UpdateController::class
         )->name('general-information.update');
+        Route::post(
+            '/{order}/items',
+            \App\Http\Controllers\Order\Item\StoreController::class
+        )->name('items.store');
     });
