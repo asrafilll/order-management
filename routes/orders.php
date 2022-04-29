@@ -46,4 +46,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/items/{orderItem}',
             \App\Http\Controllers\Order\Item\UpdateController::class
         )->name('items.update');
+        Route::delete(
+            '/{order}/items/{orderItem}',
+            \App\Http\Controllers\Order\Item\DeleteController::class
+        )->name('items.destroy');
     });
