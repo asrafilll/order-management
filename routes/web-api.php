@@ -13,4 +13,5 @@ Route::middleware(['auth'])
         Route::get('product-variants', \App\Http\Controllers\WebApi\ProductVariantController::class)->name('product-variants.index');
         Route::get('employees', \App\Http\Controllers\WebApi\EmployeeController::class)->name('employees.index');
         Route::get('shippings', \App\Http\Controllers\WebApi\ShippingController::class)->name('shippings.index');
+        Route::get('payment-methods', \App\Http\Controllers\WebApi\PaymentMethodController::class)->name('payment-methods.index');
     });
