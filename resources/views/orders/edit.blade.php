@@ -145,6 +145,9 @@
                                                 <button
                                                     type="button"
                                                     class="btn btn-danger"
+                                                    data-toggle="modal"
+                                                    data-target="#modal-delete"
+                                                    data-action="{{ route('orders.items.destroy', [$order, $item]) }}"
                                                 >{{ __('Delete') }}</button>
                                             </td>
                                         </tr>
