@@ -345,15 +345,6 @@ class UpdateOrderItemsDiscountTest extends TestCase
                     'items_discount'
                 ],
             ],
-            'items_discount: 0' => [
-                [
-                    'items_discount' => 0,
-                ],
-                [
-                    'items_discount'
-                ],
-            ],
-
             'items_discount: (higher than items_price)' => [
                 [
                     'items_discount' => 20000,
