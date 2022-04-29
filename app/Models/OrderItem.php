@@ -75,6 +75,21 @@ class OrderItem extends Model
         'quantity' => 1,
     ];
 
+    protected static function booted()
+    {
+        static::created(function (OrderItem $orderItem) {
+            $orderItem->order->calculateItemsSummary();
+        });
+
+        static::updated(function (OrderItem $orderItem) {
+            $orderItem->order->calculateItemsSummary();
+        });
+
+        static::deleted(function (OrderItem $orderItem) {
+            $orderItem->order->calculateItemsSummary();
+        });
+    }
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

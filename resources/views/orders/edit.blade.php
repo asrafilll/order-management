@@ -8,7 +8,7 @@
             <div class="col-lg">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title float-none">{{ __('Products') }}</h3>
+                        <h3 class="card-title float-none">{{ __('Items') }}</h3>
                     </div>
                     <div class="card-body p-0">
                         @if ($order->isEditable())
@@ -180,6 +180,47 @@
                                 }
                             })();
                         </script>
+                        <div class="border p-3">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-lg">
+                                    <span>{{ __('Subtotal') }}</span>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="text-right">
+                                        {{ Config::get('app.currency') . ' ' . number_format($order->items_price) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-lg">
+                                    <span>{{ __('Discount') }}</span>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">{{ Config::get('app.currency') }}</span>
+                                        </div>
+                                        <input
+                                            type="number"
+                                            name="items_discount"
+                                            id="items_discount"
+                                            class="form-control text-right"
+                                            value="{{ $order->items_discount }}"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-lg">
+                                    <span class="font-weight-bold">{{ __('Total') }}</span>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="font-weight-bold text-right">
+                                        {{ Config::get('app.currency') . ' ' . number_format($order->items_price + $order->items_discount) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

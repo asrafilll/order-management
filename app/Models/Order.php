@@ -139,4 +139,19 @@ class Order extends Model
     {
         return $this->status->equals(OrderStatusEnum::draft());
     }
+
+    public function calculateItemsSummary(): void
+    {
+        $this->load(['items']);
+
+        $itemsQuantity = intval($this->items()->sum('quantity'));
+        $itemsPrice = $this
+            ->items
+            ->reduce(fn (int $acc, OrderItem $orderItem) => $acc + ($orderItem->variant_price * $orderItem->quantity), 0);
+
+        $this->update([
+            'items_quantity' => $itemsQuantity,
+            'items_price' => $itemsPrice,
+        ]);
+    }
 }
