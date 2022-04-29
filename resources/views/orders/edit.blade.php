@@ -96,31 +96,57 @@
                                 };
                             })();
                         </script>
-                        <div class="p-3 border">
-                            <div class="row">
-                                <div class="col-lg">{{ __('Product') }}</div>
-                                <div class="col-lg">{{ __('Quantity') }}</div>
-                                <div class="col-lg">{{ __('Total') }}</div>
-                            </div>
-                        </div>
-                        <div class="p-3 border">
-                            @foreach ($order->items as $item)
-                                <div class="row">
-                                    <div class="col-lg">
-                                        <dl>
-                                            <dt>{{ $item->product_name }}</dt>
-                                            <dd>
-                                                <ul class="list-unstyled">
-                                                    <li>{{ $item->variant_name }}</li>
-                                                    <li>{{ $item->variant_price }}</li>
-                                                </ul>
-                                            </dd>
-                                        </dl>
-                                    </div>
-                                    <div class="col-lg">{{ $item->quantity }}</div>
-                                    <div class="col-lg">{{ $item->variant_price * $item->quantity }}</div>
-                                </div>
-                            @endforeach
+                        <div class="table-responsive">
+                            <table class="table text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Product') }}</th>
+                                        <th width="150">{{ __('Quantity') }}</th>
+                                        <th width="150">{{ __('Total') }}</th>
+                                        <th width="10"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($order->items as $item)
+                                        <tr>
+                                            <td>
+                                                <dl>
+                                                    <dt>{{ $item->product_name }}</dt>
+                                                    <dd>
+                                                        <ul class="list-unstyled">
+                                                            <li>{{ $item->variant_name }}</li>
+                                                            <li>
+                                                                {{ Config::get('app.currency') . ' ' . number_format($item->variant_price) }}
+                                                            </li>
+                                                        </ul>
+                                                    </dd>
+                                                </dl>
+                                            </td>
+                                            <td>
+                                                <form method="POST">
+                                                    @csrf
+                                                    <input
+                                                        type="number"
+                                                        name="quantity"
+                                                        id="quantity"
+                                                        class="form-control"
+                                                        value="{{ $item->quantity }}"
+                                                    />
+                                                </form>
+                                            </td>
+                                            <td>
+                                                {{ Config::get('app.currency') . ' ' . number_format($item->variant_price * $item->quantity) }}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                >{{ __('Delete') }}</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
