@@ -307,6 +307,72 @@
                         </div>
                     </div>
                 </form>
+                <form
+                    id="contributors-module"
+                    method="POST"
+                >
+                    @csrf
+                    @method('PUT')
+                    <div class="card">
+                        <div class="card-header">{{ __('Contributors') }}</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="sales_name">
+                                    <span>{{ __('Sales') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="sales_name"
+                                    id="sales_name"
+                                    class="form-control @error('sales_name') is-invalid @enderror"
+                                    value="{{ $order->sales_name }}"
+                                />
+                                @error('sales_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="creator_name">
+                                    <span>{{ __('Creator') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="creator_name"
+                                    id="creator_name"
+                                    class="form-control @error('creator_name') is-invalid @enderror"
+                                    value="{{ $order->creator_name }}"
+                                />
+                                @error('creator_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="packer_name">
+                                    <span>{{ __('Packer') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="packer_name"
+                                    id="packer_name"
+                                    class="form-control @error('packer_name') is-invalid @enderror"
+                                    value="{{ $order->packer_name }}"
+                                />
+                                @error('packer_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >{{ __('Save') }}</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
