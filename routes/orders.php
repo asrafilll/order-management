@@ -42,4 +42,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/items',
             \App\Http\Controllers\Order\Item\StoreController::class
         )->name('items.store');
+        Route::put(
+            '/{order}/items/{orderItem}',
+            \App\Http\Controllers\Order\Item\UpdateController::class
+        )->name('items.update');
     });
