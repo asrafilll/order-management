@@ -11,4 +11,5 @@ Route::middleware(['auth'])
         Route::get('customers', \App\Http\Controllers\WebApi\CustomerController::class)->name('customers.index');
         Route::get('order-sources', \App\Http\Controllers\WebApi\OrderSourceController::class)->name('order-sources.index');
         Route::get('product-variants', \App\Http\Controllers\WebApi\ProductVariantController::class)->name('product-variants.index');
+        Route::get('employees', \App\Http\Controllers\WebApi\EmployeeController::class)->name('employees.index');
     });
