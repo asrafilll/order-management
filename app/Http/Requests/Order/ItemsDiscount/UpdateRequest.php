@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
             'items_discount' => [
                 'required',
                 'integer',
-                'min:1',
+                'min:0',
                 'max:' . $this->order->items_price,
             ],
         ];

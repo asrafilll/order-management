@@ -107,7 +107,10 @@
                                     <tr>
                                         <th>{{ __('Product') }}</th>
                                         <th width="150">{{ __('Quantity') }}</th>
-                                        <th width="150" class="text-right">{{ __('Total') }}</th>
+                                        <th
+                                            width="150"
+                                            class="text-right"
+                                        >{{ __('Total') }}</th>
                                         <th width="10"></th>
                                     </tr>
                                 </thead>
@@ -196,18 +199,42 @@
                                     <span>{{ __('Discount') }}</span>
                                 </div>
                                 <div class="col-lg-4">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">{{ Config::get('app.currency') }}</span>
+                                    <form
+                                        id="update-order-items-discount-module"
+                                        action="{{ route('orders.items-discount.update', $order) }}"
+                                        method="POST"
+                                    >
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span
+                                                    class="input-group-text">{{ Config::get('app.currency') }}</span>
+                                            </div>
+                                            <input
+                                                type="number"
+                                                name="items_discount"
+                                                id="items_discount"
+                                                class="form-control text-right @error('items_discount') is-invalid @enderror"
+                                                value="{{ $order->items_discount }}"
+                                            />
+                                            @error('items_discount')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        <input
-                                            type="number"
-                                            name="items_discount"
-                                            id="items_discount"
-                                            class="form-control text-right"
-                                            value="{{ $order->items_discount }}"
-                                        />
-                                    </div>
+                                    </form>
+                                    <script>
+                                        const UpdateOrderItemsDiscount = (function() {
+                                            const $el = $('#update-order-items-discount-module');
+                                            const $itemsDiscount = $el.find('#items_discount');
+
+                                            $itemsDiscount.on('change', handleChange)
+
+                                            function handleChange() {
+                                                $el.submit();
+                                            }
+                                        })();
+                                    </script>
                                 </div>
                             </div>
                             <div class="row align-items-center mb-3">
@@ -216,7 +243,7 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="font-weight-bold text-right">
-                                        {{ Config::get('app.currency') . ' ' . number_format($order->items_price + $order->items_discount) }}
+                                        {{ Config::get('app.currency') . ' ' . number_format($order->items_price - $order->items_discount) }}
                                     </div>
                                 </div>
                             </div>
