@@ -62,4 +62,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/contributors',
             \App\Http\Controllers\Order\Contributors\UpdateController::class
         )->name('contributors.update');
+        Route::put(
+            '/{order}/shipping',
+            \App\Http\Controllers\Order\Shipping\UpdateController::class
+        )->name('shipping.update');
     });
