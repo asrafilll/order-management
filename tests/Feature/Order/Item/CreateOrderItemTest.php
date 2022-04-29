@@ -119,6 +119,11 @@ class CreateOrderItemTest extends TestCase
             'variant_value2' => $productVariant->value2,
             'quantity' => 1,
         ]);
+
+        $order->refresh();
+
+        $this->assertEquals(1, $order->items_quantity);
+        $this->assertEquals($productVariant->price, $order->items_price);
     }
 
     /**
@@ -362,5 +367,10 @@ class CreateOrderItemTest extends TestCase
             'variant_value2' => $productVariant->value2,
             'quantity' => 2, // +1 because already exists
         ]);
+
+        $order->refresh();
+
+        $this->assertEquals(2, $order->items_quantity);
+        $this->assertEquals(2 * $productVariant->price, $order->items_price);
     }
 }

@@ -123,6 +123,11 @@ class DeleteOrderItemTest extends TestCase
         $this->assertDatabaseMissing((new OrderItem()), [
             'id' => $orderItem->id,
         ]);
+
+        $order->refresh();
+
+        $this->assertEquals(0, $order->items_quantity);
+        $this->assertEquals(0, $order->items_price);
     }
 
     /**

@@ -140,6 +140,11 @@ class UpdateOrderItemTest extends TestCase
             'variant_value2' => $productVariant->value2,
             'quantity' => 10,
         ]);
+
+        $order->refresh();
+
+        $this->assertEquals(10, $order->items_quantity);
+        $this->assertEquals(10 * $orderItem->variant_price, $order->items_price);
     }
 
     /**
