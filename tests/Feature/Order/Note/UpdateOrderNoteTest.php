@@ -20,7 +20,7 @@ class UpdateOrderNoteTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_success_update_order_items_discount()
+    public function test_should_success_update_order_note()
     {
         $order = $this->createOrder();
         $input = [
@@ -46,7 +46,7 @@ class UpdateOrderNoteTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_error_update_order_items_discount_when_order_is_not_editable()
+    public function test_should_error_update_order_note_when_order_is_not_editable()
     {
         $order = $this->createOrder(OrderStatusEnum::processed());
         $input = [
