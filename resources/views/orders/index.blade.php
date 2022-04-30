@@ -18,11 +18,13 @@
                     <thead>
                         <tr>
                             <th>{{ __('ID') }}</th>
-                            <th>{{ __('Source') }}</th>
-                            <th>{{ __('Customer') }}</th>
-                            <th>{{ __('Status') }}</th>
                             <th>{{ __('Created At') }}</th>
-                            <th>{{ __('Updated At') }}</th>
+                            <th>{{ __('Customer') }}</th>
+                            <th>{{ __('Total') }}</th>
+                            <th>{{ __('Status') }}</th>
+                            <th>{{ __('Payment Status') }}</th>
+                            <th>{{ __('Source') }}</th>
+                            <th>{{ __('Items') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -30,11 +32,13 @@
                         @forelse ($orders as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
-                                <td>{{ $order->source_name }}</td>
-                                <td>{{ $order->customer_name }}</td>
-                                <td>{{ Str::upper($order->status) }}</td>
                                 <td>{{ $order->created_at->diffForHumans() }}</td>
-                                <td>{{ $order->updated_at->diffForHumans() }}</td>
+                                <td>{{ $order->customer_name }}</td>
+                                <td>{{ Config::get('app.currency') . ' ' . number_format($order->total_price) }}</td>
+                                <td>{{ Str::upper($order->status) }}</td>
+                                <td>{{ Str::upper($order->payment_status) }}</td>
+                                <td>{{ $order->source_name }}</td>
+                                <td>{{ $order->items_quantity . ' ' . __('items') }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <button
@@ -63,7 +67,7 @@
                         @empty
                             <tr>
                                 <td
-                                    colspan="6"
+                                    colspan="9"
                                     class="text-center"
                                 >{{ __('Data not found') }}</td>
                             </tr>
