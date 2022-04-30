@@ -130,6 +130,13 @@ class Order extends Model
         'payment_status' => PaymentStatusEnum::class,
     ];
 
+    protected static function booted()
+    {
+        static::updated(function (Order $order) {
+            $order->calculateSummary();
+        });
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
@@ -140,18 +147,19 @@ class Order extends Model
         return $this->status->equals(OrderStatusEnum::draft());
     }
 
-    public function calculateItemsSummary(): void
+    public function calculateSummary(): void
     {
         $this->load(['items']);
 
-        $itemsQuantity = intval($this->items()->sum('quantity'));
-        $itemsPrice = $this
+        $this->items_quantity = intval($this->items()->sum('quantity'));
+        $this->items_price = $this
             ->items
-            ->reduce(fn (int $acc, OrderItem $orderItem) => $acc + ($orderItem->variant_price * $orderItem->quantity), 0);
-
-        $this->update([
-            'items_quantity' => $itemsQuantity,
-            'items_price' => $itemsPrice,
-        ]);
+            ->reduce(
+                fn (int $acc, OrderItem $orderItem) => $acc + ($orderItem->variant_price * $orderItem->quantity),
+                0
+            );
+        $this->total_price = ($this->items_price - intval($this->items_discount)) +
+            (intval($this->shipping_price) - intval($this->shipping_discount));
+        $this->saveQuietly();
     }
 }

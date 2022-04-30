@@ -41,6 +41,7 @@ class UpdateOrderItemsDiscountTest extends TestCase
         $order->refresh();
 
         $this->assertEquals(1000, $order->items_discount);
+        $this->assertEquals($order->items_price - 1000, $order->total_price);
     }
 
     /**

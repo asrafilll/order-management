@@ -51,6 +51,7 @@ class DeleteOrderItemTest extends TestCase
 
         $this->assertEquals(0, $order->items_quantity);
         $this->assertEquals(0, $order->items_price);
+        $this->assertEquals(0, $order->total_price);
     }
 
     /**

@@ -64,6 +64,7 @@ class CreateOrderItemTest extends TestCase
 
         $this->assertEquals(1, $order->items_quantity);
         $this->assertEquals($productVariant->price, $order->items_price);
+        $this->assertEquals($productVariant->price, $order->total_price);
     }
 
     /**
@@ -180,5 +181,6 @@ class CreateOrderItemTest extends TestCase
 
         $this->assertEquals(2, $order->items_quantity);
         $this->assertEquals(2 * $productVariant->price, $order->items_price);
+        $this->assertEquals(2 * $productVariant->price, $order->total_price);
     }
 }

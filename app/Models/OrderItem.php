@@ -78,15 +78,15 @@ class OrderItem extends Model
     protected static function booted()
     {
         static::created(function (OrderItem $orderItem) {
-            $orderItem->order->calculateItemsSummary();
+            $orderItem->order->calculateSummary();
         });
 
         static::updated(function (OrderItem $orderItem) {
-            $orderItem->order->calculateItemsSummary();
+            $orderItem->order->calculateSummary();
         });
 
         static::deleted(function (OrderItem $orderItem) {
-            $orderItem->order->calculateItemsSummary();
+            $orderItem->order->calculateSummary();
         });
     }
 

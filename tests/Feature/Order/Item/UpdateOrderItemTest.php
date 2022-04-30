@@ -73,6 +73,7 @@ class UpdateOrderItemTest extends TestCase
 
         $this->assertEquals(10, $order->items_quantity);
         $this->assertEquals(10 * $orderItem->variant_price, $order->items_price);
+        $this->assertEquals(10 * $orderItem->variant_price, $order->total_price);
     }
 
     /**

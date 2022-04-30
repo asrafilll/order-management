@@ -50,6 +50,7 @@ class UpdateOrderShippingTest extends TestCase
         $this->assertEquals($shipping->name, $order->shipping_name);
         $this->assertEquals(10000, $order->shipping_price);
         $this->assertEquals(5000, $order->shipping_discount);
+        $this->assertEquals((intval($order->items_price) - intval($order->items_discount)) + (10000 - 5000), $order->total_price);
     }
 
     /**
