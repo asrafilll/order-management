@@ -22,10 +22,6 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}',
             \App\Http\Controllers\Order\EditController::class
         )->name('edit');
-        Route::put(
-            '/{order}',
-            \App\Http\Controllers\Order\UpdateController::class
-        )->name('update');
         Route::delete(
             '/{order}',
             \App\Http\Controllers\Order\DestroyController::class
