@@ -588,6 +588,36 @@
                 </script>
             </div>
             <div class="col-lg-3">
+                <form
+                    action="{{ route('orders.status.update', $order) }}"
+                    method="POST"
+                >
+                    @csrf
+                    @method('PUT')
+                    <div class="card">
+                        <div class="card-header">{{ __('Status') }}</div>
+                        <div class="card-body">
+                            <select
+                                name="status"
+                                id="status"
+                                class="form-control @error('status') is-invalid @enderror"
+                            >
+                                @foreach (\App\Enums\OrderStatusEnum::toValues() as $orderStatus)
+                                    <option
+                                        value="{{ $orderStatus }}"
+                                        @if (old('status') == $orderStatus || $order->status == $orderStatus) selected @endif
+                                    >{{ Str::upper($orderStatus) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="card-footer">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >{{ __('Save') }}</button>
+                        </div>
+                    </div>
+                </form>
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title float-none">{{ __('General Information') }}</h3>
