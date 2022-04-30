@@ -41,7 +41,7 @@ class CreateOrdersTable extends Migration
                 ->default(PaymentStatusEnum::unpaid());
             $table->unsignedBigInteger('shipping_id')->nullable();
             $table->string('shipping_name')->nullable();
-            $table->date('shipping_date')->nullable();
+            $table->timestamp('shipping_date')->nullable();
             $table->string('shipping_airwaybill')->nullable();
             $table->unsignedBigInteger('items_quantity')->nullable();
             $table->unsignedBigInteger('items_price')->nullable();

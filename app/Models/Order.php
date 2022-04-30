@@ -7,22 +7,15 @@ use App\Enums\PaymentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Order
  *
- * @property \Spatie\Enum\Enum|null $status
- * @property \Spatie\Enum\Enum|null $payment_status
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
- * @property-read int|null $items_count
- * @method static \Database\Factories\OrderFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order query()
- * @mixin \Eloquent
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property \Spatie\Enum\Enum|null $status
  * @property int $source_id
  * @property string $source_name
  * @property int $customer_id
@@ -36,9 +29,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $customer_postal_code
  * @property int|null $payment_method_id
  * @property string|null $payment_method_name
+ * @property \Spatie\Enum\Enum|null $payment_status
  * @property int|null $shipping_id
  * @property string|null $shipping_name
- * @property string|null $shipping_date
+ * @property Carbon|null $shipping_date
  * @property string|null $shipping_airwaybill
  * @property int|null $items_quantity
  * @property int|null $items_price
@@ -47,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null $shipping_discount
  * @property int|null $total_price
  * @property string|null $note
- * @property string|null $returned_at
+ * @property Carbon|null $returned_at
  * @property string|null $returned_note
  * @property int|null $sales_id
  * @property string|null $sales_name
@@ -55,6 +49,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $creator_name
  * @property int|null $packer_id
  * @property string|null $packer_name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
+ * @property-read int|null $items_count
+ * @method static \Database\Factories\OrderFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order query()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatorName($value)
@@ -92,6 +92,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotalPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Order extends Model
 {
@@ -137,6 +138,8 @@ class Order extends Model
     protected $casts = [
         'status' => OrderStatusEnum::class,
         'payment_status' => PaymentStatusEnum::class,
+        'shipping_date' => Carbon::class,
+        'returned_at' => Carbon::class,
     ];
 
     protected static function booted()
