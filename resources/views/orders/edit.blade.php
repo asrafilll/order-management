@@ -669,6 +669,7 @@
                                         type="hidden"
                                         name="sales_id"
                                         id="sales_id"
+                                        value="{{ $order->sales_id }}"
                                     />
                                     <input
                                         type="text"
@@ -693,6 +694,7 @@
                                         type="hidden"
                                         name="creator_id"
                                         id="creator_id"
+                                        value="{{ $order->creator_id }}"
                                     />
                                     <input
                                         type="text"
@@ -717,6 +719,7 @@
                                         type="hidden"
                                         name="packer_id"
                                         id="packer_id"
+                                        value="{{ $order->packer_id }}"
                                     />
                                     <input
                                         type="text"
