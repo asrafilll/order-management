@@ -15,23 +15,38 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $orders = Order::query()
-            ->latest()
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {
-                    $query
-                        ->orWhere('status', 'LIKE', '%' . $request->get('search') . '%')
-                        ->orWhere('source_name', 'LIKE', '%' . $request->get('search') . '%')
-                        ->orWhere('payment_status', 'LIKE', '%' . $request->get('search') . '%')
-                        ->orWhere('customer_name', 'LIKE', '%' . $request->get('search') . '%')
-                        ->orWhere('items_quantity', 'LIKE', '%' . $request->get('search') . '%')
-                        ->orWhere('total_price', 'LIKE', '%' . $request->get('search') . '%');
-                });
-            })
-            ->paginate(
-                perPage: $request->get('per_page', 10),
-                page: $request->get('page')
-            );
+        $query = Order::query()->latest();
+
+        if ($request->filled('search')) {
+            $query->where(function ($query) use ($request) {
+                $query
+                    ->orWhere('status', 'LIKE', '%' . $request->get('search') . '%')
+                    ->orWhere('source_name', 'LIKE', '%' . $request->get('search') . '%')
+                    ->orWhere('payment_status', 'LIKE', '%' . $request->get('search') . '%')
+                    ->orWhere('customer_name', 'LIKE', '%' . $request->get('search') . '%')
+                    ->orWhere('items_quantity', 'LIKE', '%' . $request->get('search') . '%')
+                    ->orWhere('total_price', 'LIKE', '%' . $request->get('search') . '%');
+            });
+        }
+
+        $filters = [
+            'customer_id',
+            'status',
+            'payment_status',
+            'source_id',
+        ];
+
+        foreach ($filters as $filter) {
+            if ($request->filled($filter)) {
+                $query->where($filter, $request->get($filter));
+            }
+        }
+
+
+        $orders = $query->paginate(
+            perPage: $request->get('per_page', 10),
+            page: $request->get('page')
+        );
 
         return Response::view('orders.index', [
             'orders' => $orders,
