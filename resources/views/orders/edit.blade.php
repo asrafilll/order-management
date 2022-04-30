@@ -534,7 +534,7 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             @else
-                                                <span>{{ $order->payment_status }}</span>
+                                                <span>{{ Str::upper($order->payment_status) }}</span>
                                             @endif
                                         </div>
                                     </div>
