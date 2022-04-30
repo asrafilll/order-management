@@ -28,3 +28,4 @@ Features:
 - Employee types management (sales, input, packing)
 - Order sources management
 - Auto assign customer type
+- Auto complete order dengan status sent setelah 7 hari
