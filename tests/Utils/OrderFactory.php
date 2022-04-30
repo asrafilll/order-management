@@ -31,7 +31,7 @@ trait OrderFactory
             'customer_subdistrict' => $customer->subdistrict,
             'customer_village' => $customer->village,
             'customer_postal_code' => $customer->postal_code,
-            'status' => $orderStatusEnum ?? OrderStatusEnum::draft(),
+            'status' => $orderStatusEnum ?? OrderStatusEnum::waiting(),
         ]);
 
         /** @var Product */
@@ -155,7 +155,7 @@ trait OrderFactory
             'customer_subdistrict' => $customer->subdistrict,
             'customer_village' => $customer->village,
             'customer_postal_code' => $customer->postal_code,
-            'status' => $orderStatusEnum ?? OrderStatusEnum::draft(),
+            'status' => $orderStatusEnum ?? OrderStatusEnum::waiting(),
         ]);
 
         return $order;

@@ -57,7 +57,7 @@ class RetrieveEditOrderGeneralInformationPageTest extends TestCase
     {
         /** @var Order */
         $order = Order::factory()
-            ->waiting()
+            ->processed()
             ->create();
 
         $response = $this

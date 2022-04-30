@@ -153,7 +153,7 @@ class Order extends Model
 
     public function isEditable(): bool
     {
-        return $this->status->equals(OrderStatusEnum::draft());
+        return $this->status->equals(OrderStatusEnum::waiting());
     }
 
     public function calculateSummary(): void

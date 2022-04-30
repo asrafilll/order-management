@@ -59,7 +59,7 @@ class DeleteOrderItemTest extends TestCase
      */
     public function test_should_error_delete_order_item_when_order_status_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::waiting());
+        $order = $this->createOrder(OrderStatusEnum::processed());
         $orderItem = $order->items->first();
         $response = $this
             ->actingAs(

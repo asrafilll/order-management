@@ -17,7 +17,7 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'status' => OrderStatusEnum::draft()->value,
+            'status' => OrderStatusEnum::waiting()->value,
             'source_id' => 1,
             'source_name' => 'Marketplace',
             'customer_id' => 1,

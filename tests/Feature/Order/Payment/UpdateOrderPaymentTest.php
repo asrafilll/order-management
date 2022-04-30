@@ -56,7 +56,7 @@ class UpdateOrderPaymentTest extends TestCase
      */
     public function test_should_error_update_order_payment_method_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::waiting());
+        $order = $this->createOrder(OrderStatusEnum::processed());
         /** @var PaymentMethod */
         $paymentMethod = PaymentMethod::factory()->create();
         $input = [

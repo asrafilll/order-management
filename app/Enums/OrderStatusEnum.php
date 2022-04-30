@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Spatie\Enum\Laravel\Enum;
 
 /**
- * @method static self draft()
  * @method static self waiting()
  * @method static self processed()
  * @method static self sent()

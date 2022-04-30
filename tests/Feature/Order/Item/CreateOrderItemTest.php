@@ -72,7 +72,7 @@ class CreateOrderItemTest extends TestCase
      */
     public function test_should_error_create_order_item_when_order_is_not_editable()
     {
-        $order = $this->createOrderWithoutOrderItems(OrderStatusEnum::waiting());
+        $order = $this->createOrderWithoutOrderItems(OrderStatusEnum::processed());
         /** @var ProductVariant */
         $productVariant = ProductVariant::with(['product'])
             ->inRandomOrder()

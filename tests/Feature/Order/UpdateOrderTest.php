@@ -176,12 +176,12 @@ class UpdateOrderTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_error_update_order_when_status_not_draft()
+    public function test_should_error_update_order_when_status_is_not_editable()
     {
         $this->markTestSkipped();
         /** @var Order */
         $order = Order::factory()
-            ->waiting()
+            ->processed()
             ->create();
         /** @var OrderSource */
         $orderSource = OrderSource::factory()->create();

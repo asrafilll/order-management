@@ -61,7 +61,7 @@ class UpdateOrderContributorsTest extends TestCase
      */
     public function test_should_error_update_order_contributors_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::waiting());
+        $order = $this->createOrder(OrderStatusEnum::processed());
         /** @var Employee */
         $employee = Employee::factory()->create();
         $input = [

@@ -81,7 +81,7 @@ class UpdateOrderItemTest extends TestCase
      */
     public function test_should_error_update_order_item_when_order_status_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::waiting());
+        $order = $this->createOrder(OrderStatusEnum::processed());
         $orderItem = $order->items->first();
         /** @var ProductVariant $productVariant */
         $input = [

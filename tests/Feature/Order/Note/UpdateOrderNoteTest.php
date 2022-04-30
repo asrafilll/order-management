@@ -48,7 +48,7 @@ class UpdateOrderNoteTest extends TestCase
      */
     public function test_should_error_update_order_items_discount_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::waiting());
+        $order = $this->createOrder(OrderStatusEnum::processed());
         $input = [
             'note' => 'Example note for order',
         ];

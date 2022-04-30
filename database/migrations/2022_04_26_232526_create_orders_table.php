@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table
                 ->string('status')
                 ->index()
-                ->default(OrderStatusEnum::draft()->value);
+                ->default(OrderStatusEnum::waiting()->value);
             $table->unsignedBigInteger('source_id');
             $table->string('source_name');
             $table->unsignedBigInteger('customer_id');
