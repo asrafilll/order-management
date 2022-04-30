@@ -7,7 +7,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1"
     >
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>{{ Config::get('app.name') }}</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link
