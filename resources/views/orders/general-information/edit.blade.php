@@ -513,7 +513,7 @@
                                 class="btn btn-primary"
                             >{{ __('Save') }}</button>
                             <a
-                                href="{{ route('orders.index') }}"
+                                href="{{ route('orders.edit', $order) }}"
                                 class="btn btn-default"
                             >{{ __('Back') }}</a>
                         </div>
