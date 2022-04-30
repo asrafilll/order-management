@@ -14,7 +14,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Notifications Dropdown Menu -->
-        <li class="nav-item dropdown">
+        {{-- <li class="nav-item dropdown">
             <a
                 class="nav-link"
                 data-toggle="dropdown"
@@ -55,6 +55,6 @@
                     class="dropdown-item dropdown-footer"
                 >See All Notifications</a>
             </div>
-        </li>
+        </li> --}}
     </ul>
 </nav>
