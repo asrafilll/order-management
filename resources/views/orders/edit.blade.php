@@ -669,14 +669,14 @@
                                         type="hidden"
                                         name="sales_id"
                                         id="sales_id"
-                                        value="{{ $order->sales_id }}"
+                                        value="{{ old('sales_id') ?? $order->sales_id }}"
                                     />
                                     <input
                                         type="text"
                                         name="sales_name"
                                         id="sales_name"
                                         class="form-control @error('sales_name') is-invalid @enderror @error('sales_id') is-invalid @enderror"
-                                        value="{{ $order->sales_name }}"
+                                        value="{{ old('sales_name') ?? $order->sales_name }}"
                                     />
                                     @error('sales_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -694,14 +694,14 @@
                                         type="hidden"
                                         name="creator_id"
                                         id="creator_id"
-                                        value="{{ $order->creator_id }}"
+                                        value="{{ old('creator_id') ?? $order->creator_id }}"
                                     />
                                     <input
                                         type="text"
                                         name="creator_name"
                                         id="creator_name"
                                         class="form-control @error('creator_name') is-invalid @enderror @error('creator_id') is-invalid @enderror"
-                                        value="{{ $order->creator_name }}"
+                                        value="{{ old('creator_name') ?? $order->creator_name }}"
                                     />
                                     @error('creator_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -719,14 +719,14 @@
                                         type="hidden"
                                         name="packer_id"
                                         id="packer_id"
-                                        value="{{ $order->packer_id }}"
+                                        value="{{ old('packer_id') ?? $order->packer_id }}"
                                     />
                                     <input
                                         type="text"
                                         name="packer_name"
                                         id="packer_name"
                                         class="form-control @error('packer_name') is-invalid @enderror @error('packer_id') is-invalid @enderror"
-                                        value="{{ $order->packer_name }}"
+                                        value="{{ old('packer_name') ?? $order->packer_name }}"
                                     />
                                     @error('packer_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
