@@ -52,8 +52,11 @@ class CreateOrdersTable extends Migration
             $table->string('note')->nullable();
             $table->timestamp('returned_at')->nullable();
             $table->string('returned_note')->nullable();
+            $table->unsignedBigInteger('sales_id')->nullable();
             $table->string('sales_name')->nullable();
+            $table->unsignedBigInteger('creator_id')->nullable();
             $table->string('creator_name')->nullable();
+            $table->unsignedBigInteger('packer_id')->nullable();
             $table->string('packer_name')->nullable();
         });
     }

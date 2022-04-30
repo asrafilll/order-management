@@ -48,8 +48,11 @@ class UpdateOrderContributorsTest extends TestCase
 
         $order->refresh();
 
+        $this->assertEquals($employee->id, $order->sales_id);
         $this->assertEquals($employee->name, $order->sales_name);
+        $this->assertEquals($employee->id, $order->creator_id);
         $this->assertEquals($employee->name, $order->creator_name);
+        $this->assertEquals($employee->id, $order->packer_id);
         $this->assertEquals($employee->name, $order->packer_name);
     }
 

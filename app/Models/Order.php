@@ -11,10 +11,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * App\Models\Order
  *
+ * @property \Spatie\Enum\Enum|null $status
+ * @property \Spatie\Enum\Enum|null $payment_status
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
+ * @property-read int|null $items_count
+ * @method static \Database\Factories\OrderFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ * @mixin \Eloquent
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Spatie\Enum\Enum|null $status
  * @property int $source_id
  * @property string $source_name
  * @property int $customer_id
@@ -26,32 +34,29 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $customer_subdistrict
  * @property string $customer_village
  * @property string $customer_postal_code
- * @property int $payment_method_id
- * @property string $payment_method_name
- * @property \Spatie\Enum\Enum|null $payment_status
- * @property int $shipping_id
- * @property string $shipping_name
+ * @property int|null $payment_method_id
+ * @property string|null $payment_method_name
+ * @property int|null $shipping_id
+ * @property string|null $shipping_name
  * @property string|null $shipping_date
  * @property string|null $shipping_airwaybill
- * @property int $items_quantity
- * @property int $items_price
+ * @property int|null $items_quantity
+ * @property int|null $items_price
  * @property int|null $items_discount
- * @property int $shipping_price
+ * @property int|null $shipping_price
  * @property int|null $shipping_discount
- * @property int $total_price
+ * @property int|null $total_price
  * @property string|null $note
  * @property string|null $returned_at
  * @property string|null $returned_note
+ * @property int|null $sales_id
  * @property string|null $sales_name
+ * @property int|null $creator_id
  * @property string|null $creator_name
+ * @property int|null $packer_id
  * @property string|null $packer_name
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
- * @property-read int|null $items_count
- * @method static \Database\Factories\OrderFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order query()
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatorName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerCity($value)
@@ -67,12 +72,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereItemsPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereItemsQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereNote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePackerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePackerName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereReturnedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereReturnedNote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereSalesId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereSalesName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereShippingAirwaybill($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereShippingDate($value)
@@ -85,7 +92,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotalPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class Order extends Model
 {
@@ -120,8 +126,11 @@ class Order extends Model
         'note',
         'returned_at',
         'returned_note',
+        'sales_id',
         'sales_name',
+        'creator_id',
         'creator_name',
+        'packer_id',
         'packer_name',
     ];
 
