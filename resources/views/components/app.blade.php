@@ -34,6 +34,11 @@
         rel="stylesheet"
         href="{{ url('/') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css"
     >
+    <!-- Date Time Picker -->
+    <link
+        rel="stylesheet"
+        href="{{ url('/') }}/plugins/datetimepicker/jquery.datetimepicker.min.css"
+    >
     <!-- Toastr -->
     <link
         rel="stylesheet"
@@ -57,6 +62,8 @@
     <script src="{{ url('/') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 -->
     <script src="{{ url('/') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Date Time Picker -->
+    <script src="{{ url('/') }}/plugins/datetimepicker/jquery.datetimepicker.full.min.js"></script>
     <!-- Toastr -->
     <script src="{{ url('/') }}/plugins/toastr/toastr.min.js"></script>
     <!-- overlayScrollbars -->
