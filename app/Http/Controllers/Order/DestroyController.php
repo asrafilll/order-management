@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Response;
 
 class DestroyController extends Controller
@@ -14,6 +15,7 @@ class DestroyController extends Controller
      */
     public function __invoke(Order $order)
     {
+        abort_unless($order->isEditable(), HttpResponse::HTTP_FORBIDDEN);
         $order->delete();
         $message = __('crud.deleted', [
             'name' => 'order',

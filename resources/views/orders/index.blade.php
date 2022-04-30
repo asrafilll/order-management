@@ -53,13 +53,15 @@
                                                 class="dropdown-item"
                                                 href="{{ route('orders.edit', $order) }}"
                                             >{{ __('Edit') }}</a>
-                                            <button
-                                                type="button"
-                                                class="dropdown-item text-danger"
-                                                data-toggle="modal"
-                                                data-target="#modal-delete"
-                                                data-action="{{ route('orders.destroy', $order) }}"
-                                            >{{ __('Delete') }}</button>
+                                            @if ($order->isEditable())
+                                                <button
+                                                    type="button"
+                                                    class="dropdown-item text-danger"
+                                                    data-toggle="modal"
+                                                    data-target="#modal-delete"
+                                                    data-action="{{ route('orders.destroy', $order) }}"
+                                                >{{ __('Delete') }}</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>

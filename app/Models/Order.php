@@ -147,6 +147,10 @@ class Order extends Model
         static::updated(function (Order $order) {
             $order->calculateSummary();
         });
+
+        static::deleting(function (Order $order) {
+            $order->items()->delete();
+        });
     }
 
     public function items(): HasMany
