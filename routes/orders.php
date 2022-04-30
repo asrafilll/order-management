@@ -70,4 +70,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/payment',
             \App\Http\Controllers\Order\Payment\UpdateController::class
         )->name('payment.update');
+        Route::put(
+            '/{order}/status',
+            \App\Http\Controllers\Order\Status\UpdateController::class
+        )->name('status.update');
     });
