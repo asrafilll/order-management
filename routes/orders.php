@@ -74,4 +74,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/status',
             \App\Http\Controllers\Order\Status\UpdateController::class
         )->name('status.update');
+        Route::put(
+            '/{order}/shipping-detail',
+            \App\Http\Controllers\Order\ShippingDetail\UpdateController::class
+        )->name('shipping-detail.update');
     });

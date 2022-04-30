@@ -138,8 +138,8 @@ class Order extends Model
     protected $casts = [
         'status' => OrderStatusEnum::class,
         'payment_status' => PaymentStatusEnum::class,
-        'shipping_date' => Carbon::class,
-        'returned_at' => Carbon::class,
+        'shipping_date' => 'datetime',
+        'returned_at' => 'datetime',
     ];
 
     protected static function booted()
