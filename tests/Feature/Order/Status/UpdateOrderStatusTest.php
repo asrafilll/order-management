@@ -20,7 +20,7 @@ class UpdateOrderStatusTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_success_update_order_items_discount()
+    public function test_should_success_update_order_status()
     {
         $order = $this->createOrder();
         $input = [
