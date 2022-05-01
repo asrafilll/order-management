@@ -1,7 +1,10 @@
 <x-auth-app class="login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/') }}">{{ Config::get('app.name') }}</a>
+            <img
+                src="{{ url('/') }}/themes/img/logo-300x100.png"
+                alt="{{ Config::get('app.name') }}"
+            />
         </div>
         <div class="card">
             <div class="card-body login-card-body">
