@@ -29,4 +29,4 @@ Features:
 [] Print order as invoice
 [] Auto assign customer type
 [] Auto complete order dengan status sent setelah 7 hari
-[] Filter orders
+[x] Filter orders
