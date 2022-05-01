@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentStatusEnum;
+use App\Jobs\CompleteOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -145,7 +146,14 @@ class Order extends Model
     protected static function booted()
     {
         static::updated(function (Order $order) {
-            $order->calculateSummary();
+            if ($order->isEditable()) {
+                $order->calculateSummary();
+            }
+
+            if ($order->status->equals(OrderStatusEnum::sent())) {
+                CompleteOrder::dispatch($order)
+                    ->delay(Carbon::now()->addWeek());
+            }
         });
 
         static::deleting(function (Order $order) {
