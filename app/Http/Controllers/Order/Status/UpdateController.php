@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Order\Status;
 
+use App\Enums\OrderHistoryTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\Status\UpdateRequest;
 use App\Models\Order;
@@ -16,7 +17,17 @@ class UpdateController extends Controller
      */
     public function __invoke(Order $order, UpdateRequest $updateRequest)
     {
+        $currentStatus = $order->status;
         $order->update($updateRequest->validated());
+
+        if ($currentStatus !== $updateRequest->get('status')) {
+            $order->histories()->create([
+                'type' => OrderHistoryTypeEnum::status(),
+                'from' => $currentStatus,
+                'to' => $updateRequest->get('status'),
+            ]);
+        }
+
         $message = __('crud.updated', [
             'name' => 'status',
         ]);

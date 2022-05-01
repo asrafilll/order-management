@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Order\Payment;
 
+use App\Enums\OrderHistoryTypeEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentStatusEnum;
 use App\Enums\PermissionEnum;
+use App\Models\OrderHistory;
 use App\Models\PaymentMethod;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -30,7 +32,7 @@ class UpdateOrderPaymentTest extends TestCase
         $input = [
             'payment_method_id' => $paymentMethod->id,
             'payment_method_name' => $paymentMethod->name,
-            'payment_status' => PaymentStatusEnum::unpaid()->value,
+            'payment_status' => PaymentStatusEnum::paid()->value,
         ];
         $response = $this
             ->actingAs(
@@ -44,11 +46,17 @@ class UpdateOrderPaymentTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
 
+        $previousPaymentStatus = $order->payment_status;
         $order->refresh();
 
         $this->assertEquals($paymentMethod->id, $order->payment_method_id);
         $this->assertEquals($paymentMethod->name, $order->payment_method_name);
-        $this->assertTrue($order->payment_status->equals(PaymentStatusEnum::unpaid()));
+        $this->assertTrue($order->payment_status->equals(PaymentStatusEnum::paid()));
+        $this->assertDatabaseHas((new OrderHistory())->getTable(), [
+            'type' => OrderHistoryTypeEnum::payment_status(),
+            'from' => $previousPaymentStatus,
+            'to' => $order->payment_status,
+        ]);
     }
 
     /**
@@ -62,7 +70,7 @@ class UpdateOrderPaymentTest extends TestCase
         $input = [
             'payment_method_id' => $paymentMethod->id,
             'payment_method_name' => $paymentMethod->name,
-            'payment_status' => PaymentStatusEnum::unpaid(),
+            'payment_status' => PaymentStatusEnum::unpaid()->value,
         ];
         $response = $this
             ->actingAs(

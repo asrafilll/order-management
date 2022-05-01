@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Order\Payment;
 
+use App\Enums\OrderHistoryTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\Payment\UpdateRequest;
 use App\Models\Order;
@@ -16,9 +17,19 @@ class UpdateController extends Controller
      */
     public function __invoke(Order $order, UpdateRequest $updateRequest)
     {
+        $currentPaymentStatus = $order->payment_status;
         $order->update($updateRequest->validated());
+
+        if ($currentPaymentStatus !== $updateRequest->get('payment_status')) {
+            $order->histories()->create([
+                'type' => OrderHistoryTypeEnum::payment_status(),
+                'from' => $currentPaymentStatus,
+                'to' => $updateRequest->get('payment_status'),
+            ]);
+        }
+
         $message = __('crud.updated', [
-            'name' => 'payment method',
+            'name' => 'payment',
         ]);
 
         return Response::redirectToRoute('orders.edit', $order)

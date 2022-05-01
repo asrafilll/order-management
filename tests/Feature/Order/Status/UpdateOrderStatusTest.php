@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Order\Status;
 
+use App\Enums\OrderHistoryTypeEnum;
 use Tests\TestCase;
 use Tests\Utils\UserFactory;
 use App\Enums\PermissionEnum;
 use App\Enums\OrderStatusEnum;
 use App\Jobs\CompleteOrder;
+use App\Models\OrderHistory;
 use Carbon\Carbon;
 use Tests\Utils\ResponseAssertion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -41,9 +43,15 @@ class UpdateOrderStatusTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
 
+        $previousStatus = $order->status;
         $order->refresh();
 
-        $this->assertEquals(OrderStatusEnum::processed()->value, $order->status);
+        $this->assertEquals(OrderStatusEnum::processed(), $order->status);
+        $this->assertDatabaseHas((new OrderHistory())->getTable(), [
+            'type' => OrderHistoryTypeEnum::status(),
+            'from' => $previousStatus,
+            'to' => $order->status,
+        ]);
     }
 
     /**
@@ -99,5 +107,10 @@ class UpdateOrderStatusTest extends TestCase
 
         $order->refresh();
         $this->assertTrue($order->status->equals(OrderStatusEnum::completed()));
+        $this->assertDatabaseHas((new OrderHistory())->getTable(), [
+            'type' => OrderHistoryTypeEnum::status(),
+            'from' => OrderStatusEnum::sent(),
+            'to' => $order->status,
+        ]);
     }
 }

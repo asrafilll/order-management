@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property \Spatie\Enum\Enum|null $status
+ * @property \Spatie\Enum\Enum $status
  * @property int $source_id
  * @property string $source_name
  * @property int $customer_id
@@ -30,7 +30,7 @@ use Illuminate\Support\Carbon;
  * @property string $customer_postal_code
  * @property int|null $payment_method_id
  * @property string|null $payment_method_name
- * @property \Spatie\Enum\Enum|null $payment_status
+ * @property \Spatie\Enum\Enum $payment_status
  * @property int|null $shipping_id
  * @property string|null $shipping_name
  * @property Carbon|null $shipping_date
@@ -50,6 +50,8 @@ use Illuminate\Support\Carbon;
  * @property string|null $creator_name
  * @property int|null $packer_id
  * @property string|null $packer_name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderHistory[] $histories
+ * @property-read int|null $histories_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
  * @property-read int|null $items_count
  * @method static \Database\Factories\OrderFactory factory(...$parameters)
@@ -164,6 +166,11 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function histories(): HasMany
+    {
+        return $this->hasMany(OrderHistory::class);
     }
 
     public function isEditable(): bool

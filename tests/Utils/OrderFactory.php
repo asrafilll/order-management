@@ -95,6 +95,8 @@ trait OrderFactory
                 'quantity' => 1,
             ]);
 
+        $order->refresh();
+
         return $order;
     }
 
@@ -157,6 +159,8 @@ trait OrderFactory
             'customer_postal_code' => $customer->postal_code,
             'status' => $orderStatusEnum ?? OrderStatusEnum::waiting(),
         ]);
+
+        $order->refresh();
 
         return $order;
     }

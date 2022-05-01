@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\OrderHistoryTypeEnum;
 use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
@@ -38,8 +39,14 @@ class CompleteOrder implements ShouldQueue
     public function handle()
     {
         if ($this->order->status->equals(OrderStatusEnum::sent())) {
+            $currentStatus = $this->order->status;
             $this->order->status = OrderStatusEnum::completed();
             $this->order->saveQuietly();
+            $this->order->histories()->create([
+                'type' => OrderHistoryTypeEnum::status(),
+                'from' => $currentStatus,
+                'to' => OrderStatusEnum::completed(),
+            ]);
         }
     }
 }
