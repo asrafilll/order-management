@@ -170,7 +170,9 @@ class Order extends Model
 
     public function histories(): HasMany
     {
-        return $this->hasMany(OrderHistory::class);
+        return $this
+            ->hasMany(OrderHistory::class)
+            ->latest();
     }
 
     public function isEditable(): bool
