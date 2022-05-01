@@ -28,5 +28,5 @@ Features:
 [x] Order sources management
 [] Print order as invoice
 [] Auto assign customer type
-[] Auto complete order dengan status sent setelah 7 hari
+[x] Auto complete order dengan status sent setelah 7 hari
 [x] Filter orders
