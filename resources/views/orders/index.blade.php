@@ -46,10 +46,10 @@
                             data-toggle="modal"
                             data-target="#filter-modal"
                         >{{ __('Filter') }}</button>
-                        <button
-                            type="button"
+                        <a
+                            href="{{ request()->fullUrlWithQuery(['action' => 'export']) }}"
                             class="btn btn-default"
-                        >{{ __('Export') }}</button>
+                        >{{ __('Export') }}</a>
                     </div>
                 </div>
                 <div
