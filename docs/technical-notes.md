@@ -30,3 +30,4 @@ Features:
 [] Auto assign customer type
 [x] Auto complete order dengan status sent setelah 7 hari
 [x] Filter orders
+[x] Export orders
