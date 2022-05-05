@@ -2,12 +2,14 @@
 
 namespace Tests\Feature\Order;
 
+use App\Enums\OrderStatusEnum;
 use App\Enums\PermissionEnum;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderSource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\Utils\OrderFactory;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -16,6 +18,7 @@ class UpdateOrderGeneralInformationTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
+    use OrderFactory;
 
     /**
      * @return void
@@ -23,7 +26,7 @@ class UpdateOrderGeneralInformationTest extends TestCase
     public function test_should_success_update_order()
     {
         /** @var Order */
-        $order = Order::factory()->create();
+        $order = $this->createOrder();
         /** @var OrderSource */
         $orderSource = OrderSource::factory()->create();
         /** @var Customer */
@@ -69,7 +72,7 @@ class UpdateOrderGeneralInformationTest extends TestCase
         array $errors
     ) {
         /** @var Order */
-        $order = Order::factory()->create();
+        $order = $this->createOrder();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(
@@ -176,9 +179,7 @@ class UpdateOrderGeneralInformationTest extends TestCase
     public function test_should_error_update_order_when_status_is_not_editable()
     {
         /** @var Order */
-        $order = Order::factory()
-            ->processed()
-            ->create();
+        $order = $this->createOrder(OrderStatusEnum::processed());
         /** @var OrderSource */
         $orderSource = OrderSource::factory()->create();
         /** @var Customer */
