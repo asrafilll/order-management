@@ -301,7 +301,7 @@
                                 <td>{{ Str::upper($order->status) }}</td>
                                 <td>{{ Str::upper($order->payment_status) }}</td>
                                 <td>{{ $order->source_name }}</td>
-                                <td>{{ $order->items_quantity . ' ' . __('items') }}</td>
+                                <td>{{ ($order->items_quantity ?: 'No ') . ' ' . __('items') }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <button
