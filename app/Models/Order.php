@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CustomerTypeEnum;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PaymentStatusEnum;
 use App\Jobs\CompleteOrder;
@@ -165,6 +166,10 @@ class Order extends Model
                 CompleteOrder::dispatch($order)
                     ->delay(Carbon::now()->addWeek());
             }
+
+            if ($order->status->equals(OrderStatusEnum::completed())) {
+                $order->syncCustomerType();
+            }
         });
 
         static::deleting(function (Order $order) {
@@ -203,5 +208,25 @@ class Order extends Model
         $this->total_price = ($this->items_price - intval($this->items_discount)) +
             (intval($this->shipping_price) - intval($this->shipping_discount));
         $this->saveQuietly();
+    }
+
+    public function syncCustomerType()
+    {
+        $totalCompletedOrdersForCurrentCustomerId = Order::query()
+            ->whereCustomerId($this->customer_id)
+            ->whereStatus(OrderStatusEnum::completed())
+            ->count();
+
+        if ($totalCompletedOrdersForCurrentCustomerId == 2) {
+            Customer::whereId($this->customer_id)->update([
+                'type' => CustomerTypeEnum::repeat(),
+            ]);
+        }
+
+        if ($totalCompletedOrdersForCurrentCustomerId > 2) {
+            Customer::whereId($this->customer_id)->update([
+                'type' => CustomerTypeEnum::member(),
+            ]);
+        }
     }
 }

@@ -27,7 +27,7 @@ Features:
 [x] Employee types management (sales, input, packing)
 [x] Order sources management
 [] Print order as invoice
-[] Auto assign customer type
+[x] Auto assign customer type
 [x] Auto complete order dengan status sent setelah 7 hari
 [x] Filter orders
 [x] Export orders

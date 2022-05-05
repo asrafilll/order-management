@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $subdistrict
  * @property string $village
  * @property string $postal_code
- * @property string $type
+ * @property \Spatie\Enum\Enum|null $type
  * @method static \Database\Factories\CustomerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer newQuery()
@@ -53,6 +53,10 @@ class Customer extends Model
         'village',
         'postal_code',
         'type',
+    ];
+
+    protected $casts = [
+        'type' => CustomerTypeEnum::class . ':nullable',
     ];
 
     protected static function booted()

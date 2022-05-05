@@ -47,6 +47,7 @@ class CompleteOrder implements ShouldQueue
                 'from' => $currentStatus,
                 'to' => OrderStatusEnum::completed(),
             ]);
+            $this->order->syncCustomerType();
         }
     }
 }
