@@ -53,7 +53,9 @@ class CreateOrderTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseHas((new Order())->getTable(), $input);
+        $this->assertDatabaseHas((new Order())->getTable(), $input + [
+            'customer_type' => $customer->type,
+        ]);
     }
 
     /**

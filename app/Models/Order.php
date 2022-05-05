@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property \Spatie\Enum\Enum $status
+ * @property \Spatie\Enum\Enum|null $status
  * @property int $source_id
  * @property string $source_name
  * @property int $customer_id
@@ -28,9 +28,10 @@ use Illuminate\Support\Carbon;
  * @property string $customer_subdistrict
  * @property string $customer_village
  * @property string $customer_postal_code
+ * @property string $customer_type
  * @property int|null $payment_method_id
  * @property string|null $payment_method_name
- * @property \Spatie\Enum\Enum $payment_status
+ * @property \Spatie\Enum\Enum|null $payment_status
  * @property int|null $shipping_id
  * @property string|null $shipping_name
  * @property Carbon|null $shipping_date
@@ -69,6 +70,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerPostalCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerProvince($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerSubdistrict($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerVillage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereItemsDiscount($value)
@@ -114,6 +116,7 @@ class Order extends Model
         'customer_subdistrict',
         'customer_village',
         'customer_postal_code',
+        'customer_type',
         'payment_method_id',
         'payment_method_name',
         'payment_status',
@@ -147,6 +150,12 @@ class Order extends Model
 
     protected static function booted()
     {
+        static::creating(function (Order $order) {
+            /** @var Customer */
+            $customer = Customer::find($order->customer_id);
+            $order->customer_type = $customer->type;
+        });
+
         static::updated(function (Order $order) {
             if ($order->isEditable()) {
                 $order->calculateSummary();
