@@ -11,9 +11,6 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self sent()
  * @method static self completed()
  * @method static self canceled()
- * @method static self returned_to_warehouse()
- * @method static self returned_to_expedition()
- * @method static self lost()
  */
 final class OrderStatusEnum extends Enum
 {
