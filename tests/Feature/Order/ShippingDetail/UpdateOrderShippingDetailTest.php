@@ -51,9 +51,9 @@ class UpdateOrderShippingDetailTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_error_update_order_shipping_detail_when_order_is_not_editable()
+    public function test_should_error_update_order_shipping_detail_when_order_shipping_detail_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = $this->createOrder(OrderStatusEnum::sent());
         $shippingDate = Carbon::now()->addDay()->format('Y-m-d H:i:s');
         $input = [
             'shipping_date' => $shippingDate,

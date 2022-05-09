@@ -857,7 +857,7 @@
                             <h3 class="card-title">{{ __('Shipping Detail') }}</h3>
                         </div>
                         <div class="card-body">
-                            @if ($order->isEditable())
+                            @if ($order->canEditShippingDetail())
                                 <div class="form-group">
                                     <label for="shipping_date">
                                         <span>{{ __('Date') }}</span>
@@ -901,7 +901,7 @@
                                 </dl>
                             @endif
                         </div>
-                        @if ($order->isEditable())
+                        @if ($order->canEditShippingDetail())
                             <div class="card-footer">
                                 <button
                                     type="submit"

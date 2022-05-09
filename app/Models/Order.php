@@ -194,6 +194,14 @@ class Order extends Model
         return $this->status->equals(OrderStatusEnum::waiting());
     }
 
+    public function canEditShippingDetail(): bool
+    {
+        return in_array($this->status, [
+            OrderStatusEnum::waiting(),
+            OrderStatusEnum::processed(),
+        ]);
+    }
+
     public function calculateSummary(): void
     {
         $this->load(['items']);
