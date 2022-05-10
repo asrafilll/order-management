@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\OrderSource;
 
+use App\Models\OrderSource;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -27,6 +29,11 @@ class UpdateRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
+            ],
+            'parent_id' => [
+                'nullable',
+                'integer',
+                Rule::exists((new OrderSource())->getTable(), 'id'),
             ],
         ];
     }

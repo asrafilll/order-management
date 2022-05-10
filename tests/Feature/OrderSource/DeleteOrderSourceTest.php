@@ -19,7 +19,7 @@ class DeleteOrderSourceTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_success_delete_shipping()
+    public function test_should_success_delete_order_source()
     {
         /** @var OrderSource */
         $orderSource = OrderSource::factory()->create();
@@ -47,5 +47,32 @@ class DeleteOrderSourceTest extends TestCase
             ->delete(route('order-sources.destroy', ['orderSource' => '0']));
 
         $response->assertNotFound();
+    }
+
+    /**
+     * @return void
+     */
+    public function test_should_success_delete_order_source_and_set_parent_id_to_null_for_it_childs()
+    {
+        /** @var OrderSource */
+        $orderSource = OrderSource::factory()->create();
+        /** @var OrderSource */
+        $childOrderSource = OrderSource::factory()
+            ->state(['parent_id' => $orderSource->id])
+            ->create();
+        $response = $this
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_order_sources()
+                )
+            )
+            ->delete(route('order-sources.destroy', $orderSource));
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
+
+        $childOrderSource->refresh();
+        $this->assertNull($childOrderSource->parent_id);
     }
 }

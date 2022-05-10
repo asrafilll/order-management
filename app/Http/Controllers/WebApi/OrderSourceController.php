@@ -20,6 +20,9 @@ class OrderSourceController extends Controller
                 ->when($request->filled('q'), function ($query) use ($request) {
                     $query->where('name', 'LIKE', '%' . $request->get('q') . '%');
                 })
+                ->when($request->has('parent_only'), function ($query) {
+                    $query->whereNull('parent_id');
+                })
                 ->paginate(
                     perPage: $request->get('per_page'),
                     page: $request->get('page')

@@ -18,6 +18,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('Name') }}</th>
+                            <th>{{ __('Parent') }}</th>
                             <th>{{ __('Created At') }}</th>
                             <th>{{ __('Updated At') }}</th>
                             <th></th>
@@ -27,6 +28,7 @@
                         @forelse ($orderSources as $orderSource)
                             <tr>
                                 <td>{{ $orderSource->name }}</td>
+                                <td>{{ $orderSource->parent_name ?? '-' }}</td>
                                 <td>{{ $orderSource->created_at->diffForHumans() }}</td>
                                 <td>{{ $orderSource->updated_at->diffForHumans() }}</td>
                                 <td class="text-right">

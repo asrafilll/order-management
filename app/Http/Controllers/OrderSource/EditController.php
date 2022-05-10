@@ -14,6 +14,8 @@ class EditController extends Controller
      */
     public function __invoke(OrderSource $orderSource)
     {
+        $orderSource->load(['parent']);
+
         return Response::view('order-sources.edit', [
             'orderSource' => $orderSource,
         ]);

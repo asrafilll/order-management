@@ -31,20 +31,80 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="card-footer">
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >{{ __('Save') }}</button>
-                            <a
-                                href="{{ route('order-sources.index') }}"
-                                class="btn btn-default"
-                            >{{ __('Back') }}</a>
+                            <div
+                                id="order-source-parent-module"
+                                class="form-group"
+                            >
+                                <label for="parent_name">
+                                    <span>{{ __('Parent') }}</span>
+                                </label>
+                                <input
+                                    type="hidden"
+                                    id="parent_id"
+                                    name="parent_id"
+                                    value="{{ old('parent_id') ?? $orderSource->parent_id }}"
+                                />
+                                <input
+                                    type="text"
+                                    id="parent_name"
+                                    name="parent_name"
+                                    class="form-control @error('parent_name') is-invalid @enderror"
+                                    value="{{ old('parent_name') ?? $orderSource->parent?->name }}"
+                                />
+                                @error('parent_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <script>
+                                const OrderSourceParent = (function() {
+                                    const $el = $('#order-source-parent-module');
+                                    const $id = $el.find('#parent_id');
+                                    const $name = $el.find('#parent_name');
+
+                                    init();
+
+                                    function init() {
+                                        $name.autocomplete({
+                                            source: function(request, response) {
+                                                $.ajax({
+                                                    method: 'GET',
+                                                    url: '{{ route('web-api.order-sources.index', ['parent_only' => 1]) }}',
+                                                    data: {
+                                                        q: request.term,
+                                                    },
+                                                    success: function(res) {
+                                                        response(res.data.map(function(orderSource) {
+                                                            return {
+                                                                id: orderSource.id,
+                                                                label: orderSource.name,
+                                                                value: orderSource.name,
+                                                            };
+                                                        }))
+                                                    },
+                                                });
+                                            },
+                                            select: function(event, ui) {
+                                                $id.val(ui.item.id);
+                                            },
+                                        });
+                                    }
+                                })();
+                            </script>
                         </div>
                     </div>
-                </form>
+                    <div class="card-footer">
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >{{ __('Save') }}</button>
+                        <a
+                            href="{{ route('order-sources.index') }}"
+                            class="btn btn-default"
+                        >{{ __('Back') }}</a>
+                    </div>
             </div>
+            </form>
+        </div>
         </div>
     </section>
 </x-app>
