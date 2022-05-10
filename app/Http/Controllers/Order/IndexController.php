@@ -6,9 +6,7 @@ use App\Actions\CreateOrdersQueryFromRequestAction;
 use App\Exports\OrdersExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
-use Maatwebsite\Excel\Excel;
 
 class IndexController extends Controller
 {

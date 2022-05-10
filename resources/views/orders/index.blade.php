@@ -102,6 +102,32 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label for="customer_type">{{ __('Customer Type') }}</label>
+                                        <div class="input-group">
+                                            <select
+                                                name="customer_type"
+                                                id="customer_type"
+                                                class="form-control"
+                                            >
+                                                <option value="">ALL</option>
+                                                @foreach (\App\Enums\CustomerTypeEnum::toValues() as $customerType)
+                                                    <option
+                                                        value="{{ $customerType }}"
+                                                        @if (Request::get('customer_type') == $customerType) selected @endif
+                                                    >{{ Str::upper($customerType) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('customer_type')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="status">{{ __('Status') }}</label>
                                         <div class="input-group">
                                             <select
@@ -123,6 +149,31 @@
                                                     type="button"
                                                     class="btn btn-default btn-reset"
                                                     @if (!Request::filled('status')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="payment_method_id">{{ __('Payment Method') }}</label>
+                                        <input
+                                            type="hidden"
+                                            name="payment_method_id"
+                                            id="payment_method_id"
+                                            value="{{ Request::get('payment_method_id') }}"
+                                        />
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="payment_method_name"
+                                                id="payment_method_name"
+                                                class="form-control"
+                                                value="{{ Request::get('payment_method_name') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('payment_method_name') || !Request::filled('payment_method_id')) disabled @endif
                                                 >{{ __('Reset') }}</button>
                                             </div>
                                         </div>
@@ -179,6 +230,56 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="sales_id">{{ __('Sales') }}</label>
+                                        <input
+                                            type="hidden"
+                                            name="sales_id"
+                                            id="sales_id"
+                                            value="{{ Request::get('sales_id') }}"
+                                        />
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="sales_name"
+                                                id="sales_name"
+                                                class="form-control"
+                                                value="{{ Request::get('sales_name') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('sales_name') || !Request::filled('sales_id')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shipping_id">{{ __('Shipping') }}</label>
+                                        <input
+                                            type="hidden"
+                                            name="shipping_id"
+                                            id="shipping_id"
+                                            value="{{ Request::get('shipping_id') }}"
+                                        />
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="shipping_name"
+                                                id="shipping_name"
+                                                class="form-control"
+                                                value="{{ Request::get('shipping_name') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('shipping_name') || !Request::filled('shipping_id')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <a
@@ -197,8 +298,14 @@
                                 const $el = $('#filter-order-module');
                                 const $customerId = $el.find('#customer_id');
                                 const $customerName = $el.find('#customer_name');
+                                const $paymentMethodId = $el.find('#payment_method_id');
+                                const $paymentMethodName = $el.find('#payment_method_name');
                                 const $sourceId = $el.find('#source_id');
                                 const $sourceName = $el.find('#source_name');
+                                const $salesId = $el.find('#sales_id');
+                                const $salesName = $el.find('#sales_name');
+                                const $shippingId = $el.find('#shipping_id');
+                                const $shippingName = $el.find('#shipping_name');
                                 const $resets = $el.find('.btn-reset');
 
                                 $resets.on('click', handleReset);
@@ -247,6 +354,30 @@
                                         }
                                     });
 
+                                    $paymentMethodName.autocomplete({
+                                        source: function(request, response) {
+                                            $.ajax({
+                                                method: 'GET',
+                                                url: '{{ route('web-api.payment-methods.index') }}',
+                                                data: {
+                                                    q: request.term,
+                                                },
+                                                success: function(res) {
+                                                    response(res.data.map(function(paymentMetnod) {
+                                                        return {
+                                                            id: paymentMetnod.id,
+                                                            label: paymentMetnod.name,
+                                                            value: paymentMetnod.name,
+                                                        };
+                                                    }))
+                                                },
+                                            });
+                                        },
+                                        select: function(event, ui) {
+                                            $paymentMethodId.val(ui.item.id);
+                                        },
+                                    });
+
                                     $sourceName.autocomplete({
                                         source: function(request, response) {
                                             $.ajax({
@@ -269,7 +400,55 @@
                                         select: function(event, ui) {
                                             $sourceId.val(ui.item.id);
                                         },
-                                    })
+                                    });
+
+                                    $salesName.autocomplete({
+                                        source: function(request, response) {
+                                            $.ajax({
+                                                method: 'GET',
+                                                url: '{{ route('web-api.employees.index') }}',
+                                                data: {
+                                                    q: request.term,
+                                                },
+                                                success: function(res) {
+                                                    response(res.data.map(function(employee) {
+                                                        return {
+                                                            id: employee.id,
+                                                            label: employee.name,
+                                                            value: employee.name,
+                                                        };
+                                                    }))
+                                                },
+                                            });
+                                        },
+                                        select: function(event, ui) {
+                                            $salesId.val(ui.item.id);
+                                        },
+                                    });
+
+                                    $shippingName.autocomplete({
+                                        source: function(request, response) {
+                                            $.ajax({
+                                                method: 'GET',
+                                                url: '{{ route('web-api.shippings.index') }}',
+                                                data: {
+                                                    q: request.term,
+                                                },
+                                                success: function(res) {
+                                                    response(res.data.map(function(shipping) {
+                                                        return {
+                                                            id: shipping.id,
+                                                            label: shipping.name,
+                                                            value: shipping.name,
+                                                        };
+                                                    }))
+                                                },
+                                            });
+                                        },
+                                        select: function(event, ui) {
+                                            $shippingId.val(ui.item.id);
+                                        },
+                                    });
                                 }
                             })();
                         </script>
@@ -283,11 +462,15 @@
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('Created At') }}</th>
                             <th>{{ __('Customer') }}</th>
+                            <th>{{ __('Type') }}</th>
                             <th>{{ __('Total') }}</th>
                             <th>{{ __('Status') }}</th>
+                            <th>{{ __('Payment Method') }}</th>
                             <th>{{ __('Payment Status') }}</th>
                             <th>{{ __('Source') }}</th>
+                            <th>{{ __('Sales') }}</th>
                             <th>{{ __('Items') }}</th>
+                            <th>{{ __('Shipping') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -297,11 +480,15 @@
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
                                 <td>{{ $order->customer_name }}</td>
+                                <td>{{ Str::upper($order->customer_type) }}</td>
                                 <td>{{ Config::get('app.currency') . ' ' . number_format($order->total_price) }}</td>
                                 <td>{{ Str::upper($order->status) }}</td>
+                                <td>{{ $order->payment_method_name }}</td>
                                 <td>{{ Str::upper($order->payment_status) }}</td>
                                 <td>{{ $order->source_name }}</td>
+                                <td>{{ $order->sales_name }}</td>
                                 <td>{{ ($order->items_quantity ?: 'No ') . ' ' . __('items') }}</td>
+                                <td>{{ $order->shipping_name }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <button
@@ -332,7 +519,7 @@
                         @empty
                             <tr>
                                 <td
-                                    colspan="9"
+                                    colspan="13"
                                     class="text-center"
                                 >{{ __('Data not found') }}</td>
                             </tr>

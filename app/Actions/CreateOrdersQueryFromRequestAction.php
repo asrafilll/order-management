@@ -34,6 +34,10 @@ class CreateOrdersQueryFromRequestAction
             'status',
             'payment_status',
             'source_id',
+            'sales_id',
+            'customer_type',
+            'payment_method_id',
+            'shipping_id',
         ];
 
         foreach ($filters as $filter) {
