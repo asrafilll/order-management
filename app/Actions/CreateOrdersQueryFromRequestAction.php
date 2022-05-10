@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\Order;
+use App\Models\OrderSource;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
@@ -33,7 +34,6 @@ class CreateOrdersQueryFromRequestAction
             'customer_id',
             'status',
             'payment_status',
-            'source_id',
             'sales_id',
             'customer_type',
             'payment_method_id',
@@ -43,6 +43,17 @@ class CreateOrdersQueryFromRequestAction
         foreach ($filters as $filter) {
             if ($request->filled($filter)) {
                 $query->where($filter, $request->get($filter));
+            }
+        }
+
+        if ($request->filled('source_id')) {
+            /** @var OrderSource */
+            $orderSource = OrderSource::with(['child'])->find($request->get('source_id'));
+
+            if ($orderSource->child->count() < 1) {
+                $query->where('source_id', $orderSource->id);
+            } else {
+                $query->whereIn('source_id', $orderSource->child->pluck('id'));
             }
         }
 
