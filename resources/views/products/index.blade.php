@@ -53,7 +53,7 @@
                         @forelse ($products as $product)
                             <tr>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->status }}</td>
+                                <td>{{ Str::upper($product->status) }}</td>
                                 <td>{{ $product->created_at->diffForHumans() }}</td>
                                 <td>{{ $product->updated_at->diffForHumans() }}</td>
                                 <td class="text-right">

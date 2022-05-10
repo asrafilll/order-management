@@ -26,6 +26,7 @@ class IndexController extends Controller
                         });
                     }
                 )
+                ->latest()
                 ->paginate(perPage: $request->get('per_page', 10)),
         ]);
     }
