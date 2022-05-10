@@ -602,7 +602,7 @@
                                 id="status"
                                 class="form-control @error('status') is-invalid @enderror"
                             >
-                                @foreach (\App\Enums\OrderStatusEnum::toValues() as $orderStatus)
+                                @foreach ($orderStatuses as $orderStatus)
                                     <option
                                         value="{{ $orderStatus }}"
                                         @if (old('status') == $orderStatus || $order->status == $orderStatus) selected @endif
@@ -666,7 +666,7 @@
                                     value="{{ $order->note }}"
                                 />
                             @else
-                                <span>{{ $order->note }}</span>
+                                <span>{{ $order->note ?? '-' }}</span>
                             @endif
                         </div>
                         @if ($order->isEditable())

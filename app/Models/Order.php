@@ -202,6 +202,70 @@ class Order extends Model
         ]);
     }
 
+    public function canProcessed(): bool
+    {
+        $requiredAttributes = [
+            'source_id',
+            'source_name',
+            'customer_id',
+            'customer_name',
+            'customer_phone',
+            'customer_address',
+            'customer_province',
+            'customer_city',
+            'customer_subdistrict',
+            'customer_village',
+            'customer_postal_code',
+            'customer_type',
+            'payment_method_id',
+            'payment_method_name',
+            'shipping_id',
+            'shipping_name',
+            'items_quantity',
+            'items_price',
+            'shipping_price',
+            'total_price',
+            'sales_id',
+            'sales_name',
+            'creator_id',
+            'creator_name',
+            'packer_id',
+            'packer_name',
+        ];
+
+        foreach ($requiredAttributes as $attribute) {
+            if (!$this->{$attribute}) {
+                return false;
+            }
+        }
+
+        if ($this->items()->count() < 1) {
+            return false;
+        }
+
+        if ($this->payment_status->equals(PaymentStatusEnum::unpaid())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function canSent(): bool
+    {
+        $requiredAttributes = [
+            'shipping_date',
+            'shipping_airwaybill',
+        ];
+
+        foreach ($requiredAttributes as $attribute) {
+            if (!$this->{$attribute}) {
+                return false;
+            }
+        }
+
+        return $this->canProcessed();
+    }
+
     public function calculateSummary(): void
     {
         $this->load(['items']);

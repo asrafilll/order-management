@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Order\Status;
 
 use App\Enums\OrderHistoryTypeEnum;
+use App\Enums\OrderStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\Status\UpdateRequest;
 use App\Models\Order;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Response;
 
 class UpdateController extends Controller
@@ -17,6 +19,22 @@ class UpdateController extends Controller
      */
     public function __invoke(Order $order, UpdateRequest $updateRequest)
     {
+        abort_if(
+            $updateRequest->get('status') == OrderStatusEnum::processed() &&
+                !$order->canProcessed(),
+            HttpResponse::HTTP_FORBIDDEN
+        );
+
+        abort_if(
+            in_array($updateRequest->get('status'), [
+                OrderStatusEnum::sent(),
+                OrderStatusEnum::completed(),
+                OrderStatusEnum::canceled(),
+            ]) &&
+                !$order->canSent(),
+            HttpResponse::HTTP_FORBIDDEN
+        );
+
         $currentStatus = $order->status;
         $order->update($updateRequest->validated());
 
