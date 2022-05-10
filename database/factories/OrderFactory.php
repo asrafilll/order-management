@@ -125,38 +125,4 @@ class OrderFactory extends Factory
             'status' => OrderStatusEnum::canceled()->value,
         ]);
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function returnedToWarehouse()
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => OrderStatusEnum::returned_to_warehouse()->value,
-            'returned_at' => Carbon::now()->subDays(1),
-            'returned_note' => 'Item not match.',
-        ]);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function returnedToExpedition()
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => OrderStatusEnum::returned_to_warehouse()->value,
-            'returned_at' => Carbon::now()->subDays(1),
-            'returned_note' => 'Address not found.',
-        ]);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function lost()
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => OrderStatusEnum::lost()->value,
-        ]);
-    }
 }
