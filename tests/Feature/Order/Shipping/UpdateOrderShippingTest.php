@@ -7,7 +7,7 @@ use App\Enums\PermissionEnum;
 use App\Models\Shipping;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -16,14 +16,13 @@ class UpdateOrderShippingTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_order_shipping()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         /** @var Shipping */
         $shipping = Shipping::factory()->create();
         $input = [
@@ -58,7 +57,7 @@ class UpdateOrderShippingTest extends TestCase
      */
     public function test_should_error_update_order_shipping_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         /** @var Shipping */
         $shipping = Shipping::factory()->create();
         $input = [
@@ -88,7 +87,7 @@ class UpdateOrderShippingTest extends TestCase
         array $input,
         array $errors
     ) {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(

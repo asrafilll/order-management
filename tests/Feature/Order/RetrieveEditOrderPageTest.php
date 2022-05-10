@@ -6,7 +6,7 @@ use App\Enums\PermissionEnum;
 use App\Models\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -15,7 +15,6 @@ class RetrieveEditOrderPageTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
@@ -23,7 +22,7 @@ class RetrieveEditOrderPageTest extends TestCase
     public function test_should_return_html_response()
     {
         /** @var Order */
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(

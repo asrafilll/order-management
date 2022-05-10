@@ -4,11 +4,9 @@ namespace Tests\Feature\Order;
 
 use App\Enums\OrderStatusEnum;
 use App\Enums\PermissionEnum;
-use App\Models\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -17,14 +15,13 @@ class DeleteOrderTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_delete_order()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(
@@ -59,7 +56,7 @@ class DeleteOrderTest extends TestCase
      */
     public function test_should_error_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(

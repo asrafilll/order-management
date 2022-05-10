@@ -10,7 +10,7 @@ use App\Models\OrderHistory;
 use App\Models\PaymentMethod;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -19,14 +19,13 @@ class UpdateOrderPaymentTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_order_payment()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         /** @var PaymentMethod */
         $paymentMethod = PaymentMethod::factory()->create();
         $input = [
@@ -64,7 +63,7 @@ class UpdateOrderPaymentTest extends TestCase
      */
     public function test_should_error_update_order_payment_method_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         /** @var PaymentMethod */
         $paymentMethod = PaymentMethod::factory()->create();
         $input = [
@@ -93,7 +92,7 @@ class UpdateOrderPaymentTest extends TestCase
         array $input,
         array $errors
     ) {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(

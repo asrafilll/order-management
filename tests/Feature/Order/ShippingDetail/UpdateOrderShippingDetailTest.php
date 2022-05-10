@@ -9,21 +9,20 @@ use App\Enums\OrderStatusEnum;
 use Tests\Utils\ResponseAssertion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 
 class UpdateOrderShippingDetailTest extends TestCase
 {
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_order_shipping_detail()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $shippingDate = Carbon::now()->addDay()->format('Y-m-d H:i:s');
         $input = [
             'shipping_date' => $shippingDate,
@@ -53,7 +52,7 @@ class UpdateOrderShippingDetailTest extends TestCase
      */
     public function test_should_error_update_order_shipping_detail_when_order_shipping_detail_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::sent());
+        $order = (new OrderBuilder)->addItems()->setStatus(OrderStatusEnum::sent())->build();
         $shippingDate = Carbon::now()->addDay()->format('Y-m-d H:i:s');
         $input = [
             'shipping_date' => $shippingDate,
@@ -81,7 +80,7 @@ class UpdateOrderShippingDetailTest extends TestCase
         array $input,
         array $errors
     ) {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(

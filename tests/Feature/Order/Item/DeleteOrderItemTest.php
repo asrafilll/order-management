@@ -10,7 +10,7 @@ use App\Models\OrderItem;
 use App\Models\OrderSource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -19,14 +19,13 @@ class DeleteOrderItemTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_delete_order_item()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $orderItem = $order->items->first();
         $response = $this
             ->actingAs(
@@ -59,7 +58,7 @@ class DeleteOrderItemTest extends TestCase
      */
     public function test_should_error_delete_order_item_when_order_status_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         $orderItem = $order->items->first();
         $response = $this
             ->actingAs(
@@ -80,7 +79,7 @@ class DeleteOrderItemTest extends TestCase
      */
     public function test_should_error_delete_order_item_when_order_item_order_id_not_equals_with_order_id()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $orderItem = $order->items->first();
         /** @var OrderSource */
         $orderSource = OrderSource::factory()->create();

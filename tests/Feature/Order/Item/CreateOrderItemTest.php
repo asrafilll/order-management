@@ -5,10 +5,11 @@ namespace Tests\Feature\Order\Item;
 use App\Enums\OrderStatusEnum;
 use App\Enums\PermissionEnum;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -17,14 +18,50 @@ class CreateOrderItemTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_create_order_item()
     {
-        $order = $this->createOrderWithoutOrderItems();
+        $order = (new OrderBuilder)->build();
+        /** @var Product */
+        $product = Product::factory()->create();
+        $product
+            ->options()
+            ->create([
+                'name' => 'Color',
+                'values' => json_encode([
+                    'Red',
+                    'Green',
+                    'Blue',
+                ])
+            ]);
+        $product
+            ->variants()
+            ->createMany([
+                [
+                    'name' => 'Red',
+                    'price' => 10000,
+                    'weight' => 1000,
+                    'option1' => 'Color',
+                    'value1' => 'Red',
+                ],
+                [
+                    'name' => 'Green',
+                    'price' => 11000,
+                    'weight' => 1100,
+                    'option1' => 'Color',
+                    'value1' => 'Green',
+                ],
+                [
+                    'name' => 'Blue',
+                    'price' => 11000,
+                    'weight' => 1100,
+                    'option1' => 'Color',
+                    'value1' => 'Blue',
+                ],
+            ]);
         /** @var ProductVariant */
         $productVariant = ProductVariant::with(['product'])
             ->inRandomOrder()
@@ -72,7 +109,46 @@ class CreateOrderItemTest extends TestCase
      */
     public function test_should_error_create_order_item_when_order_is_not_editable()
     {
-        $order = $this->createOrderWithoutOrderItems(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)
+            ->setStatus(OrderStatusEnum::processed())
+            ->build();
+        /** @var Product */
+        $product = Product::factory()->create();
+        $product
+            ->options()
+            ->create([
+                'name' => 'Color',
+                'values' => json_encode([
+                    'Red',
+                    'Green',
+                    'Blue',
+                ])
+            ]);
+        $product
+            ->variants()
+            ->createMany([
+                [
+                    'name' => 'Red',
+                    'price' => 10000,
+                    'weight' => 1000,
+                    'option1' => 'Color',
+                    'value1' => 'Red',
+                ],
+                [
+                    'name' => 'Green',
+                    'price' => 11000,
+                    'weight' => 1100,
+                    'option1' => 'Color',
+                    'value1' => 'Green',
+                ],
+                [
+                    'name' => 'Blue',
+                    'price' => 11000,
+                    'weight' => 1100,
+                    'option1' => 'Color',
+                    'value1' => 'Blue',
+                ],
+            ]);
         /** @var ProductVariant */
         $productVariant = ProductVariant::with(['product'])
             ->inRandomOrder()
@@ -96,7 +172,7 @@ class CreateOrderItemTest extends TestCase
      */
     public function test_should_error_create_order_item_because_product_variant_not_exists()
     {
-        $order = $this->createOrderWithoutOrderItems();
+        $order = (new OrderBuilder)->build();
         $input = [
             'variant_id' => 1,
         ];
@@ -120,7 +196,44 @@ class CreateOrderItemTest extends TestCase
      */
     public function test_should_not_create_new_order_item_when_order_item_already_exists()
     {
-        $order = $this->createOrderWithoutOrderItems();
+        $order = (new OrderBuilder)->build();
+        /** @var Product */
+        $product = Product::factory()->create();
+        $product
+            ->options()
+            ->create([
+                'name' => 'Color',
+                'values' => json_encode([
+                    'Red',
+                    'Green',
+                    'Blue',
+                ])
+            ]);
+        $product
+            ->variants()
+            ->createMany([
+                [
+                    'name' => 'Red',
+                    'price' => 10000,
+                    'weight' => 1000,
+                    'option1' => 'Color',
+                    'value1' => 'Red',
+                ],
+                [
+                    'name' => 'Green',
+                    'price' => 11000,
+                    'weight' => 1100,
+                    'option1' => 'Color',
+                    'value1' => 'Green',
+                ],
+                [
+                    'name' => 'Blue',
+                    'price' => 11000,
+                    'weight' => 1100,
+                    'option1' => 'Color',
+                    'value1' => 'Blue',
+                ],
+            ]);
         /** @var ProductVariant */
         $productVariant = ProductVariant::with(['product'])
             ->inRandomOrder()

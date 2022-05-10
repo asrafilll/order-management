@@ -9,21 +9,20 @@ use App\Enums\PermissionEnum;
 use App\Models\Employee;
 use Tests\Utils\ResponseAssertion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 
 class UpdateOrderContributorsTest extends TestCase
 {
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_order_contributors()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         /** @var Employee */
         $employee = Employee::factory()->create();
         $input = [
@@ -61,7 +60,7 @@ class UpdateOrderContributorsTest extends TestCase
      */
     public function test_should_error_update_order_contributors_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         /** @var Employee */
         $employee = Employee::factory()->create();
         $input = [
@@ -93,7 +92,7 @@ class UpdateOrderContributorsTest extends TestCase
         array $input,
         array $errors
     ) {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(

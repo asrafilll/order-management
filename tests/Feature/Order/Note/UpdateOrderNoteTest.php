@@ -8,21 +8,20 @@ use App\Enums\PermissionEnum;
 use App\Enums\OrderStatusEnum;
 use Tests\Utils\ResponseAssertion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 
 class UpdateOrderNoteTest extends TestCase
 {
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_order_note()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $input = [
             'note' => 'Example note for order',
         ];
@@ -48,7 +47,7 @@ class UpdateOrderNoteTest extends TestCase
      */
     public function test_should_error_update_order_note_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         $input = [
             'note' => 'Example note for order',
         ];

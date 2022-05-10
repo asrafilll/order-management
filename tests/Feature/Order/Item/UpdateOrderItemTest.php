@@ -8,11 +8,10 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderSource;
-use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -21,14 +20,13 @@ class UpdateOrderItemTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_order_item()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $orderItem = $order->items->first();
         /** @var ProductVariant $productVariant */
         $productVariant = ProductVariant::with(['product'])
@@ -81,7 +79,7 @@ class UpdateOrderItemTest extends TestCase
      */
     public function test_should_error_update_order_item_when_order_status_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         $orderItem = $order->items->first();
         /** @var ProductVariant $productVariant */
         $input = [
@@ -106,7 +104,7 @@ class UpdateOrderItemTest extends TestCase
      */
     public function test_should_error_update_order_item_when_invalid_validation()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $orderItem = $order->items->first();
         $input = [
             'quantity' => 0,
@@ -134,7 +132,7 @@ class UpdateOrderItemTest extends TestCase
      */
     public function test_should_error_update_order_item_when_order_item_order_id_not_equals_with_order_id()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $orderItem = $order->items->first();
         /** @var OrderSource */
         $orderSource = OrderSource::factory()->create();

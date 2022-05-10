@@ -6,7 +6,7 @@ use App\Enums\OrderStatusEnum;
 use App\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Utils\OrderFactory;
+use Tests\Utils\OrderBuilder;
 use Tests\Utils\ResponseAssertion;
 use Tests\Utils\UserFactory;
 
@@ -15,14 +15,13 @@ class UpdateOrderItemsDiscountTest extends TestCase
     use RefreshDatabase;
     use ResponseAssertion;
     use UserFactory;
-    use OrderFactory;
 
     /**
      * @return void
      */
     public function test_should_success_update_order_items_discount()
     {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $input = [
             'items_discount' => 1000,
         ];
@@ -49,7 +48,7 @@ class UpdateOrderItemsDiscountTest extends TestCase
      */
     public function test_should_error_update_order_items_discount_when_order_is_not_editable()
     {
-        $order = $this->createOrder(OrderStatusEnum::processed());
+        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
         $input = [
             'items_discount' => 1000,
         ];
@@ -75,7 +74,7 @@ class UpdateOrderItemsDiscountTest extends TestCase
         array $input,
         array $errors
     ) {
-        $order = $this->createOrder();
+        $order = (new OrderBuilder)->addItems()->build();
         $response = $this
             ->actingAs(
                 $this->createUserWithPermission(
