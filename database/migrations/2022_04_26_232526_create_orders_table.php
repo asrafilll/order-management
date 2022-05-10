@@ -50,8 +50,6 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('shipping_discount')->nullable();
             $table->unsignedBigInteger('total_price')->nullable();
             $table->string('note')->nullable();
-            $table->timestamp('returned_at')->nullable();
-            $table->string('returned_note')->nullable();
             $table->unsignedBigInteger('sales_id')->nullable();
             $table->string('sales_name')->nullable();
             $table->unsignedBigInteger('creator_id')->nullable();

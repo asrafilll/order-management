@@ -44,8 +44,6 @@ use Illuminate\Support\Carbon;
  * @property int|null $shipping_discount
  * @property int|null $total_price
  * @property string|null $note
- * @property Carbon|null $returned_at
- * @property string|null $returned_note
  * @property int|null $sales_id
  * @property string|null $sales_name
  * @property int|null $creator_id
@@ -132,8 +130,6 @@ class Order extends Model
         'shipping_discount',
         'total_price',
         'note',
-        'returned_at',
-        'returned_note',
         'sales_id',
         'sales_name',
         'creator_id',
