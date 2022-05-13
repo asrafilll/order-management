@@ -501,6 +501,11 @@
                                         <div class="dropdown-menu">
                                             <a
                                                 class="dropdown-item"
+                                                href="{{ route('orders.show', $order) }}"
+                                                target="_blank"
+                                            >{{ __('Print') }}</a>
+                                            <a
+                                                class="dropdown-item"
                                                 href="{{ route('orders.edit', $order) }}"
                                             >{{ __('Edit') }}</a>
                                             @if ($order->isEditable())

@@ -20,6 +20,10 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
         )->name('store');
         Route::get(
             '/{order}',
+            \App\Http\Controllers\Order\ShowController::class
+        )->name('show');
+        Route::get(
+            '/{order}/edit',
             \App\Http\Controllers\Order\EditController::class
         )->name('edit');
         Route::delete(
