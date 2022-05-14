@@ -22,7 +22,7 @@ class UpdateController extends Controller
         OrderItem $orderItem,
         UpdateRequest $updateRequest
     ) {
-        abort_unless($order->id === $orderItem->order_id, HttpResponse::HTTP_FORBIDDEN);
+        abort_unless($order->id == $orderItem->order_id, HttpResponse::HTTP_FORBIDDEN);
 
         $orderItem->update($updateRequest->validated());
         $message = __('crud.updated', [
