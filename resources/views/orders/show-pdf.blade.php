@@ -193,11 +193,11 @@
         <tr>
             <td width="33%">
                 <p style="margin-bottom: 0.3rem;">{{ __('Payment Method') }}:</p>
-                <p style="font-weight: bold;">{{ $order->payment_method_name }}</p>
+                <p style="font-weight: bold;">{{ $order->payment_method_name ?? '-' }}</p>
             </td>
             <td width="33%">
                 <p style="margin-bottom: 0.3rem;">{{ __('Shipping') }}:</p>
-                <p style="font-weight: bold;">{{ $order->shipping_name }}</p>
+                <p style="font-weight: bold;">{{ $order->shipping_name ?? '-' }}</p>
             </td>
             <td width="33%"></td>
         </tr>
