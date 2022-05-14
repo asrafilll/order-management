@@ -16,8 +16,6 @@ class ShowController extends Controller
     {
         $order->load(['items']);
 
-        // return view('orders.show-pdf', ['order' => $order]);
-
         return Pdf::loadView('orders.show-pdf', [
             'order' => $order,
         ])->stream("order_{$order->id}.pdf");
