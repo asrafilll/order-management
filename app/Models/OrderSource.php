@@ -25,6 +25,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderSource whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderSource whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|OrderSource[] $child
+ * @property-read int|null $child_count
+ * @property-read OrderSource|null $parent
  */
 class OrderSource extends Model
 {
