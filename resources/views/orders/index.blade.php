@@ -280,6 +280,232 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="province-module" class="form-group">
+                                    <label for="customer_province">
+                                        <span>{{ __('Province') }}</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="customer_province"
+                                            name="customer_province"
+                                            class="form-control @error('customer_province') is-invalid @enderror"
+                                            value="{{ Request::get('customer_province') }}"
+                                        />
+                                        <div class="input-group-append">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-reset"
+                                                @if (!Request::filled('customer_province')) disabled @endif
+                                            >{{ __('Reset') }}</button>
+                                        </div>
+                                    </div>
+                                    @error('customer_province')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <script>
+                                    const Province = (function () {
+                                        const $el = $('#province-module');
+                                        const $input = $el.find('#customer_province');
+
+                                        init();
+
+                                        function init() {
+                                            $input.autocomplete({
+                                                source: function (request, response) {
+                                                    $.ajax({
+                                                        method: 'GET',
+                                                        url: '{{ route('web-api.provinces.index') }}',
+                                                        data: {
+                                                            q: request.term,
+                                                        },
+                                                        success: function (res) {
+                                                            response(res.data.map(function (province) {
+                                                                return {
+                                                                    code: province.code,
+                                                                    label: province.name,
+                                                                    value: province.name,
+                                                                };
+                                                            }))
+                                                        },
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    })();
+                                </script>
+                                <div id ="city-module" class="form-group">
+                                    <label for="customer_city">
+                                        <span>{{ __('City') }}</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="customer_city"
+                                            name="customer_city"
+                                            class="form-control @error('customer_city') is-invalid @enderror"
+                                            value="{{ Request::get('customer_city') }}"
+                                        />
+                                        <div class="input-group-append">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-reset"
+                                                @if (!Request::filled('customer_city')) disabled @endif
+                                            >{{ __('Reset') }}</button>
+                                        </div>
+                                    </div>
+                                    @error('customer_city')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <script>
+                                    const City = (function () {
+                                        let provinceCode = null;
+
+                                        const $el = $('#city-module');
+                                        const $input = $el.find('#customer_city');
+
+                                        init();
+
+                                        function init() {
+                                            $input.autocomplete({
+                                                source: function (request, response) {
+                                                    $.ajax({
+                                                        method: 'GET',
+                                                        url: '{{ route('web-api.cities.index') }}',
+                                                        data: {
+                                                            q: request.term,
+                                                        },
+                                                        success: function (res) {
+                                                            response(res.data.map(function (city) {
+                                                                return {
+                                                                    code: city.code,
+                                                                    label: city.name,
+                                                                    value: city.name,
+                                                                };
+                                                            }))
+                                                        },
+                                                    });
+                                                },
+                                            });
+                                        }
+                                    })();
+                                </script>
+                                <div id="subdistrict-module" class="form-group">
+                                    <label for="customer_subdistrict">
+                                        <span>{{ __('Subdistrict') }}</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="customer_subdistrict"
+                                            name="customer_subdistrict"
+                                            class="form-control @error('customer_subdistrict') is-invalid @enderror"
+                                            value="{{ Request::get('customer_subdistrict') }}"
+                                        />
+                                        <div class="input-group-append">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-reset"
+                                                @if (!Request::filled('customer_subdistrict')) disabled @endif
+                                            >{{ __('Reset') }}</button>
+                                        </div>
+                                    </div>
+                                    @error('customer_subdistrict')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <script>
+                                    const Subdistrict = (function () {
+                                        let cityCode = null;
+
+                                        const $el = $('#subdistrict-module');
+                                        const $input = $el.find('#customer_subdistrict');
+
+                                        init();
+
+                                        function init() {
+                                            $input.autocomplete({
+                                                source: function (request, response) {
+                                                    $.ajax({
+                                                        method: 'GET',
+                                                        url: '{{ route('web-api.subdistricts.index') }}',
+                                                        data: {
+                                                            q: request.term,
+                                                        },
+                                                        success: function (res) {
+                                                            response(res.data.map(function (subdistrict) {
+                                                                return {
+                                                                    code: subdistrict.code,
+                                                                    label: subdistrict.name,
+                                                                    value: subdistrict.name,
+                                                                };
+                                                            }))
+                                                        },
+                                                    });
+                                                },
+                                            });
+                                        }
+                                    })();
+                                </script>
+                                <div id="village-module" class="form-group">
+                                    <label for="customer_village">
+                                        <span>{{ __('Village') }}</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            id="customer_village"
+                                            name="customer_village"
+                                            class="form-control @error('customer_village') is-invalid @enderror"
+                                            value="{{ Request::get('customer_village') }}"
+                                        />
+                                        <div class="input-group-append">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-reset"
+                                                @if (!Request::filled('customer_village')) disabled @endif
+                                            >{{ __('Reset') }}</button>
+                                        </div>
+                                    </div>
+                                    @error('customer_village')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <script>
+                                    const Village = (function () {
+                                        let subdistrictCode = null;
+
+                                        const $el = $('#village-module');
+                                        const $input = $el.find('#customer_village');
+
+                                        init();
+
+                                        function init() {
+                                            $input.autocomplete({
+                                                source: function (request, response) {
+                                                    $.ajax({
+                                                        method: 'GET',
+                                                        url: '{{ route('web-api.villages.index') }}',
+                                                        data: {
+                                                            q: request.term,
+                                                        },
+                                                        success: function (res) {
+                                                            response(res.data.map(function (village) {
+                                                                return {
+                                                                    id: village.code,
+                                                                    label: village.name,
+                                                                    value: village.name,
+                                                                };
+                                                            }))
+                                                        },
+                                                    });
+                                                },
+                                            });
+                                        }
+                                    })();
+                                </script>
                                 </div>
                                 <div class="modal-footer">
                                     <a

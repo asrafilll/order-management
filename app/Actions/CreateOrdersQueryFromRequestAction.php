@@ -38,6 +38,10 @@ class CreateOrdersQueryFromRequestAction
             'customer_type',
             'payment_method_id',
             'shipping_id',
+            'customer_province',
+            'customer_city',
+            'customer_subdistrict',
+            'customer_village',
         ];
 
         foreach ($filters as $filter) {
