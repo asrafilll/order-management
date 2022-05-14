@@ -128,6 +128,7 @@
                                     name="city"
                                     class="form-control @error('city') is-invalid @enderror"
                                     value="{{ old('city') ?? $city }}"
+                                    @if(is_null($city)) disabled @endif
                                 />
                                 @error('city')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -206,6 +207,7 @@
                                     name="subdistrict"
                                     class="form-control @error('subdistrict') is-invalid @enderror"
                                     value="{{ old('subdistrict') ?? $subdistrict }}"
+                                    @if(is_null($subdistrict)) disabled @endif
                                 />
                                 @error('subdistrict')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -284,6 +286,7 @@
                                     name="village"
                                     class="form-control @error('village') is-invalid @enderror"
                                     value="{{ old('village') ?? $village }}"
+                                    @if(is_null($village)) disabled @endif
                                 />
                                 @error('village')
                                     <div class="invalid-feedback">{{ $message }}</div>
