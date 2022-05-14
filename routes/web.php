@@ -27,3 +27,4 @@ require __DIR__ . '/order-sources.php';
 require __DIR__ . '/payment-methods.php';
 require __DIR__ . '/customers.php';
 require __DIR__ . '/orders.php';
+require __DIR__ . '/company.php';

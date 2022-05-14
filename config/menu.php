@@ -76,4 +76,11 @@ return [
         'group_name' => 'roles',
         'can' => PermissionEnum::manage_users_and_roles()->value,
     ],
+    [
+        'name' => 'Company',
+        'icon' => 'fas fa-building',
+        'route_name' => 'company.index',
+        'group_name' => 'company',
+        'can' => PermissionEnum::manage_company()->value,
+    ],
 ];
