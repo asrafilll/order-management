@@ -217,23 +217,23 @@
     <br />
     <table>
         <tr>
-            <td>
+            <td width="45%">
                 <ul style="line-height: 1.4;">
-                    <li>{{ __('Customer') }}:</li>
+                    <li>{{ __('Destination') }}:</li>
                     <li style="font-size: 1.1rem; font-weight: bold;">{{ $order->customer_name }}</li>
                     <li>{{ $order->customer_address }}</li>
-                    <li>{{ $order->customer_village }}, {{ $order->customer_subdistrict }}, {{ $order->customer_city }}, {{ $order->customer_province }}, {{ $order->customer_postal_code }}</li>
+                    <li>{{ $customerAddress }}</li>
                     <li>({{ __('Phone') . '. ' . $order->customer_phone }})</li>
                 </ul>
             </td>
-            <td width="100px"></td>
-            <td>
+            <td width="10%"></td>
+            <td width="45%">
                 <ul style="line-height: 1.4;">
-                    <li>{{ __('Customer') }}:</li>
-                    <li style="font-size: 1.1rem; font-weight: bold;">{{ $order->customer_name }}</li>
-                    <li>{{ $order->customer_address }}</li>
-                    <li>{{ $order->customer_village }}, {{ $order->customer_subdistrict }}, {{ $order->customer_city }}, {{ $order->customer_province }}, {{ $order->customer_postal_code }}</li>
-                    <li>({{ __('Phone') . '. ' . $order->customer_phone }})</li>
+                    <li>{{ __('Origin') }}:</li>
+                    <li style="font-size: 1.1rem; font-weight: bold;">{{ $company['name'] }}</li>
+                    <li>{{ $company['address'] }}</li>
+                    <li>{{ $companyAddress }}</li>
+                    <li>({{ __('Phone') . '. ' . $company['phone'] }})</li>
                 </ul>
             </td>
         </tr>
