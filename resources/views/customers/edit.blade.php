@@ -336,7 +336,6 @@
                             <div class="form-group">
                                 <label for="postal_code">
                                     <span>{{ __('Postal Code') }}</span>
-                                    <span class="text-danger">*</span>
                                 </label>
                                 <input
                                     type="number"

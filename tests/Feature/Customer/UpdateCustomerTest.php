@@ -103,7 +103,6 @@ class UpdateCustomerTest extends TestCase
                     'city',
                     'subdistrict',
                     'village',
-                    'postal_code',
                 ],
             ],
             'phone: (not numeric), postal_code: (not numeric)' => [

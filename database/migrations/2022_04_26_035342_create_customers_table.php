@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\CustomerTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,7 +23,7 @@ class CreateCustomersTable extends Migration
             $table->string('city');
             $table->string('subdistrict');
             $table->string('village');
-            $table->string('postal_code');
+            $table->string('postal_code')->nullable();
             $table->string('type')->index();
         });
     }

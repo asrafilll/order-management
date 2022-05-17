@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $city
  * @property string $subdistrict
  * @property string $village
- * @property string $postal_code
+ * @property string|null $postal_code
  * @property \Spatie\Enum\Enum|null $type
  * @method static \Database\Factories\CustomerFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer newModelQuery()
