@@ -444,7 +444,6 @@
                             <div class="form-group">
                                 <label for="customer_postal_code">
                                     <span>{{ __('Postal Code') }}</span>
-                                    <span class="text-danger">*</span>
                                 </label>
                                 <input
                                     type="number"

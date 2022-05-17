@@ -116,7 +116,6 @@ class UpdateOrderGeneralInformationTest extends TestCase
                     'customer_city',
                     'customer_subdistrict',
                     'customer_village',
-                    'customer_postal_code',
                 ]
             ],
             'source_id: (not exists), customer_id: (not exists), customer_phone: (not numeric), customer_postal_code: (not numeric)' => [

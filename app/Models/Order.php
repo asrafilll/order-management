@@ -28,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property string $customer_city
  * @property string $customer_subdistrict
  * @property string $customer_village
- * @property string $customer_postal_code
+ * @property string|null $customer_postal_code
  * @property string $customer_type
  * @property int|null $payment_method_id
  * @property string|null $payment_method_name

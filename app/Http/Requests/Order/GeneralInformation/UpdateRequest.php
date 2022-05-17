@@ -70,7 +70,7 @@ class UpdateRequest extends FormRequest
                 'string',
             ],
             'customer_postal_code' => [
-                'required',
+                'nullable',
                 'numeric',
             ],
         ];

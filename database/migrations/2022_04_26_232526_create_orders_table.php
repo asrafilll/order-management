@@ -32,7 +32,7 @@ class CreateOrdersTable extends Migration
             $table->string('customer_city');
             $table->string('customer_subdistrict');
             $table->string('customer_village');
-            $table->string('customer_postal_code');
+            $table->string('customer_postal_code')->nullable();
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->string('payment_method_name')->nullable();
             $table
