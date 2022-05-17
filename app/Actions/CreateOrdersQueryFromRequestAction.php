@@ -61,6 +61,14 @@ class CreateOrdersQueryFromRequestAction
             }
         }
 
+        if ($request->filled('start_date')) {
+            $query->whereRaw('DATE(created_at) >= ?', [$request->get('start_date')]);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereRaw('DATE(created_at) <= ?', [$request->get('end_date')]);
+        }
+
         return $query;
     }
 }

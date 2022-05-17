@@ -76,6 +76,171 @@
                                     </button>
                                 </div>
                                 <div class="modal-body ui-front">
+                                    <div
+                                        class="form-group"
+                                        id="common-date-module"
+                                    >
+                                        <label>{{ __('Date') }}</label>
+                                        <div class="btn-group w-100">
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-common-date"
+                                                data-value="week"
+                                            >{{ __('This Week') }}</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-common-date"
+                                                data-value="month"
+                                            >
+                                                {{ __('This Month') }}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-default btn-common-date"
+                                                data-value="year"
+                                            >
+                                                {{ __('This Year') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        const CommonDate = (function () {
+                                            const $el = $('#common-date-module');
+                                            const $btn = $el.find('.btn-common-date');
+
+                                            $btn.on('click', handleClick);
+
+                                            function handleClick() {
+                                                const value = $(this).data('value');
+                                                const currentDate = new Date();
+                                                let startDate = null;
+                                                let endDate = null;
+
+                                                switch (value) {
+                                                    case 'week': {
+                                                        const first = currentDate.getDate() - currentDate.getDay() + 1;
+                                                        const last = first + 6;
+                                                        startDate = new Date(currentDate.setDate(first));
+                                                        endDate = new Date(currentDate.setDate(last));
+                                                        break;
+                                                    }
+                                                    case 'month':
+                                                        startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                                                        endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+                                                        break;
+                                                    case 'year':
+                                                        startDate = new Date(currentDate.getFullYear(), 0, 1);
+                                                        endDate = new Date(currentDate.getFullYear() + 1, 0, 0);
+                                                        break;
+                                                }
+
+                                                StartDate.setValue(formatDate(startDate));
+                                                EndDate.setValue(formatDate(endDate));
+                                            }
+
+                                            function formatDate(date) {
+                                                return [
+                                                    date.getFullYear(),
+                                                    String(date.getMonth() + 1).padStart(2, '0'),
+                                                    String(date.getDate()).padStart(2, '0'),
+                                                ].join('-');
+                                            }
+                                        })();
+                                    </script>
+                                    <div class="row">
+                                        <div
+                                            class="form-group col-lg"
+                                            id="start-date-module"
+                                        >
+                                            <label for="start_date">{{ __('Start Date') }}</label>
+                                            <input
+                                                type="text"
+                                                name="start_date"
+                                                id="start_date"
+                                                class="form-control"
+                                                value="{{ Request::get('start_date') }}"
+                                            />
+                                        </div>
+                                        <script>
+                                            const StartDate = (function() {
+                                                const $el = $('#start-date-module');
+                                                const $input = $el.find('#start_date');
+
+                                                init()
+
+                                                function init() {
+                                                    $input.datetimepicker({
+                                                        format: 'Y-m-d',
+                                                        timepicker: false,
+                                                        onShow: function(ctx) {
+                                                            this.setOptions({
+                                                                maxDate: EndDate.getValue() || false,
+                                                            });
+                                                        },
+                                                    });
+                                                }
+
+                                                function getValue() {
+                                                    return $input.val() || null;
+                                                }
+
+                                                function setValue(value) {
+                                                    $input.val(value);
+                                                }
+
+                                                return {
+                                                    getValue: getValue,
+                                                    setValue: setValue,
+                                                };
+                                            })();
+                                        </script>
+                                        <div
+                                            class="form-group col-lg"
+                                            id="end-date-module"
+                                        >
+                                            <label for="end_date">{{ __('End Date') }}</label>
+                                            <input
+                                                type="text"
+                                                name="end_date"
+                                                id="end_date"
+                                                class="form-control"
+                                                value="{{ Request::get('end_date') }}"
+                                            />
+                                        </div>
+                                        <script>
+                                            const EndDate = (function() {
+                                                const $el = $('#end-date-module');
+                                                const $input = $el.find('#end_date');
+
+                                                init()
+
+                                                function init() {
+                                                    $input.datetimepicker({
+                                                        format: 'Y-m-d',
+                                                        timepicker: false,
+                                                        onShow: function(ctx) {
+                                                            this.setOptions({
+                                                                minDate: StartDate.getValue() || false,
+                                                            });
+                                                        },
+                                                    });
+                                                }
+
+                                                function getValue() {
+                                                    return $input.val() || null;
+                                                }
+
+                                                function setValue(value) {
+                                                    $input.val(value);
+                                                }
+
+                                                return {
+                                                    getValue: getValue,
+                                                    setValue: setValue,
+                                                };
+                                            })();
+                                        </script>
+                                    </div>
                                     <div class="form-group">
                                         <label for="customer_name">{{ __('Customer') }}</label>
                                         <input
@@ -280,232 +445,244 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="province-module" class="form-group">
-                                    <label for="customer_province">
-                                        <span>{{ __('Province') }}</span>
-                                    </label>
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            id="customer_province"
-                                            name="customer_province"
-                                            class="form-control @error('customer_province') is-invalid @enderror"
-                                            value="{{ Request::get('customer_province') }}"
-                                        />
-                                        <div class="input-group-append">
-                                            <button
-                                                type="button"
-                                                class="btn btn-default btn-reset"
-                                                @if (!Request::filled('customer_province')) disabled @endif
-                                            >{{ __('Reset') }}</button>
+                                    <div
+                                        id="province-module"
+                                        class="form-group"
+                                    >
+                                        <label for="customer_province">
+                                            <span>{{ __('Province') }}</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                id="customer_province"
+                                                name="customer_province"
+                                                class="form-control @error('customer_province') is-invalid @enderror"
+                                                value="{{ Request::get('customer_province') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('customer_province')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
                                         </div>
+                                        @error('customer_province')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('customer_province')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <script>
-                                    const Province = (function () {
-                                        const $el = $('#province-module');
-                                        const $input = $el.find('#customer_province');
+                                    <script>
+                                        const Province = (function() {
+                                            const $el = $('#province-module');
+                                            const $input = $el.find('#customer_province');
 
-                                        init();
+                                            init();
 
-                                        function init() {
-                                            $input.autocomplete({
-                                                source: function (request, response) {
-                                                    $.ajax({
-                                                        method: 'GET',
-                                                        url: '{{ route('web-api.provinces.index') }}',
-                                                        data: {
-                                                            q: request.term,
-                                                        },
-                                                        success: function (res) {
-                                                            response(res.data.map(function (province) {
-                                                                return {
-                                                                    code: province.code,
-                                                                    label: province.name,
-                                                                    value: province.name,
-                                                                };
-                                                            }))
-                                                        },
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    })();
-                                </script>
-                                <div id ="city-module" class="form-group">
-                                    <label for="customer_city">
-                                        <span>{{ __('City') }}</span>
-                                    </label>
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            id="customer_city"
-                                            name="customer_city"
-                                            class="form-control @error('customer_city') is-invalid @enderror"
-                                            value="{{ Request::get('customer_city') }}"
-                                        />
-                                        <div class="input-group-append">
-                                            <button
-                                                type="button"
-                                                class="btn btn-default btn-reset"
-                                                @if (!Request::filled('customer_city')) disabled @endif
-                                            >{{ __('Reset') }}</button>
+                                            function init() {
+                                                $input.autocomplete({
+                                                    source: function(request, response) {
+                                                        $.ajax({
+                                                            method: 'GET',
+                                                            url: '{{ route('web-api.provinces.index') }}',
+                                                            data: {
+                                                                q: request.term,
+                                                            },
+                                                            success: function(res) {
+                                                                response(res.data.map(function(province) {
+                                                                    return {
+                                                                        code: province.code,
+                                                                        label: province.name,
+                                                                        value: province.name,
+                                                                    };
+                                                                }))
+                                                            },
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        })();
+                                    </script>
+                                    <div
+                                        id="city-module"
+                                        class="form-group"
+                                    >
+                                        <label for="customer_city">
+                                            <span>{{ __('City') }}</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                id="customer_city"
+                                                name="customer_city"
+                                                class="form-control @error('customer_city') is-invalid @enderror"
+                                                value="{{ Request::get('customer_city') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('customer_city')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
                                         </div>
+                                        @error('customer_city')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('customer_city')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <script>
-                                    const City = (function () {
-                                        let provinceCode = null;
+                                    <script>
+                                        const City = (function() {
+                                            let provinceCode = null;
 
-                                        const $el = $('#city-module');
-                                        const $input = $el.find('#customer_city');
+                                            const $el = $('#city-module');
+                                            const $input = $el.find('#customer_city');
 
-                                        init();
+                                            init();
 
-                                        function init() {
-                                            $input.autocomplete({
-                                                source: function (request, response) {
-                                                    $.ajax({
-                                                        method: 'GET',
-                                                        url: '{{ route('web-api.cities.index') }}',
-                                                        data: {
-                                                            q: request.term,
-                                                        },
-                                                        success: function (res) {
-                                                            response(res.data.map(function (city) {
-                                                                return {
-                                                                    code: city.code,
-                                                                    label: city.name,
-                                                                    value: city.name,
-                                                                };
-                                                            }))
-                                                        },
-                                                    });
-                                                },
-                                            });
-                                        }
-                                    })();
-                                </script>
-                                <div id="subdistrict-module" class="form-group">
-                                    <label for="customer_subdistrict">
-                                        <span>{{ __('Subdistrict') }}</span>
-                                    </label>
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            id="customer_subdistrict"
-                                            name="customer_subdistrict"
-                                            class="form-control @error('customer_subdistrict') is-invalid @enderror"
-                                            value="{{ Request::get('customer_subdistrict') }}"
-                                        />
-                                        <div class="input-group-append">
-                                            <button
-                                                type="button"
-                                                class="btn btn-default btn-reset"
-                                                @if (!Request::filled('customer_subdistrict')) disabled @endif
-                                            >{{ __('Reset') }}</button>
+                                            function init() {
+                                                $input.autocomplete({
+                                                    source: function(request, response) {
+                                                        $.ajax({
+                                                            method: 'GET',
+                                                            url: '{{ route('web-api.cities.index') }}',
+                                                            data: {
+                                                                q: request.term,
+                                                            },
+                                                            success: function(res) {
+                                                                response(res.data.map(function(city) {
+                                                                    return {
+                                                                        code: city.code,
+                                                                        label: city.name,
+                                                                        value: city.name,
+                                                                    };
+                                                                }))
+                                                            },
+                                                        });
+                                                    },
+                                                });
+                                            }
+                                        })();
+                                    </script>
+                                    <div
+                                        id="subdistrict-module"
+                                        class="form-group"
+                                    >
+                                        <label for="customer_subdistrict">
+                                            <span>{{ __('Subdistrict') }}</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                id="customer_subdistrict"
+                                                name="customer_subdistrict"
+                                                class="form-control @error('customer_subdistrict') is-invalid @enderror"
+                                                value="{{ Request::get('customer_subdistrict') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('customer_subdistrict')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
                                         </div>
+                                        @error('customer_subdistrict')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('customer_subdistrict')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <script>
-                                    const Subdistrict = (function () {
-                                        let cityCode = null;
+                                    <script>
+                                        const Subdistrict = (function() {
+                                            let cityCode = null;
 
-                                        const $el = $('#subdistrict-module');
-                                        const $input = $el.find('#customer_subdistrict');
+                                            const $el = $('#subdistrict-module');
+                                            const $input = $el.find('#customer_subdistrict');
 
-                                        init();
+                                            init();
 
-                                        function init() {
-                                            $input.autocomplete({
-                                                source: function (request, response) {
-                                                    $.ajax({
-                                                        method: 'GET',
-                                                        url: '{{ route('web-api.subdistricts.index') }}',
-                                                        data: {
-                                                            q: request.term,
-                                                        },
-                                                        success: function (res) {
-                                                            response(res.data.map(function (subdistrict) {
-                                                                return {
-                                                                    code: subdistrict.code,
-                                                                    label: subdistrict.name,
-                                                                    value: subdistrict.name,
-                                                                };
-                                                            }))
-                                                        },
-                                                    });
-                                                },
-                                            });
-                                        }
-                                    })();
-                                </script>
-                                <div id="village-module" class="form-group">
-                                    <label for="customer_village">
-                                        <span>{{ __('Village') }}</span>
-                                    </label>
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            id="customer_village"
-                                            name="customer_village"
-                                            class="form-control @error('customer_village') is-invalid @enderror"
-                                            value="{{ Request::get('customer_village') }}"
-                                        />
-                                        <div class="input-group-append">
-                                            <button
-                                                type="button"
-                                                class="btn btn-default btn-reset"
-                                                @if (!Request::filled('customer_village')) disabled @endif
-                                            >{{ __('Reset') }}</button>
+                                            function init() {
+                                                $input.autocomplete({
+                                                    source: function(request, response) {
+                                                        $.ajax({
+                                                            method: 'GET',
+                                                            url: '{{ route('web-api.subdistricts.index') }}',
+                                                            data: {
+                                                                q: request.term,
+                                                            },
+                                                            success: function(res) {
+                                                                response(res.data.map(function(subdistrict) {
+                                                                    return {
+                                                                        code: subdistrict.code,
+                                                                        label: subdistrict.name,
+                                                                        value: subdistrict.name,
+                                                                    };
+                                                                }))
+                                                            },
+                                                        });
+                                                    },
+                                                });
+                                            }
+                                        })();
+                                    </script>
+                                    <div
+                                        id="village-module"
+                                        class="form-group"
+                                    >
+                                        <label for="customer_village">
+                                            <span>{{ __('Village') }}</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                id="customer_village"
+                                                name="customer_village"
+                                                class="form-control @error('customer_village') is-invalid @enderror"
+                                                value="{{ Request::get('customer_village') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('customer_village')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
                                         </div>
+                                        @error('customer_village')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('customer_village')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <script>
-                                    const Village = (function () {
-                                        let subdistrictCode = null;
+                                    <script>
+                                        const Village = (function() {
+                                            let subdistrictCode = null;
 
-                                        const $el = $('#village-module');
-                                        const $input = $el.find('#customer_village');
+                                            const $el = $('#village-module');
+                                            const $input = $el.find('#customer_village');
 
-                                        init();
+                                            init();
 
-                                        function init() {
-                                            $input.autocomplete({
-                                                source: function (request, response) {
-                                                    $.ajax({
-                                                        method: 'GET',
-                                                        url: '{{ route('web-api.villages.index') }}',
-                                                        data: {
-                                                            q: request.term,
-                                                        },
-                                                        success: function (res) {
-                                                            response(res.data.map(function (village) {
-                                                                return {
-                                                                    id: village.code,
-                                                                    label: village.name,
-                                                                    value: village.name,
-                                                                };
-                                                            }))
-                                                        },
-                                                    });
-                                                },
-                                            });
-                                        }
-                                    })();
-                                </script>
+                                            function init() {
+                                                $input.autocomplete({
+                                                    source: function(request, response) {
+                                                        $.ajax({
+                                                            method: 'GET',
+                                                            url: '{{ route('web-api.villages.index') }}',
+                                                            data: {
+                                                                q: request.term,
+                                                            },
+                                                            success: function(res) {
+                                                                response(res.data.map(function(village) {
+                                                                    return {
+                                                                        id: village.code,
+                                                                        label: village.name,
+                                                                        value: village.name,
+                                                                    };
+                                                                }))
+                                                            },
+                                                        });
+                                                    },
+                                                });
+                                            }
+                                        })();
+                                    </script>
                                 </div>
                                 <div class="modal-footer">
                                     <a

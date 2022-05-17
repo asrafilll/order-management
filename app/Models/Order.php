@@ -81,8 +81,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethodName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereReturnedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereReturnedNote($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereSalesId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereSalesName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereShippingAirwaybill($value)
@@ -142,7 +140,6 @@ class Order extends Model
         'status' => OrderStatusEnum::class,
         'payment_status' => PaymentStatusEnum::class,
         'shipping_date' => 'datetime',
-        'returned_at' => 'datetime',
     ];
 
     protected static function booted()
