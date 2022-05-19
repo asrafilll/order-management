@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\City;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\File;
 
 class CitySeeder extends Seeder
 {
@@ -15,19 +15,15 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        $csv = new \ParseCsv\Csv(
-            storage_path('indonesia-areas/cities.csv')
-        );
+        City::truncate();
 
-        $totalRows = count($csv->data);
+        $json = File::get(storage_path('indonesia-areas/cities.json'));
+        $data = json_decode($json, true);
+        $totalRows = count($data);
         $temp = [];
 
-        foreach ($csv->data as $index => $row) {
-            $temp[] = [
-                'code' => $row['Code'],
-                'parent' => $row['Parent'],
-                'name' => $row['Name'],
-            ];
+        foreach ($data as $index => $row) {
+            $temp[] = $row;
 
             if (count($temp) > 50 || $index == $totalRows - 1) {
                 City::insert($temp);

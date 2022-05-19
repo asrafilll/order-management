@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Province;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
 
 class ProvinceSeeder extends Seeder
 {
@@ -16,18 +15,15 @@ class ProvinceSeeder extends Seeder
      */
     public function run()
     {
-        $csv = new \ParseCsv\Csv(
-            storage_path('indonesia-areas/provinces.csv')
-        );
+        Province::truncate();
 
-        $totalRows = count($csv->data);
+        $json = File::get(storage_path('indonesia-areas/provinces.json'));
+        $data = json_decode($json, true);
+        $totalRows = count($data);
         $temp = [];
 
-        foreach ($csv->data as $index => $row) {
-            $temp[] = [
-                'code' => $row['Code'],
-                'name' => $row['Name'],
-            ];
+        foreach ($data as $index => $row) {
+            $temp[] = $row;
 
             if (count($temp) > 50 || $index == $totalRows - 1) {
                 Province::insert($temp);
