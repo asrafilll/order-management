@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Province;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 
 class ProvinceSeeder extends Seeder
@@ -15,7 +16,9 @@ class ProvinceSeeder extends Seeder
      */
     public function run()
     {
-        Province::truncate();
+        if (!App::environment('testing')) {
+            Province::truncate();
+        }
 
         $json = File::get(storage_path('indonesia-areas/provinces.json'));
         $data = json_decode($json, true);

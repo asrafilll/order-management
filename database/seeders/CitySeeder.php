@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\City;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 
 class CitySeeder extends Seeder
@@ -15,7 +16,9 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        City::truncate();
+        if (!App::environment('testing')) {
+            City::truncate();
+        }
 
         $json = File::get(storage_path('indonesia-areas/cities.json'));
         $data = json_decode($json, true);

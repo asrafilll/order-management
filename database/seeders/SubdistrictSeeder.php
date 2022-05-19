@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Subdistrict;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 
 class SubdistrictSeeder extends Seeder
@@ -15,7 +16,9 @@ class SubdistrictSeeder extends Seeder
      */
     public function run()
     {
-        Subdistrict::truncate();
+        if (!App::environment('testing')) {
+            Subdistrict::truncate();
+        }
 
         $json = File::get(storage_path('indonesia-areas/subdistricts.json'));
         $data = json_decode($json, true);

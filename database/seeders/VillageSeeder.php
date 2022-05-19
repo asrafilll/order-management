@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Village;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 
 class VillageSeeder extends Seeder
@@ -15,7 +16,9 @@ class VillageSeeder extends Seeder
      */
     public function run()
     {
-        Village::truncate();
+        if (!App::environment('testing')) {
+            Village::truncate();
+        }
 
         $json = File::get(storage_path('indonesia-areas/villages.json'));
         $data = json_decode($json, true);
