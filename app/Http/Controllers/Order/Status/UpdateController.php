@@ -29,7 +29,6 @@ class UpdateController extends Controller
             in_array($updateRequest->get('status'), [
                 OrderStatusEnum::sent(),
                 OrderStatusEnum::completed(),
-                OrderStatusEnum::canceled(),
             ]) &&
                 !$order->canSent(),
             HttpResponse::HTTP_FORBIDDEN
