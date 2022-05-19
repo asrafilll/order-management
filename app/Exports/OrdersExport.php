@@ -56,7 +56,7 @@ class OrdersExport implements
     {
         return [
             __('ID'),
-            __('Created At'),
+            __('Closing Date'),
             __('Name'),
             __('Phone'),
             __('Address'),

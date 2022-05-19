@@ -863,7 +863,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('ID') }}</th>
-                            <th>{{ __('Created At') }}</th>
+                            <th>{{ __('Closing Date') }}</th>
                             <th>{{ __('Customer') }}</th>
                             <th>{{ __('Type') }}</th>
                             <th>{{ __('Total') }}</th>
