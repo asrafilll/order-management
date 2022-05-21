@@ -20,6 +20,8 @@ class OrderBuilder
 
     private bool $addItem = false;
 
+    private int $itemQuantity = 1;
+
     public function __construct()
     {
         /** @var OrderSource */
@@ -141,6 +143,13 @@ class OrderBuilder
         return $this;
     }
 
+    public function setItemQuantity(int $quantity): OrderBuilder
+    {
+        $this->itemQuantity = $quantity;
+
+        return $this;
+    }
+
     public function build(): Order
     {
         /** @var Order */
@@ -192,7 +201,7 @@ class OrderBuilder
                 'variant_value1' => $productVariant->value1,
                 'variant_option2' => $productVariant->option2,
                 'variant_value2' => $productVariant->value2,
-                'quantity' => 1,
+                'quantity' => $this->itemQuantity,
             ]);
 
         $order->refresh();
