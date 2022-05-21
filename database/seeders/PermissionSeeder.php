@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Enums\PermissionEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
@@ -16,6 +18,12 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+        if (!App::environment('testing')) {
+            Schema::disableForeignKeyConstraints();
+            Permission::truncate();
+            Schema::enableForeignKeyConstraints();
+        }
+
         $temp = [];
         $permissions = PermissionEnum::toValues();
         $lastIndex = count($permissions) - 1;
