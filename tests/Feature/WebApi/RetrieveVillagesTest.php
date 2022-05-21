@@ -10,13 +10,6 @@ class RetrieveVillagesTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->seed(VillageSeeder::class);
-    }
-
     public function test_should_return_json_response()
     {
         $this->getJson(route('web-api.subdistricts.index'))

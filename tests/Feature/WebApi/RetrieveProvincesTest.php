@@ -10,13 +10,6 @@ class RetrieveProvincesTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->seed(ProvinceSeeder::class);
-    }
-
     public function test_should_return_json_response()
     {
         $this->getJson(route('web-api.provinces.index'))
