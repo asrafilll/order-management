@@ -13,21 +13,27 @@ Stacks:
 
 Features:
 
-[x] Users management
-[x] Roles management
-[x] Permissions management
-[x] Customers management
-[x] Products management
-[x] Variants management
-[x] Orders management
-[x] Integrasi wilayah Indonesia (provinsi, kota, kecamata, kelurahan, dan kode pos)
-[x] Shippings management
-[x] Payment methods management
-[x] Employees management
-[x] Employee types management (sales, input, packing)
-[x] Order sources management
-[x] Print order as invoice
-[x] Auto assign customer type
-[x] Auto complete order dengan status sent setelah 7 hari
-[x] Filter orders
-[x] Export orders
+- [x] Users management
+- [x] Roles management
+- [x] Permissions management
+- [x] Customers management
+- [x] Products management
+- [x] Variants management
+- [x] Orders management
+- [x] Integrasi wilayah Indonesia (provinsi, kota, kecamata, kelurahan, dan kode pos)
+- [x] Shippings management
+- [x] Payment methods management
+- [x] Employees management
+- [x] Employee types management (sales, input, packing)
+- [x] Order sources management
+- [x] Print order as invoice
+- [x] Auto assign customer type
+- [x] Auto complete order dengan status sent setelah 7 hari
+- [x] Filter orders
+- [x] Export orders
+- [x] Retur item order 
+- [ ] Dashboard
+  - [ ] Total penjualan berdasarkan order source
+  - [ ] Total customer berdasarkan type (new, repeat, member)
+  - [ ] Grafik order berdasarkan status
+  - [ ] Grafik penjualan
