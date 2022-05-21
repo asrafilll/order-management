@@ -97,7 +97,14 @@
     @if (Session::has('success'))
         <x-feedback
             type="success"
-            message="{{ Session::get('success') }}"
+            message="{!! Session::get('success') !!}"
+        />
+    @endif
+
+    @if (Session::has('error'))
+        <x-feedback
+            type="error"
+            message="{!! Session::get('error') !!}"
         />
     @endif
 
