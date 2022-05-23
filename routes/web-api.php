@@ -17,4 +17,5 @@ Route::middleware(['auth'])
         Route::get('payment-methods', \App\Http\Controllers\WebApi\PaymentMethodController::class)->name('payment-methods.index');
         Route::get('orders', \App\Http\Controllers\WebApi\OrderController::class)->name('orders.index');
         Route::get('order-items', \App\Http\Controllers\WebApi\OrderItemController::class)->name('order-items.index');
+        Route::get('customer-types/customers', \App\Http\Controllers\WebApi\CustomerTypeCustomerController::class)->name('customer-types.customers.index');
     });
