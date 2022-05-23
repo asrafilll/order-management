@@ -14,6 +14,12 @@ use App\Enums\PermissionEnum;
 
 return [
     [
+        'name' => 'Dashboard',
+        'icon' => 'fas fa-tachometer-alt',
+        'route_name' => 'dashboard',
+        'group_name' => 'dashboard',
+    ],
+    [
         'name' => 'Orders',
         'icon' => 'fas fa-box',
         'route_name' => 'orders.index',
