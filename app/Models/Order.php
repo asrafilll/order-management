@@ -236,10 +236,6 @@ class Order extends Model
             return false;
         }
 
-        if ($this->payment_status->equals(PaymentStatusEnum::unpaid())) {
-            return false;
-        }
-
         return true;
     }
 
