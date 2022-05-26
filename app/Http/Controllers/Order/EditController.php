@@ -64,19 +64,6 @@ class EditController extends Controller
                     OrderStatusEnum::canceled()->value,
                 ];
                 break;
-
-            case OrderStatusEnum::completed():
-            case OrderStatusEnum::canceled():
-                $orderStatuses = [
-                    OrderStatusEnum::canceled()->value,
-                ];
-
-                if ($order->canSent()) {
-                    $orderStatuses = array_merge($orderStatuses, [
-                        OrderStatusEnum::completed()->value,
-                    ]);
-                }
-                break;
         }
 
         return Response::view('orders.edit', [
