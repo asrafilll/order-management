@@ -16,7 +16,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->order->isEditable();
+        return true;
     }
 
     /**
@@ -26,21 +26,28 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'payment_method_id' => [
-                'required',
-                'integer',
-                Rule::exists((new PaymentMethod())->getTable(), 'id'),
-            ],
-            'payment_method_name' => [
-                'required',
-                'string',
-            ],
+        $rules = [
             'payment_status' => [
                 'required',
                 'string',
                 'enum:' . PaymentStatusEnum::class,
             ],
         ];
+
+        if (!$this->order->hasPayment()) {
+            $rules = array_merge($rules, [
+                'payment_method_id' => [
+                    'required',
+                    'integer',
+                    Rule::exists((new PaymentMethod())->getTable(), 'id'),
+                ],
+                'payment_method_name' => [
+                    'required',
+                    'string',
+                ],
+            ]);
+        }
+
+        return $rules;
     }
 }

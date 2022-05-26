@@ -255,6 +255,11 @@ class Order extends Model
         return $this->canProcessed();
     }
 
+    public function hasPayment(): bool
+    {
+        return !is_null($this->payment_method_id) && !is_null($this->payment_method_name);
+    }
+
     public function calculateSummary(): void
     {
         $this->load(['items']);

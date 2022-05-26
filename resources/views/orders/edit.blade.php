@@ -511,44 +511,36 @@
                                 <div class="row align-items-center mb-3">
                                     <div class="col-lg">
                                         <span>{{ __('Status') }}</span>
-                                        @if ($order->isEditable())
-                                            <span class="text-danger">*</span>
-                                        @endif
+                                        <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="text-right">
-                                            @if ($order->isEditable())
-                                                <select
-                                                    name="payment_status"
-                                                    id="payment_status"
-                                                    class="form-control @error('payment_status') is-invalid @enderror"
-                                                >
-                                                    @foreach (\App\Enums\PaymentStatusEnum::toValues() as $paymentStatus)
-                                                        <option
-                                                            value="{{ $paymentStatus }}"
-                                                            @if (old('payment_status') == $paymentStatus || $order->payment_status == $paymentStatus) selected @endif
-                                                        >{{ Str::upper($paymentStatus) }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('payment_method_name')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            @else
-                                                <span>{{ Str::upper($order->payment_status) }}</span>
-                                            @endif
+                                            <select
+                                                name="payment_status"
+                                                id="payment_status"
+                                                class="form-control @error('payment_status') is-invalid @enderror"
+                                            >
+                                                @foreach (\App\Enums\PaymentStatusEnum::toValues() as $paymentStatus)
+                                                    <option
+                                                        value="{{ $paymentStatus }}"
+                                                        @if (old('payment_status') == $paymentStatus || $order->payment_status == $paymentStatus) selected @endif
+                                                    >{{ Str::upper($paymentStatus) }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('payment_method_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @if ($order->isEditable())
-                            <div class="card-footer">
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
-                                >{{ __('Save') }}</button>
-                            </div>
-                        @endif
+                        <div class="card-footer">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >{{ __('Save') }}</button>
+                        </div>
                     </div>
                 </form>
                 <script>

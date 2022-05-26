@@ -59,30 +59,6 @@ class UpdateOrderPaymentTest extends TestCase
     }
 
     /**
-     * @return void
-     */
-    public function test_should_error_update_order_payment_method_when_order_is_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        /** @var PaymentMethod */
-        $paymentMethod = PaymentMethod::factory()->create();
-        $input = [
-            'payment_method_id' => $paymentMethod->id,
-            'payment_method_name' => $paymentMethod->name,
-            'payment_status' => PaymentStatusEnum::unpaid()->value,
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.payment.update', $order), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
      * @dataProvider invalidProvider
      * @param array $input
      * @param array $errors
