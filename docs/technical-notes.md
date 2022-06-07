@@ -45,7 +45,7 @@ Improvements:
 - [x] Setelah order status completed atau canceled, status sudah tidak dapat diedit
 - [x] Payment status masih bisa di edit di order status manapun
 - [x] Tipe customer menjadi member apabila sudah memenuhi kondisi minimal order 6x atau total nominal keseluruhan order 2jt (menunggu info total nominal diambil setelah atau sebelum diskon) dengan status order completed
-- [ ] Ubah bahasa ke Indonesia
+- [x] Ubah bahasa ke Indonesia
 - [ ] Rebuild return agar mengacu pada order dengan items secara default terpilih seluruhnya
   - [ ] Order yang dapat di return adalah order dengan status selain waiting dan processed
   - [ ] Tambah field position untuk menampung data [Gudang, Ekspedisi, Hilang]
