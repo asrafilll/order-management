@@ -278,20 +278,39 @@ class Order extends Model
 
     public function syncCustomerType()
     {
+        $totalNominalItemsPriceCompletedOrdersForCurrentCustomerId = intval(
+            Order::query()
+                ->whereCustomerId($this->customer_id)
+                ->whereStatus(OrderStatusEnum::completed())
+                ->selectRaw('SUM(items_price - IFNULL(items_discount, 0)) as total')
+                ->value('total')
+        );
+        $MIN_MEMBER_TOTAL_NOMINAL_ITEMS_PRICE_COMPLETED_ORDERS = 2000000;
+
+        if ($totalNominalItemsPriceCompletedOrdersForCurrentCustomerId >= $MIN_MEMBER_TOTAL_NOMINAL_ITEMS_PRICE_COMPLETED_ORDERS) {
+            return Customer::whereId($this->customer_id)->update([
+                'type' => CustomerTypeEnum::member(),
+            ]);
+        }
+
         $totalCompletedOrdersForCurrentCustomerId = Order::query()
             ->whereCustomerId($this->customer_id)
             ->whereStatus(OrderStatusEnum::completed())
             ->count();
 
-        if ($totalCompletedOrdersForCurrentCustomerId == 2) {
-            Customer::whereId($this->customer_id)->update([
-                'type' => CustomerTypeEnum::repeat(),
+        $MIN_MEMBER_TOTAL_COMPLETED_ORDERS = 6;
+
+        if ($totalCompletedOrdersForCurrentCustomerId >= $MIN_MEMBER_TOTAL_COMPLETED_ORDERS) {
+            return Customer::whereId($this->customer_id)->update([
+                'type' => CustomerTypeEnum::member(),
             ]);
         }
 
-        if ($totalCompletedOrdersForCurrentCustomerId > 2) {
-            Customer::whereId($this->customer_id)->update([
-                'type' => CustomerTypeEnum::member(),
+        $MIN_REPEAT_TOTAL_COMPLETED_ORDERS = 2;
+
+        if ($totalCompletedOrdersForCurrentCustomerId >= $MIN_REPEAT_TOTAL_COMPLETED_ORDERS) {
+            return Customer::whereId($this->customer_id)->update([
+                'type' => CustomerTypeEnum::repeat(),
             ]);
         }
     }

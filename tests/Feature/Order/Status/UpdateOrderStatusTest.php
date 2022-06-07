@@ -214,7 +214,7 @@ class UpdateOrderStatusTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_update_customer_type_to_member_when_order_status_was_updated_to_completed_and_customer_have_three_or_more_completed_orders()
+    public function test_should_update_customer_type_to_member_when_order_status_was_updated_to_completed_and_customer_have_six_or_more_completed_orders()
     {
         $order = (new OrderBuilder)
             ->addPaymentMethod()
@@ -226,11 +226,12 @@ class UpdateOrderStatusTest extends TestCase
             ->addShippingDetail()
             ->build();
 
-        $secondOrder = $order->replicate();
-        $secondOrder->status = OrderStatusEnum::completed();
-        $secondOrder->save();
-        $thirdOrder = $secondOrder->replicate();
-        $thirdOrder->save();
+        foreach (range(1, 5) as $row) {
+            $currentOrder = $order->replicate();
+            $currentOrder->status = OrderStatusEnum::completed();
+            $currentOrder->save();
+        }
+
         $input = [
             'status' => OrderStatusEnum::completed()->value,
         ];
@@ -255,7 +256,7 @@ class UpdateOrderStatusTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_update_customer_type_to_member_when_order_status_was_triggered_update_to_completed_by_job_and_customer_have_three_or_more_completed_orders()
+    public function test_should_update_customer_type_to_member_when_order_status_was_triggered_update_to_completed_by_job_and_customer_have_six_or_more_completed_orders()
     {
         $order = (new OrderBuilder)
             ->addPaymentMethod()
@@ -267,11 +268,94 @@ class UpdateOrderStatusTest extends TestCase
             ->addShippingDetail()
             ->build();
 
-        $secondOrder = $order->replicate();
-        $secondOrder->status = OrderStatusEnum::completed();
-        $secondOrder->save();
-        $thirdOrder = $secondOrder->replicate();
-        $thirdOrder->save();
+        foreach (range(1, 5) as $row) {
+            $currentOrder = $order->replicate();
+            $currentOrder->status = OrderStatusEnum::completed();
+            $currentOrder->save();
+        }
+
+        $input = [
+            'status' => OrderStatusEnum::sent()->value,
+        ];
+
+        $response = $this
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_orders()
+                )
+            )
+            ->put(route('orders.status.update', $order), $input);
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
+
+        /** @var Customer */
+        $customer = Customer::find($order->customer_id);
+        $this->assertTrue($customer->type->equals(CustomerTypeEnum::member()));
+    }
+
+    /**
+     * @return void
+     */
+    public function test_should_update_customer_type_to_member_when_order_status_was_updated_to_completed_and_customer_have_order_total_nominal_completed_orders_items_price_greater_than_2_millions()
+    {
+        $order = (new OrderBuilder)
+            ->addPaymentMethod()
+            ->addShipping()
+            ->addSales()
+            ->addCreator()
+            ->addPacker()
+            ->addItems()
+            ->addShippingDetail()
+            ->build();
+
+        $currentOrder = $order->replicate();
+        $currentOrder->status = OrderStatusEnum::completed();
+        $currentOrder->items_price = 1990000;
+        $currentOrder->save();
+
+        $input = [
+            'status' => OrderStatusEnum::completed()->value,
+        ];
+
+        $response = $this
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_orders()
+                )
+            )
+            ->put(route('orders.status.update', $order), $input);
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
+
+        /** @var Customer */
+        $customer = Customer::find($order->customer_id);
+        $this->assertTrue($customer->type->equals(CustomerTypeEnum::member()));
+    }
+
+    /**
+     * @return void
+     */
+    public function test_should_update_customer_type_to_member_when_order_status_was_triggered_update_to_completed_by_job_and_customer_have_order_total_nominal_completed_orders_items_price_greater_than_2_millions()
+    {
+        $order = (new OrderBuilder)
+            ->addPaymentMethod()
+            ->addShipping()
+            ->addSales()
+            ->addCreator()
+            ->addPacker()
+            ->addItems()
+            ->addShippingDetail()
+            ->build();
+
+            $currentOrder = $order->replicate();
+            $currentOrder->status = OrderStatusEnum::completed();
+            $currentOrder->items_price = 1990000;
+            $currentOrder->save();
+
         $input = [
             'status' => OrderStatusEnum::sent()->value,
         ];
