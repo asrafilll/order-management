@@ -524,7 +524,7 @@
                                                     <option
                                                         value="{{ $paymentStatus }}"
                                                         @if (old('payment_status') == $paymentStatus || $order->payment_status == $paymentStatus) selected @endif
-                                                    >{{ Str::upper(__($paymentStatus)) }}</option>
+                                                    >{{ __(Str::upper($paymentStatus)) }}</option>
                                                 @endforeach
                                             </select>
                                             @error('payment_method_name')
@@ -599,7 +599,7 @@
                                         <option
                                             value="{{ $orderStatus }}"
                                             @if (old('status') == $orderStatus || $order->status == $orderStatus) selected @endif
-                                        >{{ Str::upper(__($orderStatus)) }}</option>
+                                        >{{ __(Str::upper($orderStatus)) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -611,7 +611,7 @@
                             </div>
                         @else
                             <div class="card-body">
-                                <div>{{ Str::upper(__($order->status)) }}</div>
+                                <div>{{ __(Str::upper($order->status)) }}</div>
                             </div>
                         @endif
                     </div>
