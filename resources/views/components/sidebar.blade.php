@@ -47,7 +47,7 @@
                             groupPath="{{ $menu['group_name'] }}"
                         >
                             <i class="nav-icon {{ $menu['icon'] }}"></i>
-                            <p>{{ $menu['name'] }}</p>
+                            <p>{{ __($menu['name']) }}</p>
                         </x-nav-item>
                     @endif
                 @endforeach
