@@ -885,9 +885,9 @@
                                 <td>{{ $order->customer_name }}</td>
                                 <td>{{ Str::upper($order->customer_type) }}</td>
                                 <td>{{ Config::get('app.currency') . ' ' . number_format($order->total_price) }}</td>
-                                <td>{{ Str::upper($order->status) }}</td>
+                                <td>{{ Str::upper(__($order->status)) }}</td>
                                 <td>{{ $order->payment_method_name }}</td>
-                                <td>{{ Str::upper($order->payment_status) }}</td>
+                                <td>{{ Str::upper(__($order->payment_status)) }}</td>
                                 <td>{{ $order->source_name }}</td>
                                 <td>{{ $order->sales_name }}</td>
                                 <td>{{ ($order->items_quantity ?: 'No ') . ' ' . __('items') }}</td>
