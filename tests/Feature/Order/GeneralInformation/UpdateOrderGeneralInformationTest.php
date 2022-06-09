@@ -170,41 +170,4 @@ class UpdateOrderGeneralInformationTest extends TestCase
 
         $response->assertNotFound();
     }
-
-    /**
-     * @return void
-     */
-    public function test_should_error_update_order_when_status_is_not_editable()
-    {
-        /** @var Order */
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        /** @var OrderSource */
-        $orderSource = OrderSource::factory()->create();
-        /** @var Customer */
-        $customer = Customer::factory()->create();
-
-        $input = [
-            'source_id' => $orderSource->id,
-            'source_name' => $orderSource->name,
-            'customer_id' => $customer->id,
-            'customer_name' => $customer->name,
-            'customer_phone' => '08123456789',
-            'customer_address' => 'Updated address',
-            'customer_province' => 'Updated province',
-            'customer_city' => 'Updated city',
-            'customer_subdistrict' => 'Updated subdistrict',
-            'customer_village' => 'Updated village',
-            'customer_postal_code' => '12345',
-        ];
-
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.general-information.update', $order), $input);
-
-        $response->assertForbidden();
-    }
 }

@@ -151,9 +151,7 @@ class Order extends Model
         });
 
         static::updated(function (Order $order) {
-            if ($order->isEditable()) {
-                $order->calculateSummary();
-            }
+            $order->calculateSummary();
 
             if ($order->status->equals(OrderStatusEnum::sent())) {
                 CompleteOrder::dispatch($order)
@@ -180,84 +178,6 @@ class Order extends Model
         return $this
             ->hasMany(OrderHistory::class)
             ->latest();
-    }
-
-    public function isEditable(): bool
-    {
-        return $this->status->equals(OrderStatusEnum::waiting());
-    }
-
-    public function canEditShippingDetail(): bool
-    {
-        return in_array($this->status, [
-            OrderStatusEnum::waiting(),
-            OrderStatusEnum::processed(),
-        ]);
-    }
-
-    public function canProcessed(): bool
-    {
-        $requiredAttributes = [
-            'source_id',
-            'source_name',
-            'customer_id',
-            'customer_name',
-            'customer_phone',
-            'customer_address',
-            'customer_province',
-            'customer_city',
-            'customer_subdistrict',
-            'customer_village',
-            'customer_postal_code',
-            'customer_type',
-            'payment_method_id',
-            'payment_method_name',
-            'shipping_id',
-            'shipping_name',
-            'items_quantity',
-            'items_price',
-            'shipping_price',
-            'total_price',
-            'sales_id',
-            'sales_name',
-            'creator_id',
-            'creator_name',
-            'packer_id',
-            'packer_name',
-        ];
-
-        foreach ($requiredAttributes as $attribute) {
-            if (!$this->{$attribute}) {
-                return false;
-            }
-        }
-
-        if ($this->items()->count() < 1) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function canSent(): bool
-    {
-        $requiredAttributes = [
-            'shipping_date',
-            'shipping_airwaybill',
-        ];
-
-        foreach ($requiredAttributes as $attribute) {
-            if (!$this->{$attribute}) {
-                return false;
-            }
-        }
-
-        return $this->canProcessed();
-    }
-
-    public function hasPayment(): bool
-    {
-        return !is_null($this->payment_method_id) && !is_null($this->payment_method_name);
     }
 
     public function calculateSummary(): void

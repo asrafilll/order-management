@@ -11,57 +11,55 @@
                         <h3 class="card-title float-none">{{ __('Items') }}</h3>
                     </div>
                     <div class="card-body p-0">
-                        @if ($order->isEditable())
-                            <div
-                                id="product-search-module"
-                                class="p-3 border-bottom"
-                            >
-                                <input
-                                    type="search"
-                                    name="search"
-                                    id="search"
-                                    class="form-control"
-                                    placeholder="{{ __('Search product') }}"
-                                />
-                            </div>
-                            <script>
-                                const ProductSearch = (function() {
-                                    const $el = $('#product-search-module');
-                                    const $input = $el.find('#search');
+                        <div
+                            id="product-search-module"
+                            class="p-3 border-bottom"
+                        >
+                            <input
+                                type="search"
+                                name="search"
+                                id="search"
+                                class="form-control"
+                                placeholder="{{ __('Search product') }}"
+                            />
+                        </div>
+                        <script>
+                            const ProductSearch = (function() {
+                                const $el = $('#product-search-module');
+                                const $input = $el.find('#search');
 
-                                    init();
+                                init();
 
-                                    function init() {
-                                        $input.autocomplete({
-                                            source: function(request, response) {
-                                                $.ajax({
-                                                    method: 'GET',
-                                                    url: '{{ route('web-api.product-variants.index') }}',
-                                                    data: {
-                                                        q: request.term,
-                                                        status: '{{ \App\Enums\ProductStatusEnum::published()->value }}',
-                                                    },
-                                                    success: function(res) {
-                                                        response(res.data.map(function(productVariant) {
-                                                            const value =
-                                                                `${productVariant.product_name} - ${productVariant.name}`;
-                                                            return {
-                                                                label: value,
-                                                                value: value,
-                                                                id: productVariant.id,
-                                                            };
-                                                        }))
-                                                    },
-                                                });
-                                            },
-                                            select: function(event, ui) {
-                                                AddOrderItem.submit(ui.item.id);
-                                            },
-                                        });
-                                    }
-                                })();
-                            </script>
-                        @endif
+                                function init() {
+                                    $input.autocomplete({
+                                        source: function(request, response) {
+                                            $.ajax({
+                                                method: 'GET',
+                                                url: '{{ route('web-api.product-variants.index') }}',
+                                                data: {
+                                                    q: request.term,
+                                                    status: '{{ \App\Enums\ProductStatusEnum::published()->value }}',
+                                                },
+                                                success: function(res) {
+                                                    response(res.data.map(function(productVariant) {
+                                                        const value =
+                                                            `${productVariant.product_name} - ${productVariant.name}`;
+                                                        return {
+                                                            label: value,
+                                                            value: value,
+                                                            id: productVariant.id,
+                                                        };
+                                                    }))
+                                                },
+                                            });
+                                        },
+                                        select: function(event, ui) {
+                                            AddOrderItem.submit(ui.item.id);
+                                        },
+                                    });
+                                }
+                            })();
+                        </script>
                         <div
                             id="add-order-item-module"
                             class="d-none"
@@ -131,38 +129,32 @@
                                                 </dl>
                                             </td>
                                             <td>
-                                                @if ($order->isEditable())
-                                                    <form
-                                                        action="{{ route('orders.items.update', [$order, $item]) }}"
-                                                        method="POST"
-                                                        class="order-item-form"
-                                                    >
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input
-                                                            type="number"
-                                                            name="quantity"
-                                                            class="form-control order-item-quantity"
-                                                            value="{{ $item->quantity }}"
-                                                        />
-                                                    </form>
-                                                @else
-                                                    {{ $item->quantity }}
-                                                @endif
+                                                <form
+                                                    action="{{ route('orders.items.update', [$order, $item]) }}"
+                                                    method="POST"
+                                                    class="order-item-form"
+                                                >
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input
+                                                        type="number"
+                                                        name="quantity"
+                                                        class="form-control order-item-quantity"
+                                                        value="{{ $item->quantity }}"
+                                                    />
+                                                </form>
                                             </td>
                                             <td class="text-right">
                                                 {{ Config::get('app.currency') . ' ' . number_format($item->variant_price * $item->quantity) }}
                                             </td>
                                             <td>
-                                                @if ($order->isEditable())
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-danger"
-                                                        data-toggle="modal"
-                                                        data-target="#modal-delete"
-                                                        data-action="{{ route('orders.items.destroy', [$order, $item]) }}"
-                                                    >{{ __('Delete') }}</button>
-                                                @endif
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    data-toggle="modal"
+                                                    data-target="#modal-delete"
+                                                    data-action="{{ route('orders.items.destroy', [$order, $item]) }}"
+                                                >{{ __('Delete') }}</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -199,48 +191,42 @@
                                     <span>{{ __('Discount') }}</span>
                                 </div>
                                 <div class="col-lg-4">
-                                    @if ($order->isEditable())
-                                        <form
-                                            id="update-order-items-discount-module"
-                                            action="{{ route('orders.items-discount.update', $order) }}"
-                                            method="POST"
-                                        >
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span
-                                                        class="input-group-text">{{ Config::get('app.currency') }}</span>
-                                                </div>
-                                                <input
-                                                    type="number"
-                                                    name="items_discount"
-                                                    id="items_discount"
-                                                    class="form-control text-right @error('items_discount') is-invalid @enderror"
-                                                    value="{{ $order->items_discount }}"
-                                                />
-                                                @error('items_discount')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                    <form
+                                        id="update-order-items-discount-module"
+                                        action="{{ route('orders.items-discount.update', $order) }}"
+                                        method="POST"
+                                    >
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span
+                                                    class="input-group-text">{{ Config::get('app.currency') }}</span>
                                             </div>
-                                        </form>
-                                        <script>
-                                            const UpdateOrderItemsDiscount = (function() {
-                                                const $el = $('#update-order-items-discount-module');
-                                                const $itemsDiscount = $el.find('#items_discount');
-
-                                                $itemsDiscount.on('change', handleChange)
-
-                                                function handleChange() {
-                                                    $el.submit();
-                                                }
-                                            })();
-                                        </script>
-                                    @else
-                                        <div class="text-right">
-                                            {{ Config::get('app.currency') . ' ' . number_format(intval($order->items_discount)) }}
+                                            <input
+                                                type="number"
+                                                name="items_discount"
+                                                id="items_discount"
+                                                class="form-control text-right @error('items_discount') is-invalid @enderror"
+                                                value="{{ $order->items_discount }}"
+                                            />
+                                            @error('items_discount')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                    @endif
+                                    </form>
+                                    <script>
+                                        const UpdateOrderItemsDiscount = (function() {
+                                            const $el = $('#update-order-items-discount-module');
+                                            const $itemsDiscount = $el.find('#items_discount');
+
+                                            $itemsDiscount.on('change', handleChange)
+
+                                            function handleChange() {
+                                                $el.submit();
+                                            }
+                                        })();
+                                    </script>
                                 </div>
                             </div>
                             <div class="row align-items-center">
@@ -273,67 +259,55 @@
                             <div class="row align-items-center mb-3">
                                 <div class="col-lg">
                                     <span>{{ __('Name') }}</span>
-                                    @if ($order->isEditable())
                                         <span class="text-danger">*</span>
-                                    @endif
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="text-right">
-                                        @if ($order->isEditable())
-                                            <input
-                                                type="hidden"
-                                                name="shipping_id"
-                                                id="shipping_id"
-                                                value="{{ old('shipping_id') ?? $order->shipping_id }}"
-                                            />
-                                            <input
-                                                type="text"
-                                                name="shipping_name"
-                                                id="shipping_name"
-                                                class="form-control @error('shipping_name') is-invalid @enderror @error('shipping_id') is-invalid @enderror"
-                                                value="{{ old('shipping_name') ?? $order->shipping_name }}"
-                                            />
-                                            @error('shipping_name')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                            @error('shipping_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        @else
-                                            <span>{{ $order->shipping_name }}</span>
-                                        @endif
+                                        <input
+                                            type="hidden"
+                                            name="shipping_id"
+                                            id="shipping_id"
+                                            value="{{ old('shipping_id') ?? $order->shipping_id }}"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="shipping_name"
+                                            id="shipping_name"
+                                            class="form-control @error('shipping_name') is-invalid @enderror @error('shipping_id') is-invalid @enderror"
+                                            value="{{ old('shipping_name') ?? $order->shipping_name }}"
+                                        />
+                                        @error('shipping_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        @error('shipping_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="row align-items-center mb-3">
                                 <div class="col-lg">
                                     <span>{{ __('Price') }}</span>
-                                    @if ($order->isEditable())
-                                        <span class="text-danger">*</span>
-                                    @endif
+                                    <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="text-right">
-                                        @if ($order->isEditable())
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span
-                                                        class="input-group-text">{{ Config::get('app.currency') }}</span>
-                                                </div>
-                                                <input
-                                                    type="text"
-                                                    name="shipping_price"
-                                                    id="shipping_price"
-                                                    class="form-control text-right @error('shipping_price') is-invalid @enderror"
-                                                    value="{{ old('shipping_price') ?? $order->shipping_price }}"
-                                                />
-                                                @error('shipping_price')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span
+                                                    class="input-group-text">{{ Config::get('app.currency') }}</span>
                                             </div>
-                                        @else
-                                            <span>{{ Config::get('app.currency') . ' ' . number_format($order->shipping_price) }}</span>
-                                        @endif
+                                            <input
+                                                type="text"
+                                                name="shipping_price"
+                                                id="shipping_price"
+                                                class="form-control text-right @error('shipping_price') is-invalid @enderror"
+                                                value="{{ old('shipping_price') ?? $order->shipping_price }}"
+                                            />
+                                            @error('shipping_price')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -343,26 +317,22 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="text-right">
-                                        @if ($order->isEditable())
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span
-                                                        class="input-group-text">{{ Config::get('app.currency') }}</span>
-                                                </div>
-                                                <input
-                                                    type="text"
-                                                    name="shipping_discount"
-                                                    id="shipping_discount"
-                                                    class="form-control text-right @error('shipping_discount') is-invalid @enderror"
-                                                    value="{{ old('shipping_discount') ?? $order->shipping_discount }}"
-                                                />
-                                                @error('shipping_discount')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span
+                                                    class="input-group-text">{{ Config::get('app.currency') }}</span>
                                             </div>
-                                        @else
-                                            <span>{{ Config::get('app.currency') . ' ' . number_format($order->shipping_discount) }}</span>
-                                        @endif
+                                            <input
+                                                type="text"
+                                                name="shipping_discount"
+                                                id="shipping_discount"
+                                                class="form-control text-right @error('shipping_discount') is-invalid @enderror"
+                                                value="{{ old('shipping_discount') ?? $order->shipping_discount }}"
+                                            />
+                                            @error('shipping_discount')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -379,14 +349,12 @@
                                 </div>
                             </div>
                         </div>
-                        @if ($order->isEditable())
-                            <div class="card-footer">
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
-                                >{{ __('Save') }}</button>
-                            </div>
-                        @endif
+                        <div class="card-footer">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >{{ __('Save') }}</button>
+                        </div>
                     </div>
                 </form>
                 <script>
@@ -476,35 +444,29 @@
                                 <div class="row align-items-center mb-3">
                                     <div class="col-lg">
                                         <span>{{ __('Name') }}</span>
-                                        @if ($order->isEditable())
-                                            <span class="text-danger">*</span>
-                                        @endif
+                                        <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="text-right">
-                                            @if ($order->isEditable())
-                                                <input
-                                                    type="hidden"
-                                                    name="payment_method_id"
-                                                    id="payment_method_id"
-                                                    value="{{ old('payment_method_id') ?? $order->payment_method_id }}"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    name="payment_method_name"
-                                                    id="payment_method_name"
-                                                    class="form-control @error('payment_method_name') is-invalid @enderror @error('payment_method_id') is-invalid @enderror"
-                                                    value="{{ old('payment_method_name') ?? $order->payment_method_name }}"
-                                                />
-                                                @error('payment_method_name')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                                @error('payment_method_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            @else
-                                                <span>{{ $order->payment_method_name }}</span>
-                                            @endif
+                                            <input
+                                                type="hidden"
+                                                name="payment_method_id"
+                                                id="payment_method_id"
+                                                value="{{ old('payment_method_id') ?? $order->payment_method_id }}"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="payment_method_name"
+                                                id="payment_method_name"
+                                                class="form-control @error('payment_method_name') is-invalid @enderror @error('payment_method_id') is-invalid @enderror"
+                                                value="{{ old('payment_method_name') ?? $order->payment_method_name }}"
+                                            />
+                                            @error('payment_method_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            @error('payment_method_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -619,12 +581,10 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title float-none">{{ __('General Information') }}</h3>
-                        @if ($order->isEditable())
-                            <div class="ml-auto">
-                                <a
-                                    href="{{ route('orders.general-information.edit', $order) }}">{{ __('Edit') }}</a>
-                            </div>
-                        @endif
+                        <div class="ml-auto">
+                            <a
+                                href="{{ route('orders.general-information.edit', $order) }}">{{ __('Edit') }}</a>
+                        </div>
                     </div>
                     <div class="card-body">
                         <dl>
@@ -655,26 +615,20 @@
                     <div class="card">
                         <div class="card-header">{{ __('Note') }}</div>
                         <div class="card-body">
-                            @if ($order->isEditable())
-                                <input
-                                    type="text"
-                                    name="note"
-                                    id="note"
-                                    class="form-control"
-                                    value="{{ $order->note }}"
-                                />
-                            @else
-                                <span>{{ $order->note ?? '-' }}</span>
-                            @endif
+                            <input
+                                type="text"
+                                name="note"
+                                id="note"
+                                class="form-control"
+                                value="{{ $order->note }}"
+                            />
                         </div>
-                        @if ($order->isEditable())
-                            <div class="card-footer">
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
-                                >{{ __('Save') }}</button>
-                            </div>
-                        @endif
+                        <div class="card-footer">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >{{ __('Save') }}</button>
+                        </div>
                     </div>
                 </form>
                 <form
@@ -687,105 +641,88 @@
                     <div class="card">
                         <div class="card-header">{{ __('Contributors') }}</div>
                         <div class="card-body">
-                            @if ($order->isEditable())
-                                <div class="form-group">
-                                    <label for="sales_name">
-                                        <span>{{ __('Sales') }}</span>
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input
-                                        type="hidden"
-                                        name="sales_id"
-                                        id="sales_id"
-                                        value="{{ old('sales_id') ?? $order->sales_id }}"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="sales_name"
-                                        id="sales_name"
-                                        class="form-control @error('sales_name') is-invalid @enderror @error('sales_id') is-invalid @enderror"
-                                        value="{{ old('sales_name') ?? $order->sales_name }}"
-                                    />
-                                    @error('sales_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    @error('sales_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="creator_name">
-                                        <span>{{ __('Creator') }}</span>
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input
-                                        type="hidden"
-                                        name="creator_id"
-                                        id="creator_id"
-                                        value="{{ old('creator_id') ?? $order->creator_id }}"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="creator_name"
-                                        id="creator_name"
-                                        class="form-control @error('creator_name') is-invalid @enderror @error('creator_id') is-invalid @enderror"
-                                        value="{{ old('creator_name') ?? $order->creator_name }}"
-                                    />
-                                    @error('creator_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    @error('creator_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="packer_name">
-                                        <span>{{ __('Packer') }}</span>
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input
-                                        type="hidden"
-                                        name="packer_id"
-                                        id="packer_id"
-                                        value="{{ old('packer_id') ?? $order->packer_id }}"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="packer_name"
-                                        id="packer_name"
-                                        class="form-control @error('packer_name') is-invalid @enderror @error('packer_id') is-invalid @enderror"
-                                        value="{{ old('packer_name') ?? $order->packer_name }}"
-                                    />
-                                    @error('packer_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    @error('packer_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            @else
-                                <dl>
-                                    <dt>{{ __('Sales') }}</dt>
-                                    <dd>{{ $order->sales_name }}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>{{ __('Creator') }}</dt>
-                                    <dd>{{ $order->creator_name }}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>{{ __('Packer') }}</dt>
-                                    <dd>{{ $order->packer_name }}</dd>
-                                </dl>
-                            @endif
-                        </div>
-                        @if ($order->isEditable())
-                            <div class="card-footer">
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
-                                >{{ __('Save') }}</button>
+                            <div class="form-group">
+                                <label for="sales_name">
+                                    <span>{{ __('Sales') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="hidden"
+                                    name="sales_id"
+                                    id="sales_id"
+                                    value="{{ old('sales_id') ?? $order->sales_id }}"
+                                />
+                                <input
+                                    type="text"
+                                    name="sales_name"
+                                    id="sales_name"
+                                    class="form-control @error('sales_name') is-invalid @enderror @error('sales_id') is-invalid @enderror"
+                                    value="{{ old('sales_name') ?? $order->sales_name }}"
+                                />
+                                @error('sales_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @error('sales_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                        @endif
+                            <div class="form-group">
+                                <label for="creator_name">
+                                    <span>{{ __('Creator') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="hidden"
+                                    name="creator_id"
+                                    id="creator_id"
+                                    value="{{ old('creator_id') ?? $order->creator_id }}"
+                                />
+                                <input
+                                    type="text"
+                                    name="creator_name"
+                                    id="creator_name"
+                                    class="form-control @error('creator_name') is-invalid @enderror @error('creator_id') is-invalid @enderror"
+                                    value="{{ old('creator_name') ?? $order->creator_name }}"
+                                />
+                                @error('creator_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @error('creator_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="packer_name">
+                                    <span>{{ __('Packer') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="hidden"
+                                    name="packer_id"
+                                    id="packer_id"
+                                    value="{{ old('packer_id') ?? $order->packer_id }}"
+                                />
+                                <input
+                                    type="text"
+                                    name="packer_name"
+                                    id="packer_name"
+                                    class="form-control @error('packer_name') is-invalid @enderror @error('packer_id') is-invalid @enderror"
+                                    value="{{ old('packer_name') ?? $order->packer_name }}"
+                                />
+                                @error('packer_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @error('packer_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >{{ __('Save') }}</button>
+                        </div>
                     </div>
                 </form>
                 <script>
@@ -855,58 +792,45 @@
                             <h3 class="card-title">{{ __('Shipping Detail') }}</h3>
                         </div>
                         <div class="card-body">
-                            @if ($order->canEditShippingDetail())
-                                <div class="form-group">
-                                    <label for="shipping_date">
-                                        <span>{{ __('Date') }}</span>
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="shipping_date"
-                                        id="shipping_date"
-                                        class="form-control @error('shipping_date') is-invalid @enderror"
-                                        value="{{ old('shipping_date') ?? $order->shipping_date }}"
-                                    />
-                                    @error('shipping_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="shipping_airwaybill">
-                                        <span>{{ __('Airwaybill') }}</span>
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="shipping_airwaybill"
-                                        id="shipping_airwaybill"
-                                        class="form-control @error('shipping_airwaybill') is-invalid @enderror"
-                                        value="{{ old('shipping_airwaybill') ?? $order->shipping_airwaybill }}"
-                                    />
-                                    @error('shipping_airwaybill')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            @else
-                                <dl>
-                                    <dt>{{ __('Date') }}</dt>
-                                    <dd>{{ $order->shipping_date }}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>{{ __('Airwaybill') }}</dt>
-                                    <dd>{{ $order->shipping_airwaybill }}</dd>
-                                </dl>
-                            @endif
-                        </div>
-                        @if ($order->canEditShippingDetail())
-                            <div class="card-footer">
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary"
-                                >{{ __('Save') }}</button>
+                            <div class="form-group">
+                                <label for="shipping_date">
+                                    <span>{{ __('Date') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="shipping_date"
+                                    id="shipping_date"
+                                    class="form-control @error('shipping_date') is-invalid @enderror"
+                                    value="{{ old('shipping_date') ?? $order->shipping_date }}"
+                                />
+                                @error('shipping_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                        @endif
+                            <div class="form-group">
+                                <label for="shipping_airwaybill">
+                                    <span>{{ __('Airwaybill') }}</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="shipping_airwaybill"
+                                    id="shipping_airwaybill"
+                                    class="form-control @error('shipping_airwaybill') is-invalid @enderror"
+                                    value="{{ old('shipping_airwaybill') ?? $order->shipping_airwaybill }}"
+                                />
+                                @error('shipping_airwaybill')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >{{ __('Save') }}</button>
+                        </div>
                     </div>
                 </form>
                 <script>

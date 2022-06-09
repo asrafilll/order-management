@@ -50,21 +50,4 @@ class DeleteOrderTest extends TestCase
 
         $response->assertNotFound();
     }
-
-    /**
-     * @return void
-     */
-    public function test_should_error_when_order_is_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->delete(route('orders.destroy', $order));
-
-        $response->assertForbidden();
-    }
 }

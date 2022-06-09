@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->order->canEditShippingDetail();
+        return true;
     }
 
     /**

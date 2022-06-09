@@ -56,33 +56,6 @@ class UpdateOrderContributorsTest extends TestCase
     }
 
     /**
-     * @return void
-     */
-    public function test_should_error_update_order_contributors_when_order_is_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        /** @var Employee */
-        $employee = Employee::factory()->create();
-        $input = [
-            'sales_id' => $employee->id,
-            'sales_name' => $employee->name,
-            'creator_id' => $employee->id,
-            'creator_name' => $employee->name,
-            'packer_id' => $employee->id,
-            'packer_name' => $employee->name,
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.contributors.update', $order), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
      * @dataProvider invalidProvider
      * @param array $input
      * @param array $errors

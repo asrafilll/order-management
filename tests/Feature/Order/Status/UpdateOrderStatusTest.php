@@ -376,44 +376,4 @@ class UpdateOrderStatusTest extends TestCase
         $customer = Customer::find($order->customer_id);
         $this->assertTrue($customer->type->equals(CustomerTypeEnum::member()));
     }
-
-    /**
-     * @return void
-     */
-    public function test_should_error_update_order_status_to_processed_when_order_data_incomplete()
-    {
-        $order = (new OrderBuilder)->build();
-        $input = [
-            'status' => OrderStatusEnum::processed()->value,
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.status.update', $order), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
-     * @return void
-     */
-    public function test_should_error_update_order_status_to_sent_when_order_data_incomplete()
-    {
-        $order = (new OrderBuilder)->build();
-        $input = [
-            'status' => OrderStatusEnum::sent()->value,
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.status.update', $order), $input);
-
-        $response->assertForbidden();
-    }
 }

@@ -48,29 +48,6 @@ class UpdateOrderShippingDetailTest extends TestCase
     }
 
     /**
-     * @return void
-     */
-    public function test_should_error_update_order_shipping_detail_when_order_shipping_detail_is_not_editable()
-    {
-        $order = (new OrderBuilder)->addItems()->setStatus(OrderStatusEnum::sent())->build();
-        $shippingDate = Carbon::now()->addDay()->format('Y-m-d H:i:s');
-        $input = [
-            'shipping_date' => $shippingDate,
-            'shipping_airwaybill' => 'ASDF1234',
-        ];
-
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.shipping-detail.update', $order), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
      * @dataProvider invalidProvider
      * @param array $input
      * @param array $errors

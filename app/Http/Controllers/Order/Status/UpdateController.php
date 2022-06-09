@@ -19,21 +19,6 @@ class UpdateController extends Controller
      */
     public function __invoke(Order $order, UpdateRequest $updateRequest)
     {
-        abort_if(
-            $updateRequest->get('status') == OrderStatusEnum::processed() &&
-                !$order->canProcessed(),
-            HttpResponse::HTTP_FORBIDDEN
-        );
-
-        abort_if(
-            in_array($updateRequest->get('status'), [
-                OrderStatusEnum::sent(),
-                OrderStatusEnum::completed(),
-            ]) &&
-                !$order->canSent(),
-            HttpResponse::HTTP_FORBIDDEN
-        );
-
         $currentStatus = $order->status;
         $order->update($updateRequest->validated());
 

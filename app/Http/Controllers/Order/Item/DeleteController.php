@@ -19,7 +19,6 @@ class DeleteController extends Controller
         Order $order,
         OrderItem $orderItem,
     ) {
-        abort_unless($order->isEditable(), HttpResponse::HTTP_FORBIDDEN);
         abort_unless($order->id === $orderItem->order_id, HttpResponse::HTTP_FORBIDDEN);
 
         $orderItem->delete();

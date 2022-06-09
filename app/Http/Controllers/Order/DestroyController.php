@@ -15,7 +15,6 @@ class DestroyController extends Controller
      */
     public function __invoke(Order $order)
     {
-        abort_unless($order->isEditable(), HttpResponse::HTTP_FORBIDDEN);
         $order->delete();
         $message = __('crud.deleted', [
             'name' => 'order',

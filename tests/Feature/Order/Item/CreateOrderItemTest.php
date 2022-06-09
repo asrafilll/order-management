@@ -107,69 +107,6 @@ class CreateOrderItemTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_error_create_order_item_when_order_is_not_editable()
-    {
-        $order = (new OrderBuilder)
-            ->setStatus(OrderStatusEnum::processed())
-            ->build();
-        /** @var Product */
-        $product = Product::factory()->create();
-        $product
-            ->options()
-            ->create([
-                'name' => 'Color',
-                'values' => json_encode([
-                    'Red',
-                    'Green',
-                    'Blue',
-                ])
-            ]);
-        $product
-            ->variants()
-            ->createMany([
-                [
-                    'name' => 'Red',
-                    'price' => 10000,
-                    'weight' => 1000,
-                    'option1' => 'Color',
-                    'value1' => 'Red',
-                ],
-                [
-                    'name' => 'Green',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Green',
-                ],
-                [
-                    'name' => 'Blue',
-                    'price' => 11000,
-                    'weight' => 1100,
-                    'option1' => 'Color',
-                    'value1' => 'Blue',
-                ],
-            ]);
-        /** @var ProductVariant */
-        $productVariant = ProductVariant::with(['product'])
-            ->inRandomOrder()
-            ->first();
-        $input = [
-            'variant_id' => $productVariant->id,
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->post(route('orders.items.store', $order), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
-     * @return void
-     */
     public function test_should_error_create_order_item_because_product_variant_not_exists()
     {
         $order = (new OrderBuilder)->build();

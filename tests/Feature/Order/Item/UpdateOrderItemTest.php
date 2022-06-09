@@ -77,31 +77,6 @@ class UpdateOrderItemTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_error_update_order_item_when_order_status_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        $orderItem = $order->items->first();
-        /** @var ProductVariant $productVariant */
-        $input = [
-            'quantity' => 10,
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.items.update', [
-                $order,
-                $orderItem,
-            ]), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
-     * @return void
-     */
     public function test_should_error_update_order_item_when_invalid_validation()
     {
         $order = (new OrderBuilder)->addItems()->build();

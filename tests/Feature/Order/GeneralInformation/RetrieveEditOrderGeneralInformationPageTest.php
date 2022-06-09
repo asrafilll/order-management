@@ -51,23 +51,4 @@ class RetrieveEditOrderGeneralInformationPageTest extends TestCase
 
         $response->assertNotFound();
     }
-
-    /**
-     * @return void
-     */
-    public function test_should_error_when_general_information_not_editable()
-    {
-        /** @var Order */
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->get(route('orders.general-information.edit', $order));
-
-        $response->assertForbidden();
-    }
 }

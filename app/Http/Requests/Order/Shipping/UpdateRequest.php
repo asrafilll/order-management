@@ -15,7 +15,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->order->isEditable();
+        return true;
     }
 
     /**

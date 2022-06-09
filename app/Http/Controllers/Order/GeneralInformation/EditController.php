@@ -15,7 +15,6 @@ class EditController extends Controller
      */
     public function __invoke(Order $order)
     {
-        abort_unless($order->isEditable(), HttpResponse::HTTP_FORBIDDEN);
 
         return Response::view('orders.general-information.edit', [
             'order' => $order,

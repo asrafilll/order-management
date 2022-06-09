@@ -53,31 +53,6 @@ class UpdateOrderShippingTest extends TestCase
     }
 
     /**
-     * @return void
-     */
-    public function test_should_error_update_order_shipping_when_order_is_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        /** @var Shipping */
-        $shipping = Shipping::factory()->create();
-        $input = [
-            'shipping_id' => $shipping->id,
-            'shipping_name' => $shipping->name,
-            'shipping_price' => 10000,
-            'shipping_discount' => 5000,
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.shipping.update', $order), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
      * @dataProvider invalidProvider
      * @param array $input
      * @param array $errors

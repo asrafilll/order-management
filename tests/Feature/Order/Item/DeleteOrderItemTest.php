@@ -56,27 +56,6 @@ class DeleteOrderItemTest extends TestCase
     /**
      * @return void
      */
-    public function test_should_error_delete_order_item_when_order_status_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        $orderItem = $order->items->first();
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->delete(route('orders.items.destroy', [
-                $order,
-                $orderItem,
-            ]));
-
-        $response->assertForbidden();
-    }
-
-    /**
-     * @return void
-     */
     public function test_should_error_delete_order_item_when_order_item_order_id_not_equals_with_order_id()
     {
         $order = (new OrderBuilder)->addItems()->build();

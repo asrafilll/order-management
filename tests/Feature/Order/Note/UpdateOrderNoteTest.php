@@ -41,24 +41,4 @@ class UpdateOrderNoteTest extends TestCase
 
         $this->assertEquals('Example note for order', $order->note);
     }
-
-    /**
-     * @return void
-     */
-    public function test_should_error_update_order_note_when_order_is_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        $input = [
-            'note' => 'Example note for order',
-        ];
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.note.update', $order), $input);
-
-        $response->assertForbidden();
-    }
 }

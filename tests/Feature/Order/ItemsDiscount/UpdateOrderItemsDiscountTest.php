@@ -44,27 +44,6 @@ class UpdateOrderItemsDiscountTest extends TestCase
     }
 
     /**
-     * @return void
-     */
-    public function test_should_error_update_order_items_discount_when_order_is_not_editable()
-    {
-        $order = (new OrderBuilder)->setStatus(OrderStatusEnum::processed())->addItems()->build();
-        $input = [
-            'items_discount' => 1000,
-        ];
-
-        $response = $this
-            ->actingAs(
-                $this->createUserWithPermission(
-                    PermissionEnum::manage_orders()
-                )
-            )
-            ->put(route('orders.items-discount.update', $order), $input);
-
-        $response->assertForbidden();
-    }
-
-    /**
      * @dataProvider invalidProvider
      * @param array $input
      * @param array $errors
