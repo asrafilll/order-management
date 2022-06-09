@@ -41,9 +41,7 @@ Features:
 
 Improvements:
 
-- [x] Validasi payment status pada order dihilangkan
-- [x] Setelah order status completed atau canceled, status sudah tidak dapat diedit
-- [x] Payment status masih bisa di edit di order status manapun
+- [x] Hapus validasi perubahan status order dan payment status order
 - [x] Tipe customer menjadi member apabila sudah memenuhi kondisi minimal order 6x atau total nominal keseluruhan order 2jt (menunggu info total nominal diambil setelah atau sebelum diskon) dengan status order completed
 - [x] Ubah bahasa ke Indonesia
 - [ ] Rebuild return agar mengacu pada order dengan items secara default terpilih seluruhnya
