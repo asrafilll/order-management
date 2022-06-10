@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Str;
 use Spatie\Enum\Laravel\Enum;
 
 /**
@@ -11,4 +12,12 @@ use Spatie\Enum\Laravel\Enum;
  */
 class ReturnOrderStatusEnum extends Enum
 {
+    protected static function values()
+    {
+        return fn (string $name) => Str::replace(
+            '_',
+            ' ',
+            $name
+        );
+    }
 }

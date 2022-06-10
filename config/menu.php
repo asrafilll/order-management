@@ -27,6 +27,12 @@ return [
         'can' => PermissionEnum::manage_orders()->value,
     ],
     [
+        'name' => 'Returns',
+        'icon' => 'fas fa-undo',
+        'route_name' => 'return-orders.index',
+        'group_name' => 'return-orders',
+    ],
+    [
         'name' => 'Products',
         'icon' => 'fas fa-tag',
         'route_name' => 'products.index',
