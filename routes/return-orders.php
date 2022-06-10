@@ -32,4 +32,8 @@ Route::middleware(['auth'])
             '/{returnOrder}/items/{returnOrderItem}',
             \App\Http\Controllers\ReturnOrder\Item\UpdateController::class
         )->name('items.update');
+        Route::delete(
+            '/{returnOrder}/items/{returnOrderItem}',
+            \App\Http\Controllers\ReturnOrder\Item\DestroyController::class
+        )->name('items.destroy');
     });
