@@ -44,9 +44,7 @@ Improvements:
 - [x] Hapus validasi perubahan status order dan payment status order
 - [x] Tipe customer menjadi member apabila sudah memenuhi kondisi minimal order 6x atau total nominal keseluruhan order 2jt (menunggu info total nominal diambil setelah atau sebelum diskon) dengan status order completed
 - [x] Ubah bahasa ke Indonesia
-- [ ] Rebuild return agar mengacu pada order dengan items secara default terpilih seluruhnya
-  - [ ] Order yang dapat di return adalah order dengan status selain waiting dan processed
-  - [ ] Tambah field position untuk menampung data [Gudang, Ekspedisi, Hilang]
+- [x] Rebuild return agar dapat memilih lebih dari 1 item
 - [ ] Tambah field note di model order item, agar dapat menampung catatan untuk per item apabila ada scenario ukuran custom
 - [ ] Form order untuk guest.
 - [ ] Chart dibagian dashboard (menunggu info)
