@@ -50,7 +50,7 @@
                                                 class="dropdown-item text-danger"
                                                 data-toggle="modal"
                                                 data-target="#modal-delete"
-                                                data-action="#"
+                                                data-action="{{ route('return-orders.destroy', $returnOrder) }}"
                                             >{{ __('Delete') }}</button>
                                         </div>
                                     </div>

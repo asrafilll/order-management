@@ -20,6 +20,10 @@ Route::middleware(['auth'])
             '/{returnOrder}/edit',
             \App\Http\Controllers\ReturnOrder\EditController::class
         )->name('edit');
+        Route::delete(
+            '/{returnOrder}',
+            \App\Http\Controllers\ReturnOrder\DestroyController::class
+        )->name('destroy');
         Route::put(
             '/{returnOrder}/status',
             \App\Http\Controllers\ReturnOrder\Status\UpdateController::class
