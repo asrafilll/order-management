@@ -36,22 +36,17 @@ class ReturnOrderItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
+        'return_order_id',
         'order_item_id',
         'quantity',
         'reason',
-        'published_at',
     ];
 
-    protected $casts = [
-        'published_at' => 'datetime',
-    ];
-
-    public function order(): BelongsTo
+    public function returnOrder(): BelongsTo
     {
         return $this->belongsTo(
-            Order::class,
-            'order_id',
+            ReturnOrder::class,
+            'return_order_id',
             'id'
         );
     }
@@ -63,10 +58,5 @@ class ReturnOrderItem extends Model
             'order_item_id',
             'id'
         );
-    }
-
-    public function isPublished(): bool
-    {
-        return !is_null($this->published_at);
     }
 }
