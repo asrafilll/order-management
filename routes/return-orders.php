@@ -24,4 +24,8 @@ Route::middleware(['auth'])
             '/{returnOrder}/status',
             \App\Http\Controllers\ReturnOrder\Status\UpdateController::class
         )->name('status.update');
+        Route::post(
+            '/{returnOrder}/items',
+            \App\Http\Controllers\ReturnOrder\Item\StoreController::class
+        )->name('items.store');
     });
