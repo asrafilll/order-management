@@ -15,6 +15,10 @@
                 id="status"
                 class="form-control @error('status') is-invalid @enderror"
             >
+                <option
+                    value=""
+                    hidden
+                >-- {{ __('STATUS') }} --</option>
                 @foreach ($returnOrderStatuses as $returnOrderStatus)
                     <option
                         value="{{ $returnOrderStatus }}"
