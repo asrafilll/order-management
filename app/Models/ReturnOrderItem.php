@@ -12,22 +12,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $order_id
+ * @property int $return_order_id
  * @property int $order_item_id
  * @property int $quantity
  * @property string|null $reason
- * @property \Illuminate\Support\Carbon|null $published_at
+ * @property-read \App\Models\OrderItem $orderItem
+ * @property-read \App\Models\ReturnOrder $returnOrder
  * @method static \Database\Factories\ReturnOrderItemFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem query()
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereOrderItemId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereReturnOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrderItem whereUpdatedAt($value)
  * @mixin \Eloquent
  */
