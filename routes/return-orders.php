@@ -20,4 +20,8 @@ Route::middleware(['auth'])
             '/{returnOrder}/edit',
             \App\Http\Controllers\ReturnOrder\EditController::class
         )->name('edit');
+        Route::put(
+            '/{returnOrder}/status',
+            \App\Http\Controllers\ReturnOrder\Status\UpdateController::class
+        )->name('status.update');
     });
