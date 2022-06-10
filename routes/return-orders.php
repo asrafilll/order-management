@@ -8,4 +8,8 @@ Route::middleware(['auth'])
             '/',
             \App\Http\Controllers\ReturnOrder\IndexController::class
         )->name('index');
+        Route::get(
+            '/create',
+            \App\Http\Controllers\ReturnOrder\CreateController::class
+        )->name('create');
     });
