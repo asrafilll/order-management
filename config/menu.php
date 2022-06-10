@@ -27,13 +27,6 @@ return [
         'can' => PermissionEnum::manage_orders()->value,
     ],
     [
-        'name' => 'Return',
-        'icon' => 'fas fa-archive',
-        'route_name' => 'return-order-items.index',
-        'group_name' => 'return-order-items',
-        'can' => PermissionEnum::manage_return_order_items()->value,
-    ],
-    [
         'name' => 'Products',
         'icon' => 'fas fa-tag',
         'route_name' => 'products.index',
