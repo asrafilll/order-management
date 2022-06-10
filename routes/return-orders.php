@@ -16,4 +16,8 @@ Route::middleware(['auth'])
             '/',
             \App\Http\Controllers\ReturnOrder\StoreController::class
         )->name('store');
+        Route::get(
+            '/{returnOrder}/edit',
+            \App\Http\Controllers\ReturnOrder\EditController::class
+        )->name('edit');
     });

@@ -43,7 +43,7 @@
                                         <div class="dropdown-menu">
                                             <a
                                                 class="dropdown-item"
-                                                href="#"
+                                                href="{{ route('return-orders.edit', $returnOrder) }}"
                                             >{{ __('Edit') }}</a>
                                             <button
                                                 type="button"

@@ -15,12 +15,12 @@ class StoreController extends Controller
      */
     public function __invoke(StoreRequest $storeRequest)
     {
-        ReturnOrder::create($storeRequest->validated());
+        $returnOrder = ReturnOrder::create($storeRequest->validated());
         $message = __('crud.created', [
             'name' => 'return order',
         ]);
 
-        return Response::redirectToRoute('return-orders.create')
+        return Response::redirectToRoute('return-orders.edit', $returnOrder)
             ->with('success', $message);
     }
 }
