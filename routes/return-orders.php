@@ -12,4 +12,8 @@ Route::middleware(['auth'])
             '/create',
             \App\Http\Controllers\ReturnOrder\CreateController::class
         )->name('create');
+        Route::post(
+            '/',
+            \App\Http\Controllers\ReturnOrder\StoreController::class
+        )->name('store');
     });
