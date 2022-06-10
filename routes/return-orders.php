@@ -28,4 +28,8 @@ Route::middleware(['auth'])
             '/{returnOrder}/items',
             \App\Http\Controllers\ReturnOrder\Item\StoreController::class
         )->name('items.store');
+        Route::put(
+            '/{returnOrder}/items/{returnOrderItem}',
+            \App\Http\Controllers\ReturnOrder\Item\UpdateController::class
+        )->name('items.update');
     });
