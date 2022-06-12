@@ -98,6 +98,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('Product') }}</th>
+                        <th width="250">{{ __('Price') }}</th>
                         <th width="150">{{ __('Quantity') }}</th>
                         <th
                             width="150"
@@ -112,14 +113,7 @@
                             <td>
                                 <dl>
                                     <dt>{{ $item->product_name }}</dt>
-                                    <dd>
-                                        <ul class="list-unstyled">
-                                            <li>{{ $item->variant_name }}</li>
-                                            <li>
-                                                {{ Config::get('app.currency') . ' ' . number_format($item->variant_price) }}
-                                            </li>
-                                        </ul>
-                                    </dd>
+                                    <dd>{{ $item->variant_name }}</dd>
                                 </dl>
                             </td>
                             <td>
@@ -131,9 +125,40 @@
                                     @csrf
                                     @method('PUT')
                                     <input
+                                        type="hidden"
+                                        name="quantity"
+                                        value="{{ $item->quantity }}"
+                                    />
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">{{ Config::get('app.currency') }}</span>
+                                        </div>
+                                        <input
+                                            type="number"
+                                            name="variant_price"
+                                            class="form-control text-right order-item-variant_price"
+                                            value="{{ $item->variant_price }}"
+                                        />
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form
+                                    action="{{ route('orders.items.update', [$order, $item]) }}"
+                                    method="POST"
+                                    class="order-item-form"
+                                >
+                                    @csrf
+                                    @method('PUT')
+                                    <input
+                                        type="hidden"
+                                        name="variant_price"
+                                        value="{{ $item->variant_price }}"
+                                    />
+                                    <input
                                         type="number"
                                         name="quantity"
-                                        class="form-control order-item-quantity"
+                                        class="form-control text-right order-item-quantity"
                                         value="{{ $item->quantity }}"
                                     />
                                 </form>
@@ -158,11 +183,13 @@
         <script>
             const UpdateOrderItem = (function() {
                 const $el = $('#update-order-item-module');
+                const $prices = $el.find('.order-item-variant_price');
                 const $quantities = $el.find('.order-item-quantity');
 
-                $quantities.on('change', handleChangeQuantity);
+                $prices.on('change', handleChange);
+                $quantities.on('change', handleChange);
 
-                function handleChangeQuantity() {
+                function handleChange() {
                     const $this = $(this);
                     const $form = $this.closest('.order-item-form');
                     $form.submit();
@@ -194,8 +221,7 @@
                         @method('PUT')
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span
-                                    class="input-group-text">{{ Config::get('app.currency') }}</span>
+                                <span class="input-group-text">{{ Config::get('app.currency') }}</span>
                             </div>
                             <input
                                 type="number"

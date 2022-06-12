@@ -29,6 +29,11 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'min:1',
             ],
+            'variant_price' => [
+                'required',
+                'integer',
+                'min:1',
+            ],
         ];
     }
 }

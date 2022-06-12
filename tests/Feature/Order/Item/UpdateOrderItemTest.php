@@ -32,8 +32,11 @@ class UpdateOrderItemTest extends TestCase
         $productVariant = ProductVariant::with(['product'])
             ->whereId($orderItem->variant_id)
             ->first();
+        $newQuantity = 10;
+        $newVariantPrice = 20000;
         $input = [
-            'quantity' => 10,
+            'quantity' => $newQuantity,
+            'variant_price' => $newVariantPrice,
         ];
         $response = $this
             ->actingAs(
@@ -64,14 +67,15 @@ class UpdateOrderItemTest extends TestCase
             'variant_value1' => $productVariant->value1,
             'variant_option2' => $productVariant->option2,
             'variant_value2' => $productVariant->value2,
-            'quantity' => 10,
+            'quantity' => $newQuantity,
+            'variant_price' => $newVariantPrice,
         ]);
 
         $order->refresh();
 
-        $this->assertEquals(10, $order->items_quantity);
-        $this->assertEquals(10 * $orderItem->variant_price, $order->items_price);
-        $this->assertEquals(10 * $orderItem->variant_price, $order->total_price);
+        $this->assertEquals($newQuantity, $order->items_quantity);
+        $this->assertEquals($newQuantity * $newVariantPrice, $order->items_price);
+        $this->assertEquals($newQuantity * $newVariantPrice, $order->total_price);
     }
 
     /**
@@ -83,6 +87,7 @@ class UpdateOrderItemTest extends TestCase
         $orderItem = $order->items->first();
         $input = [
             'quantity' => 0,
+            'variant_price' => 0,
         ];
         $response = $this
             ->actingAs(
@@ -99,6 +104,7 @@ class UpdateOrderItemTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasErrors([
                 'quantity',
+                'variant_price',
             ]);
     }
 
@@ -130,6 +136,7 @@ class UpdateOrderItemTest extends TestCase
 
         $input = [
             'quantity' => 10,
+            'variant_price' => 10000,
         ];
 
         $response = $this
