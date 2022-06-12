@@ -15,7 +15,7 @@ class CityOrderController extends Controller
     {
         return CityOrderResource::collection(
             Order::query()
-                ->selectRaw('customer_city, SUM(total_price) as total')
+                ->selectRaw('customer_city as city, SUM(total_price) as total')
                 ->groupBy('customer_city')
                 ->get()
         );
