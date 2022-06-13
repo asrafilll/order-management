@@ -245,12 +245,14 @@
         <tr>
             <td style="padding: 0.2rem;">{{ __('Product') }}:</td>
             <td style="padding: 0.2rem;">{{ __('Variant') }}:</td>
+            <td style="padding: 0.2rem;">{{ __('Note') }}:</td>
             <td style="padding: 0.2rem;">{{ __('Quantity') }}:</td>
         </tr>
         @foreach ($order->items  as $item)
             <tr>
                 <td style="padding: 0.2rem;">{{ $loop->iteration }}. {{ $item->product_name }}</td>
                 <td style="padding: 0.2rem;">{{ $item->variant_name }}</td>
+                <td style="padding: 0.2rem;">{{ $item->note }}</td>
                 <td style="padding: 0.2rem;">{{ $item->quantity }}</td>
             </tr>
         @endforeach
