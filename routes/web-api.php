@@ -20,4 +20,5 @@ Route::middleware(['auth'])
         Route::get('customer-types/customers', \App\Http\Controllers\WebApi\CustomerTypeCustomerController::class)->name('customer-types.customers.index');
         Route::get('order-statuses/orders', \App\Http\Controllers\WebApi\OrderStatusOrderController::class)->name('order-statuses.orders.index');
         Route::get('cities/orders', \App\Http\Controllers\WebApi\CityOrderController::class)->name('cities.orders.index');
+        Route::get('days/return-orders', \App\Http\Controllers\WebApi\DayReturnOrderController::class)->name('days.return-orders.index');
     });
