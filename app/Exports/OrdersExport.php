@@ -56,6 +56,7 @@ class OrdersExport implements
     {
         return [
             __('ID'),
+            __('Created At'),
             __('Closing Date'),
             __('Name'),
             __('Phone'),
@@ -95,6 +96,7 @@ class OrdersExport implements
         return [
             $order->id,
             $order->created_at,
+            $order->closing_date,
             $order->customer_name,
             $order->customer_phone,
             $order->customer_address,

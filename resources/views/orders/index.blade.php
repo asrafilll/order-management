@@ -863,6 +863,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('ID') }}</th>
+                            <th>{{ __('Created Date') }}</th>
                             <th>{{ __('Closing Date') }}</th>
                             <th>{{ __('Customer') }}</th>
                             <th>{{ __('Type') }}</th>
@@ -882,6 +883,7 @@
                             <tr>
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
+                                <td>{{ $order->closing_date }}</td>
                                 <td>{{ $order->customer_name }}</td>
                                 <td>{{ Str::upper($order->customer_type) }}</td>
                                 <td>{{ Config::get('app.currency') . ' ' . number_format($order->total_price) }}</td>
@@ -925,7 +927,7 @@
                         @empty
                             <tr>
                                 <td
-                                    colspan="13"
+                                    colspan="14"
                                     class="text-center"
                                 >{{ __('Data not found') }}</td>
                             </tr>
