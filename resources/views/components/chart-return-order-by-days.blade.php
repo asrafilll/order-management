@@ -4,7 +4,7 @@
         id="return-order-by-days-module"
     >
         <div class="card-header">
-            <h3 class="card-title">{{ __('Order By Cities') }}</h3>
+            <h3 class="card-title">{{ __('Return By Days') }}</h3>
         </div>
         <div
             class="card-body"
