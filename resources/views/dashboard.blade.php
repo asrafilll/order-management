@@ -25,6 +25,9 @@
             <div class="col-lg-6">
                 <x-chart-order-by-cities />
             </div>
+            <div class="col-lg-6">
+                <x-chart-return-order-by-days />
+            </div>
         </div>
     </section>
 </x-app>
