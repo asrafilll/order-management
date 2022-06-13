@@ -28,6 +28,9 @@
             <div class="col-lg-6">
                 <x-chart-return-order-by-days />
             </div>
+            <div class="col-lg-6">
+                <x-chart-best-seller-products />
+            </div>
         </div>
     </section>
 </x-app>
