@@ -95,6 +95,8 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotalPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $closing_date
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereClosingDate($value)
  */
 class Order extends Model
 {
@@ -134,6 +136,7 @@ class Order extends Model
         'creator_name',
         'packer_id',
         'packer_name',
+        'closing_date',
     ];
 
     protected $casts = [

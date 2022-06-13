@@ -16,6 +16,7 @@
                 <x-order-note :order="$order" />
                 <x-order-contributors :order="$order" />
                 <x-order-shipping-detail :order="$order" />
+                <x-order-closing-date :order="$order" />
                 <x-order-histories :order="$order" />
             </div>
         </div>

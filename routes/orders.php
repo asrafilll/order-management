@@ -78,4 +78,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/shipping-detail',
             \App\Http\Controllers\Order\ShippingDetail\UpdateController::class
         )->name('shipping-detail.update');
+        Route::put(
+            '/{order}/closing-date',
+            \App\Http\Controllers\Order\ClosingDate\UpdateController::class
+        )->name('closing-date.update');
     });
