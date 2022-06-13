@@ -45,7 +45,6 @@
                         chart.data = {
                             labels: response.data.map(value => value.name),
                             datasets: [{
-                                label: response.data.map(value => value.name),
                                 data: response.data.map(value => value.total),
                                 backgroundColor: response.data.map(label => ColorGenerator
                                     .generate()),
