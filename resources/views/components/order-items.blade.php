@@ -98,7 +98,7 @@
                 <thead>
                     <tr>
                         <th>{{ __('Product') }}</th>
-                        <th width="250">{{ __('Price') }}</th>
+                        <th width="200">{{ __('Price') }}</th>
                         <th width="150">{{ __('Quantity') }}</th>
                         <th
                             width="150"
@@ -115,6 +115,32 @@
                                     <dt>{{ $item->product_name }}</dt>
                                     <dd>{{ $item->variant_name }}</dd>
                                 </dl>
+                                <form
+                                    action="{{ route('orders.items.update', [$order, $item]) }}"
+                                    method="POST"
+                                    class="order-item-form"
+                                >
+                                    @csrf
+                                    @method('PUT')
+                                    <input
+                                        type="hidden"
+                                        name="quantity"
+                                        value="{{ $item->quantity }}"
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="variant_price"
+                                        value="{{ $item->variant_price }}"
+                                    />
+                                    <input
+                                        type="text"
+                                        name="note"
+                                        class="form-control order-item-note"
+                                        value="{{ $item->note }}"
+                                        placeholder="{{ __('Note') }}"
+                                        style="min-width: 200px;"
+                                    />
+                                </form>
                             </td>
                             <td>
                                 <form
@@ -129,7 +155,7 @@
                                         name="quantity"
                                         value="{{ $item->quantity }}"
                                     />
-                                    <div class="input-group">
+                                    <div class="input-group flex-nowrap">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">{{ Config::get('app.currency') }}</span>
                                         </div>
@@ -138,6 +164,7 @@
                                             name="variant_price"
                                             class="form-control text-right order-item-variant_price"
                                             value="{{ $item->variant_price }}"
+                                            style="min-width: 100px;"
                                         />
                                     </div>
                                 </form>
@@ -183,9 +210,11 @@
         <script>
             const UpdateOrderItem = (function() {
                 const $el = $('#update-order-item-module');
+                const $notes = $el.find('.order-item-note');
                 const $prices = $el.find('.order-item-variant_price');
                 const $quantities = $el.find('.order-item-quantity');
 
+                $notes.on('change', handleChange);
                 $prices.on('change', handleChange);
                 $quantities.on('change', handleChange);
 

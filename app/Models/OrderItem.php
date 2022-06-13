@@ -49,6 +49,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereVariantValue2($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereVariantWeight($value)
  * @mixin \Eloquent
+ * @property string|null $note
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereNote($value)
  */
 class OrderItem extends Model
 {
@@ -69,6 +71,7 @@ class OrderItem extends Model
         'variant_option2',
         'variant_value2',
         'quantity',
+        'note',
     ];
 
     protected $attributes = [

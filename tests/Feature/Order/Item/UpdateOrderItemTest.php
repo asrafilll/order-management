@@ -34,9 +34,11 @@ class UpdateOrderItemTest extends TestCase
             ->first();
         $newQuantity = 10;
         $newVariantPrice = 20000;
+        $newNote = 'Example note';
         $input = [
             'quantity' => $newQuantity,
             'variant_price' => $newVariantPrice,
+            'note' => $newNote,
         ];
         $response = $this
             ->actingAs(
@@ -69,6 +71,7 @@ class UpdateOrderItemTest extends TestCase
             'variant_value2' => $productVariant->value2,
             'quantity' => $newQuantity,
             'variant_price' => $newVariantPrice,
+            'note' => $newNote,
         ]);
 
         $order->refresh();

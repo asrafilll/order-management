@@ -34,6 +34,10 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'min:1',
             ],
+            'note' => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 }

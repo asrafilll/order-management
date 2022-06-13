@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrder whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ReturnOrder whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Database\Factories\ReturnOrderFactory factory(...$parameters)
  */
 class ReturnOrder extends Model
 {
