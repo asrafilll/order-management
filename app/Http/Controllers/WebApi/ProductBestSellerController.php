@@ -25,6 +25,7 @@ class ProductBestSellerController extends Controller
                 ->whereMonth('orders.created_at', $now->month)
                 ->groupBy('product_id')
                 ->orderByDesc('total')
+                ->limit(10)
                 ->get()
         );
     }
