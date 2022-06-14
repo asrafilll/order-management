@@ -16,8 +16,8 @@ class DayReturnOrderController extends Controller
     {
         return DayReturnOrderResource::collection(
             ReturnOrder::query()
-                ->selectRaw('ANY_VALUE(DATE(created_at)) as date, COUNT(id) as total')
-                ->groupByRaw('YEAR(created_at), MONTH(created_at), DAY(created_at)')
+                ->selectRaw('DATE(created_at) as date, COUNT(id) as total')
+                ->groupByRaw('YEAR(created_at), MONTH(created_at), DAY(created_at), date')
                 ->orderBy('date')
                 ->get()
         );

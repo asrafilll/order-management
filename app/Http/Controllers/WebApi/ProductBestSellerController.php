@@ -19,11 +19,11 @@ class ProductBestSellerController extends Controller
 
         return ProductBestSellerResource::collection(
             OrderItem::query()
-                ->selectRaw('order_items.product_id as id, ANY_VALUE(order_items.product_name) as name, CAST(SUM(order_items.quantity) AS UNSIGNED) as total')
+                ->selectRaw('order_items.product_id as id, order_items.product_name as name, CAST(SUM(order_items.quantity) AS UNSIGNED) as total')
                 ->join('orders', 'order_items.order_id', 'orders.id')
                 ->whereYear('orders.created_at', $now->year)
                 ->whereMonth('orders.created_at', $now->month)
-                ->groupBy('product_id')
+                ->groupByRaw('product_id, name')
                 ->orderBy('name')
                 ->limit(10)
                 ->get()
