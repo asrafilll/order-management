@@ -46,7 +46,21 @@ Improvements:
 - [x] Tipe customer menjadi member apabila sudah memenuhi kondisi minimal order 6x atau total nominal keseluruhan order 2jt (menunggu info total nominal diambil setelah atau sebelum diskon) dengan status order completed
 - [x] Ubah bahasa ke Indonesia
 - [x] Rebuild return agar dapat memilih lebih dari 1 item
-- [ ] Tambah field note di model order item, agar dapat menampung catatan untuk per item apabila ada scenario ukuran custom
-- [ ] Form order untuk guest.
-- [ ] Chart dibagian dashboard (menunggu info)
-- [ ] Tambah field order_number di model order, agar memudahkan mencari order
+- [x] Tambah field note di model order item, agar dapat menampung catatan untuk per item apabila ada scenario ukuran custom
+- [x] Chart dibagian dashboard
+
+Review 16 Juni 2022:
+
+- [ ]  submit retur seharusnya tidak bisa lebih dari jumlah barang di invoice
+- [ ]  Tampilan dashboard ada opsi filter by tanggal (Seperti di orderlist)
+- [x]  Pie Chart Dashboard Sumber marketplace dihapus, ganti dengan childnya (tokped, lazada, dll)
+- [ ]  bisa bulk print invoice dari order list (ada opsi untuk select, order mana aja yang mau diprint invoicenya)
+- [x]  Input Order baru, pada saat masukkan cari customer bisa juga via nomor HP, tidak hanya via nama. Karena kemungkinan nama bisa banyak yang sama.
+- [x]  Menu list customer, bisa filter / search by nomor hp
+- [x]  Jika edit data customer, mengapa tidak merubah data informasi yang ada di order list ?
+- [x] Ubah Penulisan
+  - [x]  Kustomer = Customer
+  - [x]  Karyawan = Tim
+  - [x]  Nama = Sumber Traffic
+  - [x]  Nama = Nama Kurir
+  - [x]  Nama = Metode Pembayaran
