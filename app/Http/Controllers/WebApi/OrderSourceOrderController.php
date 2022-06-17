@@ -5,8 +5,6 @@ namespace App\Http\Controllers\WebApi;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderSourceOrderResource;
 use App\Models\Order;
-use App\Models\OrderSource;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class OrderSourceOrderController extends Controller
@@ -17,40 +15,11 @@ class OrderSourceOrderController extends Controller
      */
     public function __invoke(Request $request)
     {
-        /** @var Collection */
-        $orderSources = OrderSource::query()
-            ->whereNull('parent_id')
-            ->get();
-
-        $orderSourceOrders = $orderSources->reduce(function ($occ, $orderSource) {
-            $totalParentOrders = Order::query()
-                ->where('source_id', $orderSource->id)
-                ->count();
-
-            /** @var Collection */
-            $childOrderSources = OrderSource::query()
-                ->where('parent_id', $orderSource->id)
-                ->get();
-
-            $totalChildOrders = Order::query()
-                ->whereIn('source_id', $childOrderSources->pluck('id')->all())
-                ->count();
-
-            $totalOrders = $totalParentOrders + $totalChildOrders;
-
-            if (!$totalOrders) {
-                return $occ;
-            }
-
-            $occ->push([
-                'id' => $orderSource->id,
-                'name' => $orderSource->name,
-                'total_orders' => $totalOrders,
-            ]);
-
-            return $occ;
-        }, Collection::make());
-
-        return OrderSourceOrderResource::collection($orderSourceOrders);
+        return OrderSourceOrderResource::collection(
+            Order::query()
+                ->selectRaw("source_id as id, source_name as name, COUNT(id) as total_orders")
+                ->groupByRaw("source_id, source_name")
+                ->get()
+        );
     }
 }
