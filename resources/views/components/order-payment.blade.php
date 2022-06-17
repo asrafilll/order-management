@@ -52,7 +52,7 @@
                 <div class="p-3">
                     <div class="row align-items-center mb-3">
                         <div class="col-lg">
-                            <span>{{ __('Name') }}</span>
+                            <span>{{ __('Payment Method') }}</span>
                             <span class="text-danger">*</span>
                         </div>
                         <div class="col-lg-4">

@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div class="row align-items-center mb-3">
                     <div class="col-lg">
-                        <span>{{ __('Name') }}</span>
+                        <span>{{ __('Courier Name') }}</span>
                             <span class="text-danger">*</span>
                     </div>
                     <div class="col-lg-4">
