@@ -15,10 +15,19 @@ class CustomerController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $filters = [
+            'name',
+            'phone',
+        ];
+
         return CustomerResource::collection(
             Customer::query()
-                ->when($request->filled('q'), function ($query) use ($request) {
-                    $query->where('name', 'LIKE', '%' . $request->get('q') . '%');
+                ->when($request->filled('q'), function ($query) use ($request, $filters) {
+                    $query->where(function ($query) use ($request, $filters) {
+                        foreach ($filters as $filter) {
+                            $query->orWhere($filter, 'LIKE', "%{$request->get('q')}%");
+                        }
+                    });
                 })
                 ->paginate(
                     perPage: $request->get('per_page'),

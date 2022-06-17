@@ -480,7 +480,7 @@
                                                 success: function (res) {
                                                     response(res.data.map(function (customer) {
                                                         return {
-                                                            label: customer.name,
+                                                            label: customer.name + " (" + customer.phone + ")",
                                                             value: customer.name,
                                                             customer: customer,
                                                         };
