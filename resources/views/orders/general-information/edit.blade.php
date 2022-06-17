@@ -20,7 +20,7 @@
                         <div id="source-module" class="card-body">
                             <div class="form-group">
                                 <label for="source_name">
-                                    <span>{{ __('Name') }}</span>
+                                    <span>{{ __('Source Traffic') }}</span>
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input
