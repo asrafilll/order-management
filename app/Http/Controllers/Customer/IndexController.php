@@ -15,7 +15,20 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $filters = [
+            'name',
+            'phone',
+            'type',
+        ];
+
         $customers = Customer::query()
+            ->when($request->filled('search'), function ($query) use ($request, $filters) {
+                $query->where(function ($query) use ($request, $filters) {
+                    foreach ($filters as $filter) {
+                        $query->orWhere($filter, 'LIKE', "%{$request->get('search')}%");
+                    }
+                });
+            })
             ->paginate(
                 perPage: $request->get('per_page', 10),
                 page: $request->get('page')

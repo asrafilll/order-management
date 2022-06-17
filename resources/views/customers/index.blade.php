@@ -13,6 +13,34 @@
 
     <section class="content">
         <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <form
+                        action=""
+                        method="GET"
+                        class="col-lg mb-2 mb-lg-0"
+                    >
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                name="search"
+                                class="form-control"
+                                placeholder="Search here"
+                                value="{{ Request::get('search') }}"
+                            >
+
+                            <div class="input-group-append">
+                                <button
+                                    type="submit"
+                                    class="btn btn-default"
+                                >
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
