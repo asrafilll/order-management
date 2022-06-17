@@ -1,7 +1,6 @@
 FR James
 
 [Documetation](https://longhaired-wallaby-a66.notion.site/Fitur-Step-1-b368e4b6dfb24583ab5f7984b4921114)
-[Review June, 16 2022](https://longhaired-wallaby-a66.notion.site/Review-2c3fb148b8dd42378a1142ceb9e5b621)
 
 Stacks:
 
@@ -49,7 +48,7 @@ Improvements:
 - [x] Tambah field note di model order item, agar dapat menampung catatan untuk per item apabila ada scenario ukuran custom
 - [x] Chart dibagian dashboard
 
-Review 16 Juni 2022:
+[Review 16 Juni 2022](https://longhaired-wallaby-a66.notion.site/Review-2c3fb148b8dd42378a1142ceb9e5b621):
 
 - [ ]  submit retur seharusnya tidak bisa lebih dari jumlah barang di invoice
 - [ ]  Tampilan dashboard ada opsi filter by tanggal (Seperti di orderlist)
