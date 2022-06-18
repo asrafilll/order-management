@@ -6,6 +6,7 @@ use App\Models\OrderItem;
 use App\Models\ReturnOrderItem;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class StoreRequest extends FormRequest
 {
@@ -30,7 +31,6 @@ class StoreRequest extends FormRequest
             'order_item_id' => [
                 'required',
                 'integer',
-                Rule::exists((new OrderItem())->getTable(), 'id'),
                 Rule::unique((new ReturnOrderItem())->getTable(), 'order_item_id')
                     ->where('return_order_id', $this->returnOrder->id),
             ],
@@ -44,5 +44,30 @@ class StoreRequest extends FormRequest
                 'string',
             ],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        /** @var OrderItem */
+        $orderItem = OrderItem::find($this->get('order_item_id'));
+
+        if (!$orderItem) {
+            throw ValidationException::withMessages([
+                'order_item_id' => __('validation.exists' . [
+                    'attribute' => 'order_item_id',
+                ]),
+            ]);
+        }
+
+        $unreturnQuantity = $orderItem->getUnreturnQuantity();
+
+        if ($unreturnQuantity < $this->get('quantity')) {
+            throw ValidationException::withMessages([
+                'quantity' => __('validation.max.numeric', [
+                    'attribute' => 'quantity',
+                    'max' => $unreturnQuantity,
+                ]),
+            ]);
+        }
     }
 }

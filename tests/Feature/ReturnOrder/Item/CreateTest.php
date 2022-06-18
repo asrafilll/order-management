@@ -4,7 +4,9 @@ namespace Tests\Feature\ReturnOrder\Item;
 
 use App\Enums\PermissionEnum;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\ReturnOrder;
+use App\Models\ReturnOrderItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Tests\Utils\OrderBuilder;
@@ -34,7 +36,8 @@ class CreateTest extends TestCase
             ])
             ->create();
 
-        $orderItemId = $order->items->first()->id;
+        /** @var OrderItem */
+        $orderItem = $order->items->first();
 
         $response = $this
             ->actingAs(
@@ -43,7 +46,7 @@ class CreateTest extends TestCase
                 )
             )
             ->post(route('return-orders.items.store', $returnOrder), [
-                'order_item_id' => $orderItemId,
+                'order_item_id' => $orderItem->id,
                 'quantity' => 1,
             ]);
 
@@ -51,7 +54,16 @@ class CreateTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
 
-        $this->assertEquals($orderItemId, $order->items->first()->id);
+        $this->assertDatabaseHas((new ReturnOrderItem())->getTable(), [
+            'return_order_id' => $returnOrder->id,
+            'order_item_id' => $orderItem->id,
+            'quantity' => 1,
+        ]);
+
+        $this->assertDatabaseHas($orderItem->getTable(), [
+            'id' => $orderItem->id,
+            'returned_quantity' => 1,
+        ]);
     }
 
     /**
@@ -61,6 +73,7 @@ class CreateTest extends TestCase
     {
         /** @var Order */
         $order = (new OrderBuilder)
+            ->setItemQuantity(2)
             ->addItems()
             ->build();
 
@@ -92,5 +105,41 @@ class CreateTest extends TestCase
         $response
             ->assertRedirect()
             ->assertSessionHasErrors(['order_item_id']);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_should_error_when_quantity_is_higher_than_unreturn_quantity()
+    {
+        /** @var Order */
+        $order = (new OrderBuilder)
+            ->addItems()
+            ->build();
+
+        /** @var ReturnOrder */
+        $returnOrder = ReturnOrder::factory()
+            ->state([
+                'order_id' => $order->id
+            ])
+            ->create();
+
+        /** @var OrderItem */
+        $orderItem = $order->items->first();
+
+        $response = $this
+            ->actingAs(
+                $this->createUserWithPermission(
+                    PermissionEnum::manage_return_orders()
+                )
+            )
+            ->post(route('return-orders.items.store', $returnOrder), [
+                'order_item_id' => $orderItem->id,
+                'quantity' => 2,
+            ]);
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasErrors(['quantity']);
     }
 }

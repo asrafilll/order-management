@@ -59,4 +59,33 @@ class ReturnOrderItem extends Model
             'id'
         );
     }
+
+    protected static function booted()
+    {
+        static::created(function (ReturnOrderItem $returnOrderItem) {
+            $returnOrderItem->orderItem->update([
+                'returned_quantity' => $returnOrderItem->getReturnedQuantity() + $returnOrderItem->quantity,
+            ]);
+        });
+
+        static::updated(function (ReturnOrderItem $returnOrderItem) {
+            $returnOrderItem->orderItem->update([
+                'returned_quantity' => $returnOrderItem->getReturnedQuantity() + $returnOrderItem->quantity,
+            ]);
+        });
+
+        static::deleted(function (ReturnOrderItem $returnOrderItem) {
+            $returnOrderItem->orderItem->update([
+                'returned_quantity' => $returnOrderItem->getReturnedQuantity() ?: null,
+            ]);
+        });
+    }
+
+    public function getReturnedQuantity(): int
+    {
+        return ReturnOrderItem::query()
+            ->where('id', '!=', $this->id)
+            ->whereOrderItemId($this->order_item_id)
+            ->sum('quantity');
+    }
 }
