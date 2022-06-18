@@ -12,7 +12,7 @@
                         <thead>
                             <tr>
                                 <th>{{ __('Product') }}</th>
-                                <th>{{ __('Quantity') }}</th>
+                                <th>{{ __('Quantity That Can Be Returned') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -32,7 +32,7 @@
                                             </dd>
                                         </dl>
                                     </td>
-                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ $item->getUnreturnQuantity() }}</td>
                                     <td class="text-right">
                                         <button
                                             type="button"
