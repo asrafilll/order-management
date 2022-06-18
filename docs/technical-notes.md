@@ -51,7 +51,7 @@ Improvements:
 [Review 16 Juni 2022](https://longhaired-wallaby-a66.notion.site/Review-2c3fb148b8dd42378a1142ceb9e5b621):
 
 - [x]  submit retur seharusnya tidak bisa lebih dari jumlah barang di invoice
-- [ ]  Tampilan dashboard ada opsi filter by tanggal (Seperti di orderlist)
+- [x]  Tampilan dashboard ada opsi filter by tanggal (Seperti di orderlist)
 - [x]  Pie Chart Dashboard Sumber marketplace dihapus, ganti dengan childnya (tokped, lazada, dll)
 - [ ]  bisa bulk print invoice dari order list (ada opsi untuk select, order mana aja yang mau diprint invoicenya)
 - [x]  Input Order baru, pada saat masukkan cari customer bisa juga via nomor HP, tidak hanya via nama. Karena kemungkinan nama bisa banyak yang sama.
