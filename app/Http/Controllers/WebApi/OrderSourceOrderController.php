@@ -18,6 +18,12 @@ class OrderSourceOrderController extends Controller
         return OrderSourceOrderResource::collection(
             Order::query()
                 ->selectRaw("source_id as id, source_name as name, COUNT(id) as total_orders")
+                ->when($request->filled('start_date'), function ($query) use ($request) {
+                    $query->whereRaw('DATE(created_at) >= ?', [$request->get('start_date')]);
+                })
+                ->when($request->filled('end_date'), function ($query) use ($request) {
+                    $query->whereRaw('DATE(created_at) <= ?', [$request->get('end_date')]);
+                })
                 ->groupByRaw("source_id, source_name")
                 ->get()
         );
