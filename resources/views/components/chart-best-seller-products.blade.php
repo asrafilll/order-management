@@ -1,17 +1,27 @@
 <div>
-    <div
-        class="card"
-        id="best-seller-products-module"
-    >
-        <div class="card-header">
-            <h3 class="card-title">{{ __('Best Seller Products On Current Month') }}</h3>
+    <div id="best-seller-products-module">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{ __('Best Seller Products') }}</h3>
+                <div class="card-tools">
+                    <button
+                        type="button"
+                        class="btn btn-default"
+                        data-toggle="modal"
+                        data-target="#filter-BestSellerProducts"
+                    >
+                        <i class="fas fa-calendar-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div
+                class="card-body"
+                style="position: relative: height: 350px;"
+            >
+                <canvas id="best-seller-products-chart"></canvas>
+            </div>
         </div>
-        <div
-            class="card-body"
-            style="position: relative: height: 350px;"
-        >
-            <canvas id="best-seller-products-chart"></canvas>
-        </div>
+        <x-chart-date-filter-modal name="BestSellerProducts" />
     </div>
     <script>
         const BestSellerProductsModule = (function() {
@@ -19,10 +29,14 @@
             const $chart = document.getElementById('best-seller-products-chart');
             const ctx = $chart.getContext('2d');
 
+            const baseUrl = '{{ route('web-api.products.best-seller.index') }}';
+            let chart;
+            let url = baseUrl;
+
             init();
 
             function init() {
-                const chart = new Chart(ctx, {
+                chart = new Chart(ctx, {
                     type: 'bar',
                     options: {
                         legend: {
@@ -39,8 +53,12 @@
                     },
                 });
 
+                render();
+            }
+
+            function render() {
                 $.ajax({
-                    url: '{{ route('web-api.products.best-seller.index') }}',
+                    url: url,
                     success: function(response) {
                         chart.data = {
                             labels: response.data.map(value => value.name),
@@ -54,6 +72,16 @@
                     },
                 });
             }
+
+            function setParams(params) {
+                url = baseUrl + '?' + params;
+
+                render();
+            }
+
+            return {
+                setParams: setParams,
+            };
         })();
     </script>
 </div>
