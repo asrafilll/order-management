@@ -6,7 +6,7 @@
                 <div class="card-tools">
                     <button
                         type="button"
-                        class="btn btn-default"
+                        class="btn btn-default btn-sm"
                         data-toggle="modal"
                         data-target="#filter-ReturnOrderByDays"
                     >
