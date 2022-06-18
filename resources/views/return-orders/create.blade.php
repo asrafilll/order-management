@@ -16,7 +16,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="order_id">
-                                    <span>{{ __('Order') }}</span>
+                                    <span>{{ __('Order ID') }}</span>
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input
