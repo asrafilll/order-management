@@ -194,6 +194,7 @@
                         type="button"
                         class="btn btn-primary"
                         id="btn-submit-{{ $name }}"
+                        data-dismiss="modal"
                     >{{ __('Apply') }}</button>
                     <script>
                         $('#btn-submit-{{ $name }}').on('click', function() {
