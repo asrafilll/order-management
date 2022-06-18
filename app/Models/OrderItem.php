@@ -51,6 +51,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @mixin \Eloquent
  * @property string|null $note
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereNote($value)
+ * @property int|null $returned_quantity
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereReturnedQuantity($value)
  */
 class OrderItem extends Model
 {
@@ -72,6 +74,7 @@ class OrderItem extends Model
         'variant_value2',
         'quantity',
         'note',
+        'returned_quantity',
     ];
 
     protected $attributes = [
@@ -96,5 +99,10 @@ class OrderItem extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function getUnreturnQuantity(): int
+    {
+        return $this->quantity - intval($this->returned_quantity);
     }
 }
