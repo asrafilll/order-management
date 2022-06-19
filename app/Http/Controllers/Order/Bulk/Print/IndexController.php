@@ -1,22 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Order;
+namespace App\Http\Controllers\Order\Bulk\Print;
 
 use App\Http\Controllers\Controller;
 use App\Models\Meta;
 use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
-class ShowController extends Controller
+class IndexController extends Controller
 {
     /**
-     * @param Order $order
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Order $order)
+    public function __invoke(Request $request)
     {
-        $order->load(['items']);
+        /** @var Collection<Order> */
+        $orders = Order::with(['items'])
+            ->whereIn('id', $request->get('ids'))
+            ->latest()
+            ->get();
+
         $company = [
             'name' => Meta::findByKey('company_name'),
             'phone' => Meta::findByKey('company_phone'),
@@ -27,6 +35,7 @@ class ShowController extends Controller
             'village' => Meta::findByKey('company_village'),
             'postal_code' => Meta::findByKey('company_postal_code'),
         ];
+
         $companyAddress = Collection::make();
         $companyAddressFields = [
             'village',
@@ -44,10 +53,10 @@ class ShowController extends Controller
 
         $companyAddress = $companyAddress->join(', ');
 
-        return Pdf::loadView('orders.show-pdf', [
-            'order' => $order,
+        return Pdf::loadView('orders.bulk.print.index', [
+            'orders' => $orders,
             'company' => $company,
-            'companyAddress' => $companyAddress,
-        ])->stream("order_{$order->id}.pdf");
+            'companyAddress' => $companyAddress
+        ])->stream('orders.pdf');
     }
 }

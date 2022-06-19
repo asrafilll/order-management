@@ -82,4 +82,8 @@ Route::middleware(['auth', 'can:' . PermissionEnum::manage_orders()->value])
             '/{order}/closing-date',
             \App\Http\Controllers\Order\ClosingDate\UpdateController::class
         )->name('closing-date.update');
+        Route::get(
+            '/bulk/print',
+            \App\Http\Controllers\Order\Bulk\Print\IndexController::class
+        )->name('bulk.print.index');
     });

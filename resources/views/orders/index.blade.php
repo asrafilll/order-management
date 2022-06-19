@@ -12,7 +12,10 @@
     </x-content-header>
 
     <section class="content">
-        <div class="card">
+        <div
+            class="card"
+            id="orders-module"
+        >
             <div class="card-header">
                 <div class="row align-items-center">
                     <form
@@ -40,16 +43,38 @@
                         </div>
                     </form>
                     <div class="col-lg-auto">
-                        <button
-                            type="button"
-                            class="btn btn-default"
-                            data-toggle="modal"
-                            data-target="#filter-modal"
-                        >{{ __('Filter') }}</button>
-                        <a
-                            href="{{ request()->fullUrlWithQuery(['action' => 'export']) }}"
-                            class="btn btn-default"
-                        >{{ __('Export') }}</a>
+                        <div class="btn-group">
+                            <button
+                                type="button"
+                                class="btn btn-default"
+                                data-toggle="modal"
+                                data-target="#filter-modal"
+                            >{{ __('Filter') }}</button>
+                            <a
+                                href="{{ request()->fullUrlWithQuery(['action' => 'export']) }}"
+                                class="btn btn-default"
+                            >{{ __('Export') }}</a>
+                            <div
+                                class="dropdown"
+                                id="orders-action"
+                                style="display: none;"
+                            >
+                                <button
+                                    class="btn btn-default"
+                                    type="button"
+                                    data-toggle="dropdown"
+                                >
+                                    {{ __('Action') }}
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a
+                                        id="action-print"
+                                        class="dropdown-item"
+                                        href="#"
+                                    >{{ __('Print') }}</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -104,7 +129,7 @@
                                         </div>
                                     </div>
                                     <script>
-                                        const CommonDate = (function () {
+                                        const CommonDate = (function() {
                                             const $el = $('#common-date-module');
                                             const $btn = $el.find('.btn-common-date');
 
@@ -859,9 +884,21 @@
                 </div>
             </div>
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+                <table
+                    class="table table-hover text-nowrap"
+                    id="orders-table"
+                >
                     <thead>
                         <tr>
+                            <th class="text-center">
+                                <div class="icheck-primary my-0">
+                                    <input
+                                        type="checkbox"
+                                        id="all_ids"
+                                    >
+                                    <label for="all_ids"></label>
+                                </div>
+                            </th>
                             <th>{{ __('ID') }}</th>
                             <th>{{ __('Created Date') }}</th>
                             <th>{{ __('Closing Date') }}</th>
@@ -881,6 +918,18 @@
                     <tbody>
                         @forelse ($orders as $order)
                             <tr>
+                                <td class="text-center">
+                                    <div class="icheck-primary my-0">
+                                        <input
+                                            type="checkbox"
+                                            id="id_{{ $order->id }}"
+                                            class="ids"
+                                            name="ids[]"
+                                            value="{{ $order->id }}"
+                                        >
+                                        <label for="id_{{ $order->id }}"></label>
+                                    </div>
+                                </td>
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
                                 <td>{{ $order->closing_date }}</td>
@@ -927,7 +976,7 @@
                         @empty
                             <tr>
                                 <td
-                                    colspan="14"
+                                    colspan="15"
                                     class="text-center"
                                 >{{ __('Data not found') }}</td>
                             </tr>
@@ -939,5 +988,64 @@
                 {!! $orders->withQueryString()->links() !!}
             </div>
         </div>
+        <script>
+            const Orders = (function() {
+                const $el = $('#orders-module');
+                const $allIds = $el.find('#all_ids');
+                const $ids = $el.find('.ids');
+                const $action = $el.find('#orders-action');
+                const $print = $action.find('#action-print');
+
+                let ids = [];
+
+                $allIds.on('change', handleChangeAllIds)
+                $ids.on('change', handleChangeIds)
+
+                function handleChangeAllIds(event) {
+                    const checked = event.target.checked;
+                    $ids.prop('checked', checked);
+                    syncIds();
+                    toggleActionButton();
+                    syncPrintHref()
+                }
+
+                function handleChangeIds() {
+                    syncIds();
+                    toggleActionButton();
+                    syncPrintHref();
+                }
+
+                function syncIds() {
+                    ids = $ids.toArray().reduce(function(occ, id) {
+                        if (!id.checked) return occ;
+
+                        occ.push(+id.value);
+
+                        return occ;
+                    }, []);
+                }
+
+                function toggleActionButton() {
+                    if (ids.length) {
+                        $action.show();
+                    } else {
+                        $action.hide();
+                    }
+                }
+
+                function syncPrintHref() {
+                    if (ids.length < 1) {
+                        $print.attr('href', '#');
+                        return;
+                    }
+
+                    const query = ids.map(function(id) {
+                        return 'ids[]=' + id;
+                    }).join('&');
+
+                    $print.attr('href', '{{ route('orders.bulk.print.index') }}?' + query);
+                }
+            })();
+        </script>
     </section>
 </x-app>

@@ -7,7 +7,7 @@
         http-equiv="Content-Type"
         content="text/html; charset=utf-8"
     />
-    <title>Order {{ $order->id }}</title>
+    <title>Orders</title>
     <!-- CSS Reset -->
     <style>
         /* http://meyerweb.com/eric/tools/css/reset/v2.0 | 20110126 License: none (public domain) */
@@ -165,11 +165,16 @@
 </head>
 
 <body>
-    <x-print-order
-        :order="$order"
-        :company="$company"
-        :companyAddress="$companyAddress"
-    />
+    @foreach ($orders as $order)
+        <x-print-order
+            :order="$order"
+            :company="$company"
+            :companyAddress="$companyAddress"
+        />
+        @if (!$loop->last)
+            <p style="page-break-after: always;">&nbsp;</p>
+        @endif
+    @endforeach
 </body>
 
 </html>

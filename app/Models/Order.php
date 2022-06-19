@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Order
@@ -236,5 +237,16 @@ class Order extends Model
                 'type' => CustomerTypeEnum::repeat(),
             ]);
         }
+    }
+
+    public function getCustomerAddress(): string
+    {
+        return Collection::make([
+            $this->customer_village,
+            $this->customer_subdistrict,
+            $this->customer_city,
+            $this->customer_province,
+            $this->customer_postal_code
+        ])->join(', ');
     }
 }
