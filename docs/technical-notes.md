@@ -53,7 +53,7 @@ Improvements:
 - [x]  submit retur seharusnya tidak bisa lebih dari jumlah barang di invoice
 - [x]  Tampilan dashboard ada opsi filter by tanggal (Seperti di orderlist)
 - [x]  Pie Chart Dashboard Sumber marketplace dihapus, ganti dengan childnya (tokped, lazada, dll)
-- [ ]  bisa bulk print invoice dari order list (ada opsi untuk select, order mana aja yang mau diprint invoicenya)
+- [x]  bisa bulk print invoice dari order list (ada opsi untuk select, order mana aja yang mau diprint invoicenya)
 - [x]  Input Order baru, pada saat masukkan cari customer bisa juga via nomor HP, tidak hanya via nama. Karena kemungkinan nama bisa banyak yang sama.
 - [x]  Menu list customer, bisa filter / search by nomor hp
 - [x]  Jika edit data customer, mengapa tidak merubah data informasi yang ada di order list ?
