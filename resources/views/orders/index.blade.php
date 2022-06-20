@@ -71,6 +71,7 @@
                                         id="action-print"
                                         class="dropdown-item"
                                         href="#"
+                                        target="_blank"
                                     >{{ __('Print') }}</a>
                                 </div>
                             </div>
