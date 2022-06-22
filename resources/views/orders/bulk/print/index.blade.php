@@ -165,7 +165,7 @@
             <table style="border-collapse: separate; border-spacing: 1rem 0.5rem;">
                 <tr>
         @endif
-        <td style="border: 1px solid #000;">
+        <td width="50%" style="border: 1px solid #000;">
             <x-print-order
                 :order="$order"
                 :company="$company"
