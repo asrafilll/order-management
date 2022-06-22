@@ -117,6 +117,7 @@
 
         body {
             line-height: 1;
+            font-size: 0.8rem;
         }
 
         ol,
@@ -145,34 +146,35 @@
 
     <style>
         body {
-            padding: 2rem;
             border: 1px solid #000;
         }
 
         table {
             width: 100%;
-            {{-- border: 1px solid #000; --}}
-        }
-
-        td {
-            {{-- border: 1px solid #000; --}}
         }
 
         img {
-            padding: 1px;
+            padding: 0.2rem 0.5rem;
         }
     </style>
 </head>
 
 <body>
     @foreach ($orders as $order)
-        <x-print-order
-            :order="$order"
-            :company="$company"
-            :companyAddress="$companyAddress"
-        />
-        @if (!$loop->last)
-            <p style="page-break-after: always;">&nbsp;</p>
+        @if ($loop->odd)
+            <table style="border-collapse: separate; border-spacing: 1rem 0.5rem;">
+                <tr>
+        @endif
+        <td style="border: 1px solid #000;">
+            <x-print-order
+                :order="$order"
+                :company="$company"
+                :companyAddress="$companyAddress"
+            />
+        </td>
+        @if ($loop->even)
+                </tr>
+            </table>
         @endif
     @endforeach
 </body>

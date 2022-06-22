@@ -7,7 +7,7 @@
         http-equiv="Content-Type"
         content="text/html; charset=utf-8"
     />
-    <title>Order {{ $order->id }}</title>
+    <title>Order ID {{ $order->id }}</title>
     <!-- CSS Reset -->
     <style>
         /* http://meyerweb.com/eric/tools/css/reset/v2.0 | 20110126 License: none (public domain) */
@@ -117,6 +117,7 @@
 
         body {
             line-height: 1;
+            font-size: 0.8rem;
         }
 
         ol,
@@ -145,31 +146,32 @@
 
     <style>
         body {
-            padding: 2rem;
             border: 1px solid #000;
         }
 
         table {
             width: 100%;
-            {{-- border: 1px solid #000; --}}
-        }
-
-        td {
-            {{-- border: 1px solid #000; --}}
         }
 
         img {
-            padding: 1px;
+            padding: 0.2rem 0.5rem;
         }
     </style>
 </head>
 
 <body>
-    <x-print-order
-        :order="$order"
-        :company="$company"
-        :companyAddress="$companyAddress"
-    />
+    <table style="border-collapse: separate; border-spacing: 1rem 0.5rem;">
+        <tr>
+            <td width="50%" style="border: 1px solid #000;">
+                <x-print-order
+                    :order="$order"
+                    :company="$company"
+                    :companyAddress="$companyAddress"
+                />
+            </td>
+            <td width="50%"></td>
+        </tr>
+    </table>
 </body>
 
 </html>

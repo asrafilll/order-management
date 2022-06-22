@@ -7,7 +7,7 @@
                         <img
                             src="themes/img/logo-300x100.png"
                             alt="{{ Config::get('app.name') }}"
-                            height="100"
+                            height="50"
                         />
                     </td>
                     <td width="100%"></td>
@@ -15,15 +15,13 @@
                         <img
                             src="themes/img/qr.png"
                             alt="{{ Config::get('app.url') }}"
-                            height="100"
+                            height="50"
                         />
                     </td>
                 </tr>
             </table>
             <hr />
-            <br />
-            <br />
-            <table style="text-align: center;">
+            <table style="text-align: center; padding: 0.5rem;">
                 <tr>
                     <td width="33%">
                         <p style="margin-bottom: 0.3rem;">{{ __('Payment Method') }}:</p>
@@ -36,9 +34,7 @@
                     <td width="33%"></td>
                 </tr>
             </table>
-            <br />
-            <br />
-            <table style="border: 1px solid #000;">
+            <table style="border: 1px solid #000; padding: 0.5rem;">
                 <tr>
                     <td style="font-weight: bold; padding: 1rem; font-style: italic;">{{ __('NOTE') }}:</td>
                     <td
@@ -47,9 +43,7 @@
                     >{{ $order->note }}</td>
                 </tr>
             </table>
-            <br />
-            <br />
-            <table>
+            <table style="padding: 0.5rem;">
                 <tr>
                     <td width="45%">
                         <ul style="line-height: 1.4;">
@@ -72,10 +66,8 @@
                     </td>
                 </tr>
             </table>
-            <br />
             <hr />
-            <br />
-            <table>
+            <table style="padding: 0.5rem;">
                 <tr>
                     <td style="padding: 0.2rem;">{{ __('Product') }}:</td>
                     <td style="padding: 0.2rem;">{{ __('Variant') }}:</td>
