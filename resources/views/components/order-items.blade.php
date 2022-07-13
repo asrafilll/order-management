@@ -36,11 +36,9 @@
                                 },
                                 success: function(res) {
                                     response(res.data.map(function(productVariant) {
-                                        const value =
-                                            `${productVariant.product_name} - ${productVariant.name}`;
                                         return {
-                                            label: value,
-                                            value: value,
+                                            label: productVariant.variant_name,
+                                            value: productVariant.variant_name,
                                             id: productVariant.id,
                                         };
                                     }))
