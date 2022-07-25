@@ -168,6 +168,7 @@ class Order extends Model
         });
 
         static::deleting(function (Order $order) {
+            $order->syncCustomerType();
             $order->items()->delete();
         });
     }
