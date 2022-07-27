@@ -212,8 +212,10 @@ class Order extends Model
         );
         $MIN_MEMBER_TOTAL_NOMINAL_ITEMS_PRICE_COMPLETED_ORDERS = 2000000;
 
+        $customerQuery = Customer::whereId($this->customer_id);
+
         if ($totalNominalItemsPriceCompletedOrdersForCurrentCustomerId >= $MIN_MEMBER_TOTAL_NOMINAL_ITEMS_PRICE_COMPLETED_ORDERS) {
-            return Customer::whereId($this->customer_id)->update([
+            return $customerQuery->update([
                 'type' => CustomerTypeEnum::member(),
             ]);
         }
@@ -226,7 +228,7 @@ class Order extends Model
         $MIN_MEMBER_TOTAL_COMPLETED_ORDERS = 6;
 
         if ($totalCompletedOrdersForCurrentCustomerId >= $MIN_MEMBER_TOTAL_COMPLETED_ORDERS) {
-            return Customer::whereId($this->customer_id)->update([
+            return $customerQuery->update([
                 'type' => CustomerTypeEnum::member(),
             ]);
         }
@@ -234,10 +236,14 @@ class Order extends Model
         $MIN_REPEAT_TOTAL_COMPLETED_ORDERS = 2;
 
         if ($totalCompletedOrdersForCurrentCustomerId >= $MIN_REPEAT_TOTAL_COMPLETED_ORDERS) {
-            return Customer::whereId($this->customer_id)->update([
+            return $customerQuery->update([
                 'type' => CustomerTypeEnum::repeat(),
             ]);
         }
+
+        return $customerQuery->update([
+            'type' => CustomerTypeEnum::new(),
+        ]);
     }
 
     public function getCustomerAddress(): string
