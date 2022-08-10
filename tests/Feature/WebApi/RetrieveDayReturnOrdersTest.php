@@ -19,8 +19,6 @@ class RetrieveDayReturnOrdersTest extends TestCase
             )
             ->getJson(route('web-api.days.return-orders.index'));
 
-        $response->dump();
-
         $response
             ->assertOk()
             ->assertJsonStructure(['data']);
