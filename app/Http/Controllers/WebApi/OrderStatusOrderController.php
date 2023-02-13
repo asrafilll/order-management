@@ -19,10 +19,10 @@ class OrderStatusOrderController extends Controller
             Order::query()
                 ->selectRaw('UPPER(status) as name, COUNT(id) as total_orders')
                 ->when($request->filled('start_date'), function ($query) use ($request) {
-                    $query->whereRaw('DATE(created_at) >= ?', [$request->get('start_date')]);
+                    $query->whereRaw('DATE(closing_date) >= ?', [$request->get('start_date')]);
                 })
                 ->when($request->filled('end_date'), function ($query) use ($request) {
-                    $query->whereRaw('DATE(created_at) <= ?', [$request->get('end_date')]);
+                    $query->whereRaw('DATE(closing_date) <= ?', [$request->get('end_date')]);
                 })
                 ->groupBy('status')
                 ->get()

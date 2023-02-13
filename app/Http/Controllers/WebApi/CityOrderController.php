@@ -19,10 +19,10 @@ class CityOrderController extends Controller
             Order::query()
                 ->selectRaw('customer_city as city, COUNT(id) as total')
                 ->when($request->filled('start_date'), function ($query) use ($request) {
-                    $query->whereRaw('DATE(created_at) >= ?', [$request->get('start_date')]);
+                    $query->whereRaw('DATE(closing_date) >= ?', [$request->get('start_date')]);
                 })
                 ->when($request->filled('end_date'), function ($query) use ($request) {
-                    $query->whereRaw('DATE(created_at) <= ?', [$request->get('end_date')]);
+                    $query->whereRaw('DATE(closing_date) <= ?', [$request->get('end_date')]);
                 })
                 ->groupBy('customer_city')
                 ->get()
