@@ -26,7 +26,7 @@ class ProductBestSellerController extends Controller
                     $query->whereRaw('DATE(orders.created_at) <= ?', [$request->get('end_date')]);
                 })
                 ->groupByRaw('product_id, name')
-                ->orderBy('name')
+                ->orderByDesc('total')
                 ->limit(10)
                 ->get()
         );
