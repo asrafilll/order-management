@@ -26,6 +26,9 @@
                 <x-chart-best-seller-cities />
             </div>
             <div class="col-lg-6">
+                <x-chart-best-seller-provinces />
+            </div>
+            <div class="col-lg-6">
                 <x-chart-return-order-by-days />
             </div>
             <div class="col-lg-6">
