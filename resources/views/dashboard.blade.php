@@ -23,7 +23,7 @@
                 <x-chart-order-by-statuses />
             </div>
             <div class="col-lg-6">
-                <x-chart-order-by-cities />
+                <x-chart-best-seller-cities />
             </div>
             <div class="col-lg-6">
                 <x-chart-return-order-by-days />
