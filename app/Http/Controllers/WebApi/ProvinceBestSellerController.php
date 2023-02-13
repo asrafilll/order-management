@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\WebApi;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductBestSellerResource;
+use App\Http\Resources\ProvinceBestSellerResource;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
-class ProductBestSellerController extends Controller
+class ProvinceBestSellerController extends Controller
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -15,17 +15,17 @@ class ProductBestSellerController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return ProductBestSellerResource::collection(
+        return ProvinceBestSellerResource::collection(
             OrderItem::query()
-                ->selectRaw('order_items.product_id as id, order_items.product_name as name, CAST(SUM(order_items.quantity) AS UNSIGNED) as total')
+                ->selectRaw('orders.customer_province as name, CAST(SUM(order_items.quantity) AS UNSIGNED) as total')
                 ->join('orders', 'order_items.order_id', 'orders.id')
                 ->when($request->filled('start_date'), function ($query) use ($request) {
-                    $query->whereRaw('DATE(orders.created_at) >= ?', [$request->get('start_date')]);
+                    $query->whereRaw('DATE(orders.closing_date) >= ?', [$request->get('start_date')]);
                 })
                 ->when($request->filled('end_date'), function ($query) use ($request) {
-                    $query->whereRaw('DATE(orders.created_at) <= ?', [$request->get('end_date')]);
+                    $query->whereRaw('DATE(orders.closing_date) <= ?', [$request->get('end_date')]);
                 })
-                ->groupByRaw('product_id, name')
+                ->groupBy('name')
                 ->orderByDesc('total')
                 ->limit(10)
                 ->get()
