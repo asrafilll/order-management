@@ -268,6 +268,31 @@
                                         </script>
                                     </div>
                                     <div class="form-group">
+                                        <label for="variant_name">{{ __('Product') }}</label>
+                                        <input
+                                            type="hidden"
+                                            name="variant_id"
+                                            id="variant_id"
+                                            value="{{ Request::get('variant_id') }}"
+                                        />
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                name="variant_name"
+                                                id="variant_name"
+                                                class="form-control"
+                                                value="{{ Request::get('variant_name') }}"
+                                            />
+                                            <div class="input-group-append">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-default btn-reset"
+                                                    @if (!Request::filled('variant_name') || !Request::filled('variant_id')) disabled @endif
+                                                >{{ __('Reset') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="customer_name">{{ __('Customer') }}</label>
                                         <input
                                             type="hidden"
@@ -725,6 +750,8 @@
                         <script>
                             const FilterOrder = (function() {
                                 const $el = $('#filter-order-module');
+                                const $variantId = $el.find('#variant_id');
+                                const $variantName = $el.find('#variant_name');
                                 const $customerId = $el.find('#customer_id');
                                 const $customerName = $el.find('#customer_name');
                                 const $paymentMethodId = $el.find('#payment_method_id');
@@ -755,6 +782,33 @@
                                 }
 
                                 function init() {
+                                    $variantName.autocomplete({
+                                        source: function(request, response) {
+                                            $.ajax({
+                                                method: 'GET',
+                                                url: '{{ route('web-api.product-variants.index') }}',
+                                                data: {
+                                                    q: request.term,
+                                                },
+                                                success: function(res) {
+                                                    response(res.data.map(function(productVariant) {
+                                                        return {
+                                                            id: productVariant.id,
+                                                            label: productVariant.variant_name,
+                                                            value: productVariant.variant_name,
+                                                        };
+                                                    }))
+                                                },
+                                            });
+                                        },
+                                        select: function(event, ui) {
+                                            $variantId.val(ui.item.id);
+                                        },
+                                        change: function(event, ui) {
+                                            $variantId.val(ui.item ? ui.item.id : null);
+                                        }
+                                    });
+
                                     $customerName.autocomplete({
                                         source: function(request, response) {
                                             $.ajax({
@@ -778,7 +832,6 @@
                                             $customerId.val(ui.item.id);
                                         },
                                         change: function(event, ui) {
-                                            console.log(ui);
                                             $customerId.val(ui.item ? ui.item.id : null);
                                         }
                                     });

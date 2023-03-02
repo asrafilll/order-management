@@ -61,6 +61,15 @@ class CreateOrdersQueryFromRequestAction
             }
         }
 
+        if ($request->filled('variant_id')) {
+            $query->whereExists(function ($query) use ($request) {
+                $query->selectRaw(1)
+                    ->from('order_items')
+                    ->whereColumn('order_items.order_id', 'orders.id')
+                    ->where('order_items.variant_id', $request->get('variant_id'));
+            });
+        }
+
         if ($request->filled('start_date')) {
             $query->whereRaw('DATE(created_at) >= ?', [$request->get('start_date')]);
         }
