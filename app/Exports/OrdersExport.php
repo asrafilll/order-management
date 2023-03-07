@@ -58,6 +58,8 @@ class OrdersExport implements
             __('ID'),
             __('Created At'),
             __('Closing Date'),
+            __('Nama Produk'),
+            __('Variasi'),
             __('Name'),
             __('Phone'),
             __('Address'),
@@ -93,36 +95,45 @@ class OrdersExport implements
      */
     public function map($order): array
     {
-        return [
-            $order->id,
-            $order->created_at,
-            $order->closing_date,
-            $order->customer_name,
-            $order->customer_phone,
-            $order->customer_address,
-            $order->customer_province,
-            $order->customer_city,
-            $order->customer_subdistrict,
-            $order->customer_village,
-            $order->customer_postal_code,
-            $order->items_quantity,
-            $order->items_price,
-            $order->items_discount,
-            $order->shipping_price,
-            $order->shipping_discount,
-            $order->total_price,
-            $order->payment_method_name,
-            $order->shipping_name,
-            $order->shipping_airwaybill,
-            $order->shipping_date,
-            $order->note,
-            Str::upper($order->customer_type),
-            $order->source_name,
-            $order->sales_name,
-            $order->creator_name,
-            $order->packer_name,
-            Str::upper($order->payment_status),
-            Str::upper($order->status),
-        ];
+        $rows = [];
+        $products = $order->items;
+        // Setiap produk menjadi baris terpisah
+        foreach ($products as $key=>$product) {
+            $rows[] = [
+            $key == 0 ? $order->id : "",
+            $key == 0 ? $order->created_at : "",
+            $key == 0 ? $order->closing_date : "",
+            $product->product_name, // Nama Produk
+            $product->variant_name, // Variant Produk
+            $key == 0 ? $order->customer_name : "",
+            $key == 0 ? $order->customer_phone : "",
+            $key == 0 ? $order->customer_address : "",
+            $key == 0 ?  $order->customer_province : "",
+            $key == 0 ? $order->customer_city : "",
+            $key == 0 ? $order->customer_subdistrict : "",
+            $key == 0 ? $order->customer_village : "",
+            $key == 0 ? $order->customer_postal_code : "",
+            $key == 0 ? $order->items_quantity : "",
+            $key == 0 ? $order->items_price : "",
+            $key == 0 ? $order->items_discount:"" ,
+            $key == 0 ? $order->shipping_price: "",
+            $key == 0 ? $order->shipping_discount : "",
+            $key == 0 ? $order->total_price : "",
+            $key == 0 ? $order->payment_method_name : "",
+            $key == 0 ? $order->shipping_name : "",
+            $key == 0 ? $order->shipping_airwaybill :"",
+            $key == 0 ? $order->shipping_date :"",
+            $key == 0 ? $order->note :"",
+            $key == 0 ? Str::upper($order->customer_type) :"",
+            $key == 0 ? $order->source_name :"",
+            $key == 0 ? $order->sales_name :"",
+            $key == 0 ? $order->creator_name :"",
+            $key == 0 ? $order->packer_name :"",
+            $key == 0 ? Str::upper($order->payment_status):"",
+            $key == 0 ? Str::upper($order->status):"",
+            ];
+        }
+    
+        return $rows;
     }
 }
