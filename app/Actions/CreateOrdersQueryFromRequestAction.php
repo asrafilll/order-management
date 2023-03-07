@@ -61,12 +61,19 @@ class CreateOrdersQueryFromRequestAction
             }
         }
 
-        if ($request->filled('variant_id')) {
+        if ($request->filled('variant_id') || $request->filled('variant_name')) {
             $query->whereExists(function ($query) use ($request) {
                 $query->selectRaw(1)
                     ->from('order_items')
                     ->whereColumn('order_items.order_id', 'orders.id')
-                    ->where('order_items.variant_id', $request->get('variant_id'));
+                    ->where(function ($query) use ($request) {
+                        $query->when($request->filled('variant_id'), function ($query) use ($request) {
+                            $query->orWhere('order_items.variant_id', $request->get('variant_id'));
+                        })
+                        ->when($request->filled('variant_name'), function ($query) use ($request) {
+                            $query->orWhere('order_items.product_name', 'LIKE', '%' . $request->get('variant_name') . '%');
+                        });
+                    });
             });
         }
 
