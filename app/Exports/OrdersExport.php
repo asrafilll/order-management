@@ -38,7 +38,7 @@ class OrdersExport implements
      */
     public function __construct($query)
     {
-        $this->_query = $query;
+        $this->_query = $this->_query = \App\Models\OrderItem::with('order')->whereIn('order_id',$query->pluck('id'));
     }
 
     /**
@@ -68,8 +68,10 @@ class OrdersExport implements
             __('Subdistrict'),
             __('Village'),
             __('Postal Code'),
+
             __('Items Quantity'),
             __('Items Price'),
+
             __('Items Discount'),
             __('Shipping Price'),
             __('Shipping Discount'),
@@ -95,45 +97,40 @@ class OrdersExport implements
      */
     public function map($order): array
     {
-        $rows = [];
-        $products = $order->items;
-        // Setiap produk menjadi baris terpisah
-        foreach ($products as $key=>$product) {
-            $rows[] = [
-            $key == 0 ? $order->id : "",
-            $key == 0 ? $order->created_at : "",
-            $key == 0 ? $order->closing_date : "",
-            $product->product_name, // Nama Produk
-            $product->variant_name, // Variant Produk
-            $key == 0 ? $order->customer_name : "",
-            $key == 0 ? $order->customer_phone : "",
-            $key == 0 ? $order->customer_address : "",
-            $key == 0 ?  $order->customer_province : "",
-            $key == 0 ? $order->customer_city : "",
-            $key == 0 ? $order->customer_subdistrict : "",
-            $key == 0 ? $order->customer_village : "",
-            $key == 0 ? $order->customer_postal_code : "",
-            $key == 0 ? $order->items_quantity : "",
-            $key == 0 ? $order->items_price : "",
-            $key == 0 ? $order->items_discount:"" ,
-            $key == 0 ? $order->shipping_price: "",
-            $key == 0 ? $order->shipping_discount : "",
-            $key == 0 ? $order->total_price : "",
-            $key == 0 ? $order->payment_method_name : "",
-            $key == 0 ? $order->shipping_name : "",
-            $key == 0 ? $order->shipping_airwaybill :"",
-            $key == 0 ? $order->shipping_date :"",
-            $key == 0 ? $order->note :"",
-            $key == 0 ? Str::upper($order->customer_type) :"",
-            $key == 0 ? $order->source_name :"",
-            $key == 0 ? $order->sales_name :"",
-            $key == 0 ? $order->creator_name :"",
-            $key == 0 ? $order->packer_name :"",
-            $key == 0 ? Str::upper($order->payment_status):"",
-            $key == 0 ? Str::upper($order->status):"",
-            ];
-        }
-    
-        return $rows;
+       return [
+            $order->order->id,
+            $order->order->created_at,
+            $order->order->closing_date,
+            $order->product_name, // Nama Produk
+            $order->variant_name, // Variant Produk
+            $order->order->customer_name ,
+            $order->order->customer_phone ,
+            $order->order->customer_address ,
+            $order->order->customer_province,
+            $order->order->customer_city ,
+            $order->order->customer_subdistrict ,
+            $order->order->customer_village ,
+            $order->order->customer_postal_code ,
+
+            $order->quantity ,
+            $order->variant_price ,
+            
+            $order->order->items_discount ,
+            $order->order->shipping_price,
+            $order->order->shipping_discount,
+            $order->quantity * $order->variant_price,
+            $order->order->payment_method_name,
+            $order->order->shipping_name ,
+            $order->order->shipping_airwaybill ,
+            $order->order->shipping_date ,
+            $order->order->note ,
+            Str::upper($order->order->customer_type),
+            $order->order->source_name ,
+            $order->order->sales_name ,
+            $order->order->creator_name ,
+            $order->order->packer_name ,
+            Str::upper($order->order->payment_status),
+            Str::upper($order->order->status),
+        ];
     }
 }
