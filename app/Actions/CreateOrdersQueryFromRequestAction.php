@@ -66,13 +66,10 @@ class CreateOrdersQueryFromRequestAction
                 $query->selectRaw(1)
                     ->from('order_items')
                     ->whereColumn('order_items.order_id', 'orders.id')
-                    ->where(function ($query) use ($request) {
-                        $query->when($request->filled('variant_name'), function ($query) use ($request) {
-                            $query->orWhere('order_items.product_name', 'LIKE', '%' . $request->get('variant_name') . '%');
-                        });
-                    });
+                    ->where('order_items.product_name', 'LIKE', '%' . $request->get('variant_name') . '%');
             });
         }
+        
 
         if ($request->filled('start_date')) {
             $query->whereRaw('DATE(created_at) >= ?', [$request->get('start_date')]);
