@@ -19,11 +19,11 @@ class IndexController extends Controller
         CreateOrdersQueryFromRequestAction $createOrdersQueryFromRequestAction,
         Request $request
     ) {
-        $query = $createOrdersQueryFromRequestAction->run($request);
-
         if ($request->get('action') === 'export') {
-            return new OrdersExport($query);
+            return new OrdersExport($request);
         }
+
+        $query = $createOrdersQueryFromRequestAction->run($request);
 
         return Response::view('orders.index', [
             'orders' => $query->paginate(

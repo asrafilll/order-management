@@ -3,10 +3,13 @@
 namespace App\Exports;
 
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\OrderSource;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -30,15 +33,12 @@ class OrdersExport implements
 
     private $writerType = Excel::XLSX;
 
-    /** @var Builder|EloquentBuilder|Relation */
-    private $_query;
+    /** @var Request */
+    private $request;
 
-    /**
-     * @param Builder|EloquentBuilder|Relation $query
-     */
-    public function __construct($query)
+    public function __construct(Request $request)
     {
-        $this->_query = $query;
+        $this->request = $request;
     }
 
     /**
@@ -46,7 +46,71 @@ class OrdersExport implements
      */
     public function query()
     {
-        return $this->_query;
+        $query = OrderItem::query()
+            ->latest()
+            ->select([
+                'orders.*',
+                'order_items.product_name',
+                'order_items.variant_name',
+            ])
+            ->join('orders', 'order_items.order_id', 'orders.id');
+
+        if ($this->request->filled('search')) {
+            $query->where(function ($query) {
+                $query
+                    ->orWhere('orders.status', 'LIKE', '%' . $this->request->get('search') . '%')
+                    ->orWhere('orders.source_name', 'LIKE', '%' . $this->request->get('search') . '%')
+                    ->orWhere('orders.payment_status', 'LIKE', '%' . $this->request->get('search') . '%')
+                    ->orWhere('orders.customer_name', 'LIKE', '%' . $this->request->get('search') . '%')
+                    ->orWhere('orders.items_quantity', 'LIKE', '%' . $this->request->get('search') . '%')
+                    ->orWhere('orders.total_price', 'LIKE', '%' . $this->request->get('search') . '%');
+            });
+        }
+
+        $filters = [
+            'orders.customer_id' => 'customer_id',
+            'orders.status' => 'status',
+            'orders.payment_status' => 'payment_status',
+            'orders.sales_id' => 'sales_id',
+            'orders.customer_type' => 'customer_type',
+            'orders.payment_method_id' => 'payment_method_id',
+            'orders.shipping_id' => 'shipping_id',
+            'orders.customer_province' => 'customer_province',
+            'orders.customer_city' => 'customer_city',
+            'orders.customer_subdistrict' => 'customer_subdistrict',
+            'orders.customer_village' => 'customer_village',
+        ];
+
+        foreach ($filters as $field => $filter) {
+            if ($this->request->filled($filter)) {
+                $query->where($field, $this->request->get($filter));
+            }
+        }
+
+        if ($this->request->filled('source_id')) {
+            /** @var OrderSource */
+            $orderSource = OrderSource::with(['child'])->find($this->request->get('source_id'));
+
+            if ($orderSource->child->count() < 1) {
+                $query->where('source_id', $orderSource->id);
+            } else {
+                $query->whereIn('source_id', $orderSource->child->pluck('id'));
+            }
+        }
+
+        if ($this->request->filled('variant_name')) {
+            $query->where('order_items.product_name', 'LIKE', '%' . $this->request->get('variant_name') . '%');
+        }
+
+        if ($this->request->filled('start_date')) {
+            $query->whereRaw('DATE(orders.created_at) >= ?', [$this->request->get('start_date')]);
+        }
+
+        if ($this->request->filled('end_date')) {
+            $query->whereRaw('DATE(orders.created_at) <= ?', [$this->request->get('end_date')]);
+        }
+
+        return $query;
     }
 
     /**
@@ -58,6 +122,8 @@ class OrdersExport implements
             __('ID'),
             __('Created At'),
             __('Closing Date'),
+            __('Product'),
+            __('Variant'),
             __('Name'),
             __('Phone'),
             __('Address'),
@@ -88,41 +154,43 @@ class OrdersExport implements
     }
 
     /**
-     * @param Order $order
+     * @param object $row
      * @return array
      */
-    public function map($order): array
+    public function map($row): array
     {
         return [
-            $order->id,
-            $order->created_at,
-            $order->closing_date,
-            $order->customer_name,
-            $order->customer_phone,
-            $order->customer_address,
-            $order->customer_province,
-            $order->customer_city,
-            $order->customer_subdistrict,
-            $order->customer_village,
-            $order->customer_postal_code,
-            $order->items_quantity,
-            $order->items_price,
-            $order->items_discount,
-            $order->shipping_price,
-            $order->shipping_discount,
-            $order->total_price,
-            $order->payment_method_name,
-            $order->shipping_name,
-            $order->shipping_airwaybill,
-            $order->shipping_date,
-            $order->note,
-            Str::upper($order->customer_type),
-            $order->source_name,
-            $order->sales_name,
-            $order->creator_name,
-            $order->packer_name,
-            Str::upper($order->payment_status),
-            Str::upper($order->status),
+            $row->id,
+            $row->created_at,
+            $row->closing_date,
+            $row->product_name,
+            $row->variant_name,
+            $row->customer_name,
+            $row->customer_phone,
+            $row->customer_address,
+            $row->customer_province,
+            $row->customer_city,
+            $row->customer_subdistrict,
+            $row->customer_village,
+            $row->customer_postal_code,
+            $row->items_quantity,
+            $row->items_price,
+            $row->items_discount,
+            $row->shipping_price,
+            $row->shipping_discount,
+            $row->total_price,
+            $row->payment_method_name,
+            $row->shipping_name,
+            $row->shipping_airwaybill,
+            $row->shipping_date,
+            $row->note,
+            Str::upper($row->customer_type),
+            $row->source_name,
+            $row->sales_name,
+            $row->creator_name,
+            $row->packer_name,
+            Str::upper($row->payment_status),
+            Str::upper($row->status),
         ];
     }
 }
