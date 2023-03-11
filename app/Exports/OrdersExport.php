@@ -98,8 +98,8 @@ class OrdersExport implements
             }
         }
 
-        if ($this->request->filled('variant_name')) {
-            $query->where('order_items.product_name', 'LIKE', '%' . $this->request->get('variant_name') . '%');
+        if ($this->request->filled('product_name')) {
+            $query->where('order_items.product_name', 'LIKE', '%' . $this->request->get('product_name') . '%');
         }
 
         if ($this->request->filled('start_date')) {
