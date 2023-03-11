@@ -268,26 +268,20 @@
                                         </script>
                                     </div>
                                     <div class="form-group">
-                                        <label for="variant_name">{{ __('Product') }}</label>
-                                        <input
-                                            type="hidden"
-                                            name="variant_id"
-                                            id="variant_id"
-                                            value="{{ Request::get('variant_id') }}"
-                                        />
+                                        <label for="product_name">{{ __('Product') }}</label>
                                         <div class="input-group">
                                             <input
                                                 type="text"
-                                                name="variant_name"
-                                                id="variant_name"
+                                                name="product_name"
+                                                id="product_name"
                                                 class="form-control"
-                                                value="{{ Request::get('variant_name') }}"
+                                                value="{{ Request::get('product_name') }}"
                                             />
                                             <div class="input-group-append">
                                                 <button
                                                     type="button"
                                                     class="btn btn-default btn-reset"
-                                                    @if (!Request::filled('variant_name') || !Request::filled('variant_id')) disabled @endif
+                                                    @if (!Request::filled('product_name') || !Request::filled('product_id')) disabled @endif
                                                 >{{ __('Reset') }}</button>
                                             </div>
                                         </div>
@@ -750,8 +744,6 @@
                         <script>
                             const FilterOrder = (function() {
                                 const $el = $('#filter-order-module');
-                                const $variantId = $el.find('#variant_id');
-                                const $variantName = $el.find('#variant_name');
                                 const $customerId = $el.find('#customer_id');
                                 const $customerName = $el.find('#customer_name');
                                 const $paymentMethodId = $el.find('#payment_method_id');
@@ -782,33 +774,6 @@
                                 }
 
                                 function init() {
-                                    $variantName.autocomplete({
-                                        source: function(request, response) {
-                                            $.ajax({
-                                                method: 'GET',
-                                                url: '{{ route('web-api.product-variants.index') }}',
-                                                data: {
-                                                    q: request.term,
-                                                },
-                                                success: function(res) {
-                                                    response(res.data.map(function(productVariant) {
-                                                        return {
-                                                            id: productVariant.id,
-                                                            label: productVariant.variant_name,
-                                                            value: productVariant.variant_name,
-                                                        };
-                                                    }))
-                                                },
-                                            });
-                                        },
-                                        select: function(event, ui) {
-                                            $variantId.val(ui.item.id);
-                                        },
-                                        change: function(event, ui) {
-                                            $variantId.val(ui.item ? ui.item.id : null);
-                                        }
-                                    });
-
                                     $customerName.autocomplete({
                                         source: function(request, response) {
                                             $.ajax({
