@@ -744,6 +744,7 @@
                         <script>
                             const FilterOrder = (function() {
                                 const $el = $('#filter-order-module');
+                                const $productName = $el.find('#product_name');
                                 const $customerId = $el.find('#customer_id');
                                 const $customerName = $el.find('#customer_name');
                                 const $paymentMethodId = $el.find('#payment_method_id');
@@ -774,6 +775,27 @@
                                 }
 
                                 function init() {
+                                    $productName.autocomplete({
+                                        source: function(request, response) {
+                                            $.ajax({
+                                                method: 'GET',
+                                                url: '{{ route('web-api.products.index') }}',
+                                                data: {
+                                                    q: request.term,
+                                                },
+                                                success: function(res) {
+                                                    response(res.data.map(function(product) {
+                                                        return {
+                                                            id: product.id,
+                                                            label: product.name,
+                                                            value: product.name,
+                                                        };
+                                                    }))
+                                                },
+                                            });
+                                        },
+                                    });
+
                                     $customerName.autocomplete({
                                         source: function(request, response) {
                                             $.ajax({
